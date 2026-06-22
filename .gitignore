@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+venv/
+.venv/
+env/
+
+# SQLite database
+*.db
+*.sqlite3
+
+# Node
+node_modules/
+dist/
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Vite
+frontend/.env.local
+
+# OS
+.DS_Store
+Thumbs.db

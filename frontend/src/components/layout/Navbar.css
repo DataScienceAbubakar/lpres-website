@@ -1,0 +1,188 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: var(--ease);
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+}
+
+.navbar--scrolled {
+  background: rgba(0, 0, 0, 0.97);
+  box-shadow: 0 2px 40px rgba(0, 0, 0, 0.7);
+  border-bottom-color: rgba(196, 154, 62, 0.10);
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 100%;
+}
+
+/* ── Logo ─────────────────────────────────────────────────── */
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+/* White container so logo is crisp and sharp on dark navbar */
+.navbar__logo-wrap {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  transition: var(--ease);
+}
+
+.navbar__brand:hover .navbar__logo-wrap {
+  box-shadow: 0 4px 20px rgba(196, 154, 62, 0.4);
+}
+
+.navbar__logo {
+  height: 48px;
+  width: auto;
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* ── Nav links ─────────────────────────────────────────────── */
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+  margin-left: auto;
+}
+
+.navbar__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 13px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  border-radius: var(--r-sm);
+  transition: var(--ease);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.01em;
+}
+
+.navbar__link:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.navbar__link--active {
+  color: var(--gold-light);
+}
+
+/* ── GDSS Portal button ────────────────────────────────────── */
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.btn-gdss {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 22px;
+  border-radius: var(--r-full);
+  font-size: 13.5px;
+  font-weight: 700;
+  background: var(--gold-primary);
+  color: #1a1200;
+  border: none;
+  cursor: pointer;
+  transition: var(--ease);
+  text-decoration: none;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+  box-shadow: 0 2px 14px rgba(196, 154, 62, 0.40);
+}
+
+.btn-gdss:hover {
+  background: var(--gold-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 24px rgba(196, 154, 62, 0.55);
+}
+
+/* ── Burger ────────────────────────────────────────────────── */
+
+.navbar__burger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--r-sm);
+  margin-left: auto;
+  transition: var(--ease);
+}
+.navbar__burger:hover { background: rgba(255,255,255,0.08); }
+
+/* ── Mobile drawer ─────────────────────────────────────────── */
+
+.navbar__mobile {
+  position: absolute;
+  top: var(--navbar-height);
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.97);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 16px 0 24px;
+  backdrop-filter: blur(12px);
+}
+
+.navbar__mobile-link {
+  display: block;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: var(--ease);
+}
+.navbar__mobile-link:last-of-type { border-bottom: none; }
+.navbar__mobile-link:hover { color: white; padding-left: 8px; }
+
+@media (max-width: 900px) {
+  .navbar__links   { display: none; }
+  .navbar__actions { display: none; }
+  .navbar__burger  { display: flex; }
+}
+
+@media (max-width: 480px) {
+  .navbar__logo { height: 40px; }
+}
