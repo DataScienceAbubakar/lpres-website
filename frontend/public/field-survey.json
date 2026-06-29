@@ -1,0 +1,2573 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.36872,
+          10.26893
+        ]
+      },
+      "properties": {
+        "S/N": 1,
+        "Waypoint ID": "KW001",
+        "Location Name": "Oke-Gaa FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 232,
+        "Remark": "Active site",
+        "Cluster": "BARUTEN",
+        "Latitude (°N)": 10.26893,
+        "Longitude (°E)": 3.36872
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.18039,
+          9.94119
+        ]
+      },
+      "properties": {
+        "S/N": 2,
+        "Waypoint ID": "KW002",
+        "Location Name": "Igan-Bode FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 346,
+        "Remark": "Confirmed GPS",
+        "Cluster": "BARUTEN",
+        "Latitude (°N)": 9.94119,
+        "Longitude (°E)": 3.18039
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.14447,
+          10.04772
+        ]
+      },
+      "properties": {
+        "S/N": 3,
+        "Waypoint ID": "KW003",
+        "Location Name": "Gaa-Eiyenkorin GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 335,
+        "Remark": "LGA boundary",
+        "Cluster": "BARUTEN",
+        "Latitude (°N)": 10.04772,
+        "Longitude (°E)": 3.14447
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.26185,
+          9.92523
+        ]
+      },
+      "properties": {
+        "S/N": 4,
+        "Waypoint ID": "KW004",
+        "Location Name": "Eiyenkorin-Malete STREAM",
+        "Features": "STREAM",
+        "Elevation (m)": 202,
+        "Remark": "Field verified",
+        "Cluster": "BARUTEN",
+        "Latitude (°N)": 9.92523,
+        "Longitude (°E)": 3.26185
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.2127,
+          10.28996
+        ]
+      },
+      "properties": {
+        "S/N": 5,
+        "Waypoint ID": "KW005",
+        "Location Name": "Oro-Oro LIVESTOCK",
+        "Features": "LIVESTOCK MARKET",
+        "Elevation (m)": 210,
+        "Remark": "Surveyed 2024",
+        "Cluster": "BARUTEN",
+        "Latitude (°N)": 10.28996,
+        "Longitude (°E)": 3.2127
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.41182,
+          9.94765
+        ]
+      },
+      "properties": {
+        "S/N": 6,
+        "Waypoint ID": "KW006",
+        "Location Name": "Lafiagi-Ajasse POND",
+        "Features": "POND",
+        "Elevation (m)": 416,
+        "Remark": "Active site",
+        "Cluster": "BARUTEN",
+        "Latitude (°N)": 9.94765,
+        "Longitude (°E)": 3.41182
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.07075,
+          10.11482
+        ]
+      },
+      "properties": {
+        "S/N": 7,
+        "Waypoint ID": "KW007",
+        "Location Name": "Kaiama-Lafiagi CROSSING",
+        "Features": "CROSSING POINT",
+        "Elevation (m)": 450,
+        "Remark": "Confirmed GPS",
+        "Cluster": "BARUTEN",
+        "Latitude (°N)": 10.11482,
+        "Longitude (°E)": 3.07075
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.44973,
+          10.09868
+        ]
+      },
+      "properties": {
+        "S/N": 8,
+        "Waypoint ID": "KW008",
+        "Location Name": "Oko-Patan FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 471,
+        "Remark": "LGA boundary",
+        "Cluster": "BARUTEN",
+        "Latitude (°N)": 10.09868,
+        "Longitude (°E)": 3.44973
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.30011,
+          9.90345
+        ]
+      },
+      "properties": {
+        "S/N": 9,
+        "Waypoint ID": "KW009",
+        "Location Name": "Osi-Kaiama GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 366,
+        "Remark": "Field verified",
+        "Cluster": "BARUTEN",
+        "Latitude (°N)": 9.90345,
+        "Longitude (°E)": 3.30011
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.15094,
+          9.91498
+        ]
+      },
+      "properties": {
+        "S/N": 10,
+        "Waypoint ID": "KW010",
+        "Location Name": "Oke-Iwo WATER",
+        "Features": "WATER POINT",
+        "Elevation (m)": 397,
+        "Remark": "Surveyed 2024",
+        "Cluster": "BARUTEN",
+        "Latitude (°N)": 9.91498,
+        "Longitude (°E)": 3.15094
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.26197,
+          10.21706
+        ]
+      },
+      "properties": {
+        "S/N": 11,
+        "Waypoint ID": "KW011",
+        "Location Name": "Igan-Oko STREAM",
+        "Features": "STREAM",
+        "Elevation (m)": 405,
+        "Remark": "Active site",
+        "Cluster": "BARUTEN",
+        "Latitude (°N)": 10.21706,
+        "Longitude (°E)": 3.26197
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.08624,
+          10.26715
+        ]
+      },
+      "properties": {
+        "S/N": 12,
+        "Waypoint ID": "KW012",
+        "Location Name": "Gaa-Erin BIG",
+        "Features": "BIG FARM LAND",
+        "Elevation (m)": 484,
+        "Remark": "Confirmed GPS",
+        "Cluster": "BARUTEN",
+        "Latitude (°N)": 10.26715,
+        "Longitude (°E)": 3.08624
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.28795,
+          10.29744
+        ]
+      },
+      "properties": {
+        "S/N": 13,
+        "Waypoint ID": "KW013",
+        "Location Name": "Eiyenkorin-Osi PRIMARY",
+        "Features": "PRIMARY HEALTH CARE CENTRE",
+        "Elevation (m)": 376,
+        "Remark": "LGA boundary",
+        "Cluster": "BARUTEN",
+        "Latitude (°N)": 10.29744,
+        "Longitude (°E)": 3.28795
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.12593,
+          10.14375
+        ]
+      },
+      "properties": {
+        "S/N": 14,
+        "Waypoint ID": "KW014",
+        "Location Name": "Oro-Share SCHOOL",
+        "Features": "SCHOOL",
+        "Elevation (m)": 278,
+        "Remark": "Field verified",
+        "Cluster": "BARUTEN",
+        "Latitude (°N)": 10.14375,
+        "Longitude (°E)": 3.12593
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.7919,
+          8.30809
+        ]
+      },
+      "properties": {
+        "S/N": 15,
+        "Waypoint ID": "KW015",
+        "Location Name": "Bode-Malete WATER",
+        "Features": "WATER POINT",
+        "Elevation (m)": 436,
+        "Remark": "Surveyed 2024",
+        "Cluster": "MORO-ASA 006",
+        "Latitude (°N)": 8.30809,
+        "Longitude (°E)": 4.7919
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.77685,
+          8.47154
+        ]
+      },
+      "properties": {
+        "S/N": 16,
+        "Waypoint ID": "KW016",
+        "Location Name": "Malete-Oro STREAM",
+        "Features": "STREAM",
+        "Elevation (m)": 467,
+        "Remark": "Active site",
+        "Cluster": "MORO-ASA 006",
+        "Latitude (°N)": 8.47154,
+        "Longitude (°E)": 4.77685
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.78734,
+          8.34345
+        ]
+      },
+      "properties": {
+        "S/N": 17,
+        "Waypoint ID": "KW017",
+        "Location Name": "Ajasse-Ajasse BIG",
+        "Features": "BIG FARM LAND",
+        "Elevation (m)": 411,
+        "Remark": "Confirmed GPS",
+        "Cluster": "MORO-ASA 006",
+        "Latitude (°N)": 8.34345,
+        "Longitude (°E)": 4.78734
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.53507,
+          8.26213
+        ]
+      },
+      "properties": {
+        "S/N": 18,
+        "Waypoint ID": "KW018",
+        "Location Name": "Patan-Lafiagi PRIMARY",
+        "Features": "PRIMARY HEALTH CARE CENTRE",
+        "Elevation (m)": 346,
+        "Remark": "LGA boundary",
+        "Cluster": "MORO-ASA 006",
+        "Latitude (°N)": 8.26213,
+        "Longitude (°E)": 4.53507
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.50078,
+          8.32801
+        ]
+      },
+      "properties": {
+        "S/N": 19,
+        "Waypoint ID": "KW019",
+        "Location Name": "Iwo-Patan SCHOOL",
+        "Features": "SCHOOL",
+        "Elevation (m)": 402,
+        "Remark": "Field verified",
+        "Cluster": "MORO-ASA 006",
+        "Latitude (°N)": 8.32801,
+        "Longitude (°E)": 4.50078
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.48382,
+          8.41199
+        ]
+      },
+      "properties": {
+        "S/N": 20,
+        "Waypoint ID": "KW020",
+        "Location Name": "Erin-Kaiama FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 363,
+        "Remark": "Surveyed 2024",
+        "Cluster": "MORO-ASA 006",
+        "Latitude (°N)": 8.41199,
+        "Longitude (°E)": 4.48382
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.59963,
+          8.44532
+        ]
+      },
+      "properties": {
+        "S/N": 21,
+        "Waypoint ID": "KW021",
+        "Location Name": "Share-Iwo GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 202,
+        "Remark": "Active site",
+        "Cluster": "MORO-ASA 006",
+        "Latitude (°N)": 8.44532,
+        "Longitude (°E)": 4.59963
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.48741,
+          8.38534
+        ]
+      },
+      "properties": {
+        "S/N": 22,
+        "Waypoint ID": "KW022",
+        "Location Name": "Ile-Oko WATER",
+        "Features": "WATER POINT",
+        "Elevation (m)": 333,
+        "Remark": "Confirmed GPS",
+        "Cluster": "MORO-ASA 006",
+        "Latitude (°N)": 8.38534,
+        "Longitude (°E)": 4.48741
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.70795,
+          8.31535
+        ]
+      },
+      "properties": {
+        "S/N": 23,
+        "Waypoint ID": "KW023",
+        "Location Name": "Asa-Erin CATTLE",
+        "Features": "CATTLE MARKET",
+        "Elevation (m)": 291,
+        "Remark": "LGA boundary",
+        "Cluster": "MORO-ASA 006",
+        "Latitude (°N)": 8.31535,
+        "Longitude (°E)": 4.70795
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.75941,
+          8.37539
+        ]
+      },
+      "properties": {
+        "S/N": 24,
+        "Waypoint ID": "KW024",
+        "Location Name": "Bode-Osi BIG",
+        "Features": "BIG FARM LAND",
+        "Elevation (m)": 344,
+        "Remark": "Field verified",
+        "Cluster": "MORO-ASA 006",
+        "Latitude (°N)": 8.37539,
+        "Longitude (°E)": 4.75941
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.63305,
+          8.33401
+        ]
+      },
+      "properties": {
+        "S/N": 25,
+        "Waypoint ID": "KW025",
+        "Location Name": "Malete-Share HEALTH",
+        "Features": "HEALTH CENTER",
+        "Elevation (m)": 366,
+        "Remark": "Surveyed 2024",
+        "Cluster": "MORO-ASA 006",
+        "Latitude (°N)": 8.33401,
+        "Longitude (°E)": 4.63305
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.71935,
+          8.16211
+        ]
+      },
+      "properties": {
+        "S/N": 26,
+        "Waypoint ID": "KW026",
+        "Location Name": "Ajasse-Oke FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 301,
+        "Remark": "Active site",
+        "Cluster": "MORO-ASA 006",
+        "Latitude (°N)": 8.16211,
+        "Longitude (°E)": 4.71935
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.89861,
+          8.07321
+        ]
+      },
+      "properties": {
+        "S/N": 27,
+        "Waypoint ID": "KW027",
+        "Location Name": "Lafiagi-Lafiagi BIG",
+        "Features": "BIG FARM LAND",
+        "Elevation (m)": 321,
+        "Remark": "Confirmed GPS",
+        "Cluster": "MORO-ASA 007",
+        "Latitude (°N)": 8.07321,
+        "Longitude (°E)": 4.89861
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.91353,
+          8.16421
+        ]
+      },
+      "properties": {
+        "S/N": 28,
+        "Waypoint ID": "KW028",
+        "Location Name": "Kaiama-Patan HEALTH",
+        "Features": "HEALTH CENTER",
+        "Elevation (m)": 280,
+        "Remark": "LGA boundary",
+        "Cluster": "MORO-ASA 007",
+        "Latitude (°N)": 8.16421,
+        "Longitude (°E)": 4.91353
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.00395,
+          8.22683
+        ]
+      },
+      "properties": {
+        "S/N": 29,
+        "Waypoint ID": "KW029",
+        "Location Name": "Oko-Kaiama FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 308,
+        "Remark": "Field verified",
+        "Cluster": "MORO-ASA 007",
+        "Latitude (°N)": 8.22683,
+        "Longitude (°E)": 5.00395
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.80582,
+          8.06892
+        ]
+      },
+      "properties": {
+        "S/N": 30,
+        "Waypoint ID": "KW030",
+        "Location Name": "Osi-Iwo FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 275,
+        "Remark": "Surveyed 2024",
+        "Cluster": "MORO-ASA 007",
+        "Latitude (°N)": 8.06892,
+        "Longitude (°E)": 4.80582
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.00818,
+          8.18655
+        ]
+      },
+      "properties": {
+        "S/N": 31,
+        "Waypoint ID": "KW031",
+        "Location Name": "Oke-Oko GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 201,
+        "Remark": "Active site",
+        "Cluster": "MORO-ASA 007",
+        "Latitude (°N)": 8.18655,
+        "Longitude (°E)": 5.00818
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.90731,
+          8.13255
+        ]
+      },
+      "properties": {
+        "S/N": 32,
+        "Waypoint ID": "KW032",
+        "Location Name": "Igan-Erin STREAM",
+        "Features": "STREAM",
+        "Elevation (m)": 313,
+        "Remark": "Confirmed GPS",
+        "Cluster": "MORO-ASA 007",
+        "Latitude (°N)": 8.13255,
+        "Longitude (°E)": 4.90731
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.92157,
+          8.09426
+        ]
+      },
+      "properties": {
+        "S/N": 33,
+        "Waypoint ID": "KW033",
+        "Location Name": "Gaa-Osi LIVESTOCK",
+        "Features": "LIVESTOCK MARKET",
+        "Elevation (m)": 379,
+        "Remark": "LGA boundary",
+        "Cluster": "MORO-ASA 007",
+        "Latitude (°N)": 8.09426,
+        "Longitude (°E)": 4.92157
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.99119,
+          8.12088
+        ]
+      },
+      "properties": {
+        "S/N": 34,
+        "Waypoint ID": "KW034",
+        "Location Name": "Eiyenkorin-Share POND",
+        "Features": "POND",
+        "Elevation (m)": 275,
+        "Remark": "Field verified",
+        "Cluster": "MORO-ASA 007",
+        "Latitude (°N)": 8.12088,
+        "Longitude (°E)": 4.99119
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.93449,
+          8.08989
+        ]
+      },
+      "properties": {
+        "S/N": 35,
+        "Waypoint ID": "KW035",
+        "Location Name": "Oro-Oke CROSSING",
+        "Features": "CROSSING POINT",
+        "Elevation (m)": 459,
+        "Remark": "Surveyed 2024",
+        "Cluster": "MORO-ASA 007",
+        "Latitude (°N)": 8.08989,
+        "Longitude (°E)": 4.93449
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.97347,
+          8.02126
+        ]
+      },
+      "properties": {
+        "S/N": 36,
+        "Waypoint ID": "KW036",
+        "Location Name": "Lafiagi-Ile FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 349,
+        "Remark": "Active site",
+        "Cluster": "MORO-ASA 007",
+        "Latitude (°N)": 8.02126,
+        "Longitude (°E)": 4.97347
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.53161,
+          8.18483
+        ]
+      },
+      "properties": {
+        "S/N": 37,
+        "Waypoint ID": "KW037",
+        "Location Name": "Erin-Iwo FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 203,
+        "Remark": "Confirmed GPS",
+        "Cluster": "Central Moro-Asa 005",
+        "Latitude (°N)": 8.18483,
+        "Longitude (°E)": 4.53161
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.56237,
+          8.35093
+        ]
+      },
+      "properties": {
+        "S/N": 38,
+        "Waypoint ID": "KW038",
+        "Location Name": "Share-Oko GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 486,
+        "Remark": "LGA boundary",
+        "Cluster": "Central Moro-Asa 005",
+        "Latitude (°N)": 8.35093,
+        "Longitude (°E)": 4.56237
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.72613,
+          8.3091
+        ]
+      },
+      "properties": {
+        "S/N": 39,
+        "Waypoint ID": "KW039",
+        "Location Name": "Ile-Erin WATER",
+        "Features": "WATER POINT",
+        "Elevation (m)": 323,
+        "Remark": "Field verified",
+        "Cluster": "Central Moro-Asa 005",
+        "Latitude (°N)": 8.3091,
+        "Longitude (°E)": 4.72613
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.5999,
+          8.30717
+        ]
+      },
+      "properties": {
+        "S/N": 40,
+        "Waypoint ID": "KW040",
+        "Location Name": "Asa-Osi STREAM",
+        "Features": "STREAM",
+        "Elevation (m)": 377,
+        "Remark": "Surveyed 2024",
+        "Cluster": "Central Moro-Asa 005",
+        "Latitude (°N)": 8.30717,
+        "Longitude (°E)": 4.5999
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.62873,
+          8.28147
+        ]
+      },
+      "properties": {
+        "S/N": 41,
+        "Waypoint ID": "KW041",
+        "Location Name": "Bode-Share BIG",
+        "Features": "BIG FARM LAND",
+        "Elevation (m)": 269,
+        "Remark": "Active site",
+        "Cluster": "Central Moro-Asa 005",
+        "Latitude (°N)": 8.28147,
+        "Longitude (°E)": 4.62873
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.70661,
+          8.12276
+        ]
+      },
+      "properties": {
+        "S/N": 42,
+        "Waypoint ID": "KW042",
+        "Location Name": "Malete-Oke PRIMARY",
+        "Features": "PRIMARY HEALTH CARE CENTRE",
+        "Elevation (m)": 456,
+        "Remark": "Confirmed GPS",
+        "Cluster": "Central Moro-Asa 005",
+        "Latitude (°N)": 8.12276,
+        "Longitude (°E)": 4.70661
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.599,
+          8.34893
+        ]
+      },
+      "properties": {
+        "S/N": 43,
+        "Waypoint ID": "KW043",
+        "Location Name": "Ajasse-Ile SCHOOL",
+        "Features": "SCHOOL",
+        "Elevation (m)": 402,
+        "Remark": "LGA boundary",
+        "Cluster": "Central Moro-Asa 005",
+        "Latitude (°N)": 8.34893,
+        "Longitude (°E)": 4.599
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.70455,
+          8.21811
+        ]
+      },
+      "properties": {
+        "S/N": 44,
+        "Waypoint ID": "KW044",
+        "Location Name": "Patan-Igan FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 317,
+        "Remark": "Field verified",
+        "Cluster": "Central Moro-Asa 005",
+        "Latitude (°N)": 8.21811,
+        "Longitude (°E)": 4.70455
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.72549,
+          8.26147
+        ]
+      },
+      "properties": {
+        "S/N": 45,
+        "Waypoint ID": "KW045",
+        "Location Name": "Iwo-Asa GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 350,
+        "Remark": "Surveyed 2024",
+        "Cluster": "Central Moro-Asa 005",
+        "Latitude (°N)": 8.26147,
+        "Longitude (°E)": 4.72549
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.51867,
+          8.17529
+        ]
+      },
+      "properties": {
+        "S/N": 46,
+        "Waypoint ID": "KW046",
+        "Location Name": "Erin-Gaa WATER",
+        "Features": "WATER POINT",
+        "Elevation (m)": 418,
+        "Remark": "Active site",
+        "Cluster": "Central Moro-Asa 005",
+        "Latitude (°N)": 8.17529,
+        "Longitude (°E)": 4.51867
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.53376,
+          8.68502
+        ]
+      },
+      "properties": {
+        "S/N": 47,
+        "Waypoint ID": "KW047",
+        "Location Name": "Igan-Osi WATER",
+        "Features": "WATER POINT",
+        "Elevation (m)": 376,
+        "Remark": "Confirmed GPS",
+        "Cluster": "EDU-PATEGI 003",
+        "Latitude (°N)": 8.68502,
+        "Longitude (°E)": 5.53376
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.44085,
+          8.97249
+        ]
+      },
+      "properties": {
+        "S/N": 48,
+        "Waypoint ID": "KW048",
+        "Location Name": "Gaa-Share CATTLE",
+        "Features": "CATTLE MARKET",
+        "Elevation (m)": 480,
+        "Remark": "LGA boundary",
+        "Cluster": "EDU-PATEGI 003",
+        "Latitude (°N)": 8.97249,
+        "Longitude (°E)": 5.44085
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.22319,
+          8.82028
+        ]
+      },
+      "properties": {
+        "S/N": 49,
+        "Waypoint ID": "KW049",
+        "Location Name": "Eiyenkorin-Oke BIG",
+        "Features": "BIG FARM LAND",
+        "Elevation (m)": 234,
+        "Remark": "Field verified",
+        "Cluster": "EDU-PATEGI 003",
+        "Latitude (°N)": 8.82028,
+        "Longitude (°E)": 5.22319
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.51853,
+          8.82856
+        ]
+      },
+      "properties": {
+        "S/N": 50,
+        "Waypoint ID": "KW050",
+        "Location Name": "Oro-Ile HEALTH",
+        "Features": "HEALTH CENTER",
+        "Elevation (m)": 384,
+        "Remark": "Surveyed 2024",
+        "Cluster": "EDU-PATEGI 003",
+        "Latitude (°N)": 8.82856,
+        "Longitude (°E)": 5.51853
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.52079,
+          8.69379
+        ]
+      },
+      "properties": {
+        "S/N": 51,
+        "Waypoint ID": "KW051",
+        "Location Name": "Lafiagi-Igan FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 445,
+        "Remark": "Active site",
+        "Cluster": "EDU-PATEGI 003",
+        "Latitude (°N)": 8.69379,
+        "Longitude (°E)": 5.52079
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.45959,
+          8.86749
+        ]
+      },
+      "properties": {
+        "S/N": 52,
+        "Waypoint ID": "KW052",
+        "Location Name": "Kaiama-Asa FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 416,
+        "Remark": "Confirmed GPS",
+        "Cluster": "EDU-PATEGI 003",
+        "Latitude (°N)": 8.86749,
+        "Longitude (°E)": 5.45959
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.42501,
+          8.97886
+        ]
+      },
+      "properties": {
+        "S/N": 53,
+        "Waypoint ID": "KW053",
+        "Location Name": "Oko-Gaa GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 405,
+        "Remark": "LGA boundary",
+        "Cluster": "EDU-PATEGI 003",
+        "Latitude (°N)": 8.97886,
+        "Longitude (°E)": 5.42501
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.33181,
+          8.71619
+        ]
+      },
+      "properties": {
+        "S/N": 54,
+        "Waypoint ID": "KW054",
+        "Location Name": "Osi-Bode STREAM",
+        "Features": "STREAM",
+        "Elevation (m)": 385,
+        "Remark": "Field verified",
+        "Cluster": "EDU-PATEGI 003",
+        "Latitude (°N)": 8.71619,
+        "Longitude (°E)": 5.33181
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.46031,
+          8.87585
+        ]
+      },
+      "properties": {
+        "S/N": 55,
+        "Waypoint ID": "KW055",
+        "Location Name": "Oke-Eiyenkorin LIVESTOCK",
+        "Features": "LIVESTOCK MARKET",
+        "Elevation (m)": 402,
+        "Remark": "Surveyed 2024",
+        "Cluster": "EDU-PATEGI 003",
+        "Latitude (°N)": 8.87585,
+        "Longitude (°E)": 5.46031
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.3116,
+          8.9409
+        ]
+      },
+      "properties": {
+        "S/N": 56,
+        "Waypoint ID": "KW056",
+        "Location Name": "Igan-Malete POND",
+        "Features": "POND",
+        "Elevation (m)": 488,
+        "Remark": "Active site",
+        "Cluster": "EDU-PATEGI 003",
+        "Latitude (°N)": 8.9409,
+        "Longitude (°E)": 5.3116
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.26451,
+          8.91049
+        ]
+      },
+      "properties": {
+        "S/N": 57,
+        "Waypoint ID": "KW057",
+        "Location Name": "Gaa-Oro CROSSING",
+        "Features": "CROSSING POINT",
+        "Elevation (m)": 223,
+        "Remark": "Confirmed GPS",
+        "Cluster": "EDU-PATEGI 003",
+        "Latitude (°N)": 8.91049,
+        "Longitude (°E)": 5.26451
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.44643,
+          8.89829
+        ]
+      },
+      "properties": {
+        "S/N": 58,
+        "Waypoint ID": "KW058",
+        "Location Name": "Eiyenkorin-Ajasse FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 272,
+        "Remark": "LGA boundary",
+        "Cluster": "EDU-PATEGI 003",
+        "Latitude (°N)": 8.89829,
+        "Longitude (°E)": 5.44643
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.88565,
+          8.00114
+        ]
+      },
+      "properties": {
+        "S/N": 59,
+        "Waypoint ID": "KW059",
+        "Location Name": "Malete-Ile POND",
+        "Features": "POND",
+        "Elevation (m)": 333,
+        "Remark": "Field verified",
+        "Cluster": "KWARA-SOUTH 009",
+        "Latitude (°N)": 8.00114,
+        "Longitude (°E)": 4.88565
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.79627,
+          8.0612
+        ]
+      },
+      "properties": {
+        "S/N": 60,
+        "Waypoint ID": "KW060",
+        "Location Name": "Ajasse-Igan CROSSING",
+        "Features": "CROSSING POINT",
+        "Elevation (m)": 369,
+        "Remark": "Surveyed 2024",
+        "Cluster": "KWARA-SOUTH 009",
+        "Latitude (°N)": 8.0612,
+        "Longitude (°E)": 4.79627
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.90378,
+          8.02697
+        ]
+      },
+      "properties": {
+        "S/N": 61,
+        "Waypoint ID": "KW061",
+        "Location Name": "Patan-Asa FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 418,
+        "Remark": "Active site",
+        "Cluster": "KWARA-SOUTH 009",
+        "Latitude (°N)": 8.02697,
+        "Longitude (°E)": 4.90378
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.95012,
+          8.15829
+        ]
+      },
+      "properties": {
+        "S/N": 62,
+        "Waypoint ID": "KW062",
+        "Location Name": "Iwo-Gaa GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 215,
+        "Remark": "Confirmed GPS",
+        "Cluster": "KWARA-SOUTH 009",
+        "Latitude (°N)": 8.15829,
+        "Longitude (°E)": 4.95012
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.98999,
+          7.98214
+        ]
+      },
+      "properties": {
+        "S/N": 63,
+        "Waypoint ID": "KW063",
+        "Location Name": "Erin-Bode WATER",
+        "Features": "WATER POINT",
+        "Elevation (m)": 467,
+        "Remark": "LGA boundary",
+        "Cluster": "KWARA-SOUTH 009",
+        "Latitude (°N)": 7.98214,
+        "Longitude (°E)": 4.98999
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.98089,
+          8.0244
+        ]
+      },
+      "properties": {
+        "S/N": 64,
+        "Waypoint ID": "KW064",
+        "Location Name": "Share-Eiyenkorin STREAM",
+        "Features": "STREAM",
+        "Elevation (m)": 322,
+        "Remark": "Field verified",
+        "Cluster": "KWARA-SOUTH 009",
+        "Latitude (°N)": 8.0244,
+        "Longitude (°E)": 4.98089
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.92395,
+          8.05795
+        ]
+      },
+      "properties": {
+        "S/N": 65,
+        "Waypoint ID": "KW065",
+        "Location Name": "Ile-Malete BIG",
+        "Features": "BIG FARM LAND",
+        "Elevation (m)": 411,
+        "Remark": "Surveyed 2024",
+        "Cluster": "KWARA-SOUTH 009",
+        "Latitude (°N)": 8.05795,
+        "Longitude (°E)": 4.92395
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.81705,
+          8.10334
+        ]
+      },
+      "properties": {
+        "S/N": 66,
+        "Waypoint ID": "KW066",
+        "Location Name": "Asa-Oro PRIMARY",
+        "Features": "PRIMARY HEALTH CARE CENTRE",
+        "Elevation (m)": 399,
+        "Remark": "Active site",
+        "Cluster": "KWARA-SOUTH 009",
+        "Latitude (°N)": 8.10334,
+        "Longitude (°E)": 4.81705
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.86346,
+          7.9136
+        ]
+      },
+      "properties": {
+        "S/N": 67,
+        "Waypoint ID": "KW067",
+        "Location Name": "Bode-Ajasse SCHOOL",
+        "Features": "SCHOOL",
+        "Elevation (m)": 266,
+        "Remark": "Confirmed GPS",
+        "Cluster": "KWARA-SOUTH 009",
+        "Latitude (°N)": 7.9136,
+        "Longitude (°E)": 4.86346
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.83267,
+          8.14961
+        ]
+      },
+      "properties": {
+        "S/N": 68,
+        "Waypoint ID": "KW068",
+        "Location Name": "Malete-Lafiagi FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 304,
+        "Remark": "LGA boundary",
+        "Cluster": "KWARA-SOUTH 009",
+        "Latitude (°N)": 8.14961,
+        "Longitude (°E)": 4.83267
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.92575,
+          8.01415
+        ]
+      },
+      "properties": {
+        "S/N": 69,
+        "Waypoint ID": "KW069",
+        "Location Name": "Ajasse-Patan GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 229,
+        "Remark": "Field verified",
+        "Cluster": "KWARA-SOUTH 009",
+        "Latitude (°N)": 8.01415,
+        "Longitude (°E)": 4.92575
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.98167,
+          8.09703
+        ]
+      },
+      "properties": {
+        "S/N": 70,
+        "Waypoint ID": "KW070",
+        "Location Name": "Patan-Kaiama WATER",
+        "Features": "WATER POINT",
+        "Elevation (m)": 387,
+        "Remark": "Surveyed 2024",
+        "Cluster": "KWARA-SOUTH 009",
+        "Latitude (°N)": 8.09703,
+        "Longitude (°E)": 4.98167
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.70139,
+          7.94939
+        ]
+      },
+      "properties": {
+        "S/N": 71,
+        "Waypoint ID": "KW071",
+        "Location Name": "Kaiama-Gaa FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 398,
+        "Remark": "Active site",
+        "Cluster": "KWARA SOUTH 008",
+        "Latitude (°N)": 7.94939,
+        "Longitude (°E)": 4.70139
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.77271,
+          8.06974
+        ]
+      },
+      "properties": {
+        "S/N": 72,
+        "Waypoint ID": "KW072",
+        "Location Name": "Oko-Bode GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 317,
+        "Remark": "Confirmed GPS",
+        "Cluster": "KWARA SOUTH 008",
+        "Latitude (°N)": 8.06974,
+        "Longitude (°E)": 4.77271
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.69488,
+          8.06255
+        ]
+      },
+      "properties": {
+        "S/N": 73,
+        "Waypoint ID": "KW073",
+        "Location Name": "Osi-Eiyenkorin WATER",
+        "Features": "WATER POINT",
+        "Elevation (m)": 262,
+        "Remark": "LGA boundary",
+        "Cluster": "KWARA SOUTH 008",
+        "Latitude (°N)": 8.06255,
+        "Longitude (°E)": 4.69488
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.75347,
+          7.9502
+        ]
+      },
+      "properties": {
+        "S/N": 74,
+        "Waypoint ID": "KW074",
+        "Location Name": "Oke-Malete CATTLE",
+        "Features": "CATTLE MARKET",
+        "Elevation (m)": 202,
+        "Remark": "Field verified",
+        "Cluster": "KWARA SOUTH 008",
+        "Latitude (°N)": 7.9502,
+        "Longitude (°E)": 4.75347
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.67993,
+          8.05082
+        ]
+      },
+      "properties": {
+        "S/N": 75,
+        "Waypoint ID": "KW075",
+        "Location Name": "Igan-Oro BIG",
+        "Features": "BIG FARM LAND",
+        "Elevation (m)": 409,
+        "Remark": "Surveyed 2024",
+        "Cluster": "KWARA SOUTH 008",
+        "Latitude (°N)": 8.05082,
+        "Longitude (°E)": 4.67993
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.64455,
+          7.99858
+        ]
+      },
+      "properties": {
+        "S/N": 76,
+        "Waypoint ID": "KW076",
+        "Location Name": "Gaa-Ajasse HEALTH",
+        "Features": "HEALTH CENTER",
+        "Elevation (m)": 386,
+        "Remark": "Active site",
+        "Cluster": "KWARA SOUTH 008",
+        "Latitude (°N)": 7.99858,
+        "Longitude (°E)": 4.64455
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.56485,
+          7.93361
+        ]
+      },
+      "properties": {
+        "S/N": 77,
+        "Waypoint ID": "KW077",
+        "Location Name": "Eiyenkorin-Lafiagi FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 391,
+        "Remark": "Confirmed GPS",
+        "Cluster": "KWARA SOUTH 008",
+        "Latitude (°N)": 7.93361,
+        "Longitude (°E)": 4.56485
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.58661,
+          7.88949
+        ]
+      },
+      "properties": {
+        "S/N": 78,
+        "Waypoint ID": "KW078",
+        "Location Name": "Oro-Patan FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 353,
+        "Remark": "LGA boundary",
+        "Cluster": "KWARA SOUTH 008",
+        "Latitude (°N)": 7.88949,
+        "Longitude (°E)": 4.58661
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.64211,
+          7.84157
+        ]
+      },
+      "properties": {
+        "S/N": 79,
+        "Waypoint ID": "KW079",
+        "Location Name": "Lafiagi-Kaiama GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 388,
+        "Remark": "Field verified",
+        "Cluster": "KWARA SOUTH 008",
+        "Latitude (°N)": 7.84157,
+        "Longitude (°E)": 4.64211
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.7327,
+          8.00714
+        ]
+      },
+      "properties": {
+        "S/N": 80,
+        "Waypoint ID": "KW080",
+        "Location Name": "Kaiama-Iwo STREAM",
+        "Features": "STREAM",
+        "Elevation (m)": 488,
+        "Remark": "Surveyed 2024",
+        "Cluster": "KWARA SOUTH 008",
+        "Latitude (°N)": 8.00714,
+        "Longitude (°E)": 4.7327
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.77044,
+          8.6971
+        ]
+      },
+      "properties": {
+        "S/N": 81,
+        "Waypoint ID": "KW081",
+        "Location Name": "Share-Malete STREAM",
+        "Features": "STREAM",
+        "Elevation (m)": 332,
+        "Remark": "Active site",
+        "Cluster": "PATEGI KWAGIS",
+        "Latitude (°N)": 8.6971,
+        "Longitude (°E)": 5.77044
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.80309,
+          8.64332
+        ]
+      },
+      "properties": {
+        "S/N": 82,
+        "Waypoint ID": "KW082",
+        "Location Name": "Ile-Oro LIVESTOCK",
+        "Features": "LIVESTOCK MARKET",
+        "Elevation (m)": 201,
+        "Remark": "Confirmed GPS",
+        "Cluster": "PATEGI KWAGIS",
+        "Latitude (°N)": 8.64332,
+        "Longitude (°E)": 5.80309
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.69304,
+          8.75468
+        ]
+      },
+      "properties": {
+        "S/N": 83,
+        "Waypoint ID": "KW083",
+        "Location Name": "Asa-Ajasse POND",
+        "Features": "POND",
+        "Elevation (m)": 478,
+        "Remark": "LGA boundary",
+        "Cluster": "PATEGI KWAGIS",
+        "Latitude (°N)": 8.75468,
+        "Longitude (°E)": 5.69304
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.66595,
+          8.69726
+        ]
+      },
+      "properties": {
+        "S/N": 84,
+        "Waypoint ID": "KW084",
+        "Location Name": "Bode-Lafiagi CROSSING",
+        "Features": "CROSSING POINT",
+        "Elevation (m)": 401,
+        "Remark": "Field verified",
+        "Cluster": "PATEGI KWAGIS",
+        "Latitude (°N)": 8.69726,
+        "Longitude (°E)": 5.66595
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.6108,
+          8.76951
+        ]
+      },
+      "properties": {
+        "S/N": 85,
+        "Waypoint ID": "KW085",
+        "Location Name": "Malete-Patan FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 214,
+        "Remark": "Surveyed 2024",
+        "Cluster": "PATEGI KWAGIS",
+        "Latitude (°N)": 8.76951,
+        "Longitude (°E)": 5.6108
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.78341,
+          8.7281
+        ]
+      },
+      "properties": {
+        "S/N": 86,
+        "Waypoint ID": "KW086",
+        "Location Name": "Ajasse-Kaiama GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 488,
+        "Remark": "Active site",
+        "Cluster": "PATEGI KWAGIS",
+        "Latitude (°N)": 8.7281,
+        "Longitude (°E)": 5.78341
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.70572,
+          8.64071
+        ]
+      },
+      "properties": {
+        "S/N": 87,
+        "Waypoint ID": "KW087",
+        "Location Name": "Patan-Iwo WATER",
+        "Features": "WATER POINT",
+        "Elevation (m)": 302,
+        "Remark": "Confirmed GPS",
+        "Cluster": "PATEGI KWAGIS",
+        "Latitude (°N)": 8.64071,
+        "Longitude (°E)": 5.70572
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.62615,
+          8.82544
+        ]
+      },
+      "properties": {
+        "S/N": 88,
+        "Waypoint ID": "KW088",
+        "Location Name": "Iwo-Oko STREAM",
+        "Features": "STREAM",
+        "Elevation (m)": 410,
+        "Remark": "LGA boundary",
+        "Cluster": "PATEGI KWAGIS",
+        "Latitude (°N)": 8.82544,
+        "Longitude (°E)": 5.62615
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.94586,
+          7.84439
+        ]
+      },
+      "properties": {
+        "S/N": 89,
+        "Waypoint ID": "KW089",
+        "Location Name": "Gaa-Lafiagi PRIMARY",
+        "Features": "PRIMARY HEALTH CARE CENTRE",
+        "Elevation (m)": 341,
+        "Remark": "Field verified",
+        "Cluster": "KWARA SOUTH KWAGIS",
+        "Latitude (°N)": 7.84439,
+        "Longitude (°E)": 4.94586
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.97959,
+          7.92944
+        ]
+      },
+      "properties": {
+        "S/N": 90,
+        "Waypoint ID": "KW090",
+        "Location Name": "Eiyenkorin-Patan SCHOOL",
+        "Features": "SCHOOL",
+        "Elevation (m)": 487,
+        "Remark": "Surveyed 2024",
+        "Cluster": "KWARA SOUTH KWAGIS",
+        "Latitude (°N)": 7.92944,
+        "Longitude (°E)": 4.97959
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.04104,
+          7.78436
+        ]
+      },
+      "properties": {
+        "S/N": 91,
+        "Waypoint ID": "KW091",
+        "Location Name": "Oro-Kaiama FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 314,
+        "Remark": "Active site",
+        "Cluster": "KWARA SOUTH KWAGIS",
+        "Latitude (°N)": 7.78436,
+        "Longitude (°E)": 5.04104
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.94618,
+          7.95422
+        ]
+      },
+      "properties": {
+        "S/N": 92,
+        "Waypoint ID": "KW092",
+        "Location Name": "Lafiagi-Iwo GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 485,
+        "Remark": "Confirmed GPS",
+        "Cluster": "KWARA SOUTH KWAGIS",
+        "Latitude (°N)": 7.95422,
+        "Longitude (°E)": 4.94618
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.0665,
+          7.84629
+        ]
+      },
+      "properties": {
+        "S/N": 93,
+        "Waypoint ID": "KW093",
+        "Location Name": "Kaiama-Oko WATER",
+        "Features": "WATER POINT",
+        "Elevation (m)": 458,
+        "Remark": "LGA boundary",
+        "Cluster": "KWARA SOUTH KWAGIS",
+        "Latitude (°N)": 7.84629,
+        "Longitude (°E)": 5.0665
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.0629,
+          7.87405
+        ]
+      },
+      "properties": {
+        "S/N": 94,
+        "Waypoint ID": "KW094",
+        "Location Name": "Oko-Erin CATTLE",
+        "Features": "CATTLE MARKET",
+        "Elevation (m)": 377,
+        "Remark": "Field verified",
+        "Cluster": "KWARA SOUTH KWAGIS",
+        "Latitude (°N)": 7.87405,
+        "Longitude (°E)": 5.0629
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.96335,
+          7.97163
+        ]
+      },
+      "properties": {
+        "S/N": 95,
+        "Waypoint ID": "KW095",
+        "Location Name": "Osi-Osi BIG",
+        "Features": "BIG FARM LAND",
+        "Elevation (m)": 413,
+        "Remark": "Surveyed 2024",
+        "Cluster": "KWARA SOUTH KWAGIS",
+        "Latitude (°N)": 7.97163,
+        "Longitude (°E)": 4.96335
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.02046,
+          7.85629
+        ]
+      },
+      "properties": {
+        "S/N": 96,
+        "Waypoint ID": "KW096",
+        "Location Name": "Oke-Share HEALTH",
+        "Features": "HEALTH CENTER",
+        "Elevation (m)": 383,
+        "Remark": "Active site",
+        "Cluster": "KWARA SOUTH KWAGIS",
+        "Latitude (°N)": 7.85629,
+        "Longitude (°E)": 5.02046
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.48544,
+          8.71851
+        ]
+      },
+      "properties": {
+        "S/N": 97,
+        "Waypoint ID": "KW097",
+        "Location Name": "Ajasse-Iwo FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 274,
+        "Remark": "Confirmed GPS",
+        "Cluster": "PATEGI 003",
+        "Latitude (°N)": 8.71851,
+        "Longitude (°E)": 5.48544
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.36372,
+          8.72186
+        ]
+      },
+      "properties": {
+        "S/N": 98,
+        "Waypoint ID": "KW098",
+        "Location Name": "Patan-Oko GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 422,
+        "Remark": "LGA boundary",
+        "Cluster": "PATEGI 003",
+        "Latitude (°N)": 8.72186,
+        "Longitude (°E)": 5.36372
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.39961,
+          8.70594
+        ]
+      },
+      "properties": {
+        "S/N": 99,
+        "Waypoint ID": "KW099",
+        "Location Name": "Iwo-Erin STREAM",
+        "Features": "STREAM",
+        "Elevation (m)": 460,
+        "Remark": "Field verified",
+        "Cluster": "PATEGI 003",
+        "Latitude (°N)": 8.70594,
+        "Longitude (°E)": 5.39961
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.52489,
+          8.74639
+        ]
+      },
+      "properties": {
+        "S/N": 100,
+        "Waypoint ID": "KW100",
+        "Location Name": "Erin-Osi LIVESTOCK",
+        "Features": "LIVESTOCK MARKET",
+        "Elevation (m)": 224,
+        "Remark": "Surveyed 2024",
+        "Cluster": "PATEGI 003",
+        "Latitude (°N)": 8.74639,
+        "Longitude (°E)": 5.52489
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.39029,
+          8.87735
+        ]
+      },
+      "properties": {
+        "S/N": 101,
+        "Waypoint ID": "KW101",
+        "Location Name": "Share-Share POND",
+        "Features": "POND",
+        "Elevation (m)": 409,
+        "Remark": "Active site",
+        "Cluster": "PATEGI 003",
+        "Latitude (°N)": 8.87735,
+        "Longitude (°E)": 5.39029
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.4073,
+          8.72938
+        ]
+      },
+      "properties": {
+        "S/N": 102,
+        "Waypoint ID": "KW102",
+        "Location Name": "Ile-Oke CROSSING",
+        "Features": "CROSSING POINT",
+        "Elevation (m)": 465,
+        "Remark": "Confirmed GPS",
+        "Cluster": "PATEGI 003",
+        "Latitude (°N)": 8.72938,
+        "Longitude (°E)": 5.4073
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.42364,
+          8.8281
+        ]
+      },
+      "properties": {
+        "S/N": 103,
+        "Waypoint ID": "KW103",
+        "Location Name": "Asa-Ile FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 415,
+        "Remark": "LGA boundary",
+        "Cluster": "PATEGI 003",
+        "Latitude (°N)": 8.8281,
+        "Longitude (°E)": 5.42364
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.41199,
+          8.85366
+        ]
+      },
+      "properties": {
+        "S/N": 104,
+        "Waypoint ID": "KW104",
+        "Location Name": "Bode-Igan GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 437,
+        "Remark": "Field verified",
+        "Cluster": "PATEGI 003",
+        "Latitude (°N)": 8.85366,
+        "Longitude (°E)": 5.41199
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.43623,
+          8.09275
+        ]
+      },
+      "properties": {
+        "S/N": 105,
+        "Waypoint ID": "KW105",
+        "Location Name": "Oko-Osi STREAM",
+        "Features": "STREAM",
+        "Elevation (m)": 317,
+        "Remark": "Surveyed 2024",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.09275,
+        "Longitude (°E)": 4.43623
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.42751,
+          8.14163
+        ]
+      },
+      "properties": {
+        "S/N": 106,
+        "Waypoint ID": "KW106",
+        "Location Name": "Osi-Share BIG",
+        "Features": "BIG FARM LAND",
+        "Elevation (m)": 440,
+        "Remark": "Active site",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.14163,
+        "Longitude (°E)": 4.42751
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.57256,
+          8.07113
+        ]
+      },
+      "properties": {
+        "S/N": 107,
+        "Waypoint ID": "KW107",
+        "Location Name": "Oke-Oke PRIMARY",
+        "Features": "PRIMARY HEALTH CARE CENTRE",
+        "Elevation (m)": 250,
+        "Remark": "Confirmed GPS",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.07113,
+        "Longitude (°E)": 4.57256
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.40749,
+          8.27694
+        ]
+      },
+      "properties": {
+        "S/N": 108,
+        "Waypoint ID": "KW108",
+        "Location Name": "Igan-Ile SCHOOL",
+        "Features": "SCHOOL",
+        "Elevation (m)": 256,
+        "Remark": "LGA boundary",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.27694,
+        "Longitude (°E)": 4.40749
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.33339,
+          8.10203
+        ]
+      },
+      "properties": {
+        "S/N": 109,
+        "Waypoint ID": "KW109",
+        "Location Name": "Gaa-Igan FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 315,
+        "Remark": "Field verified",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.10203,
+        "Longitude (°E)": 4.33339
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.44985,
+          8.09982
+        ]
+      },
+      "properties": {
+        "S/N": 110,
+        "Waypoint ID": "KW110",
+        "Location Name": "Eiyenkorin-Asa GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 242,
+        "Remark": "Surveyed 2024",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.09982,
+        "Longitude (°E)": 4.44985
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.47948,
+          8.24745
+        ]
+      },
+      "properties": {
+        "S/N": 111,
+        "Waypoint ID": "KW111",
+        "Location Name": "Oro-Gaa WATER",
+        "Features": "WATER POINT",
+        "Elevation (m)": 309,
+        "Remark": "Active site",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.24745,
+        "Longitude (°E)": 4.47948
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.46522,
+          8.01966
+        ]
+      },
+      "properties": {
+        "S/N": 112,
+        "Waypoint ID": "KW112",
+        "Location Name": "Lafiagi-Bode CATTLE",
+        "Features": "CATTLE MARKET",
+        "Elevation (m)": 280,
+        "Remark": "Confirmed GPS",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.01966,
+        "Longitude (°E)": 4.46522
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.39121,
+          8.02728
+        ]
+      },
+      "properties": {
+        "S/N": 113,
+        "Waypoint ID": "KW113",
+        "Location Name": "Kaiama-Eiyenkorin BIG",
+        "Features": "BIG FARM LAND",
+        "Elevation (m)": 230,
+        "Remark": "LGA boundary",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.02728,
+        "Longitude (°E)": 4.39121
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.32476,
+          8.09829
+        ]
+      },
+      "properties": {
+        "S/N": 114,
+        "Waypoint ID": "KW114",
+        "Location Name": "Oko-Malete HEALTH",
+        "Features": "HEALTH CENTER",
+        "Elevation (m)": 341,
+        "Remark": "Field verified",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.09829,
+        "Longitude (°E)": 4.32476
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.3471,
+          8.0099
+        ]
+      },
+      "properties": {
+        "S/N": 115,
+        "Waypoint ID": "KW115",
+        "Location Name": "Osi-Oro FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 219,
+        "Remark": "Surveyed 2024",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.0099,
+        "Longitude (°E)": 4.3471
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.55365,
+          8.09042
+        ]
+      },
+      "properties": {
+        "S/N": 116,
+        "Waypoint ID": "KW116",
+        "Location Name": "Oke-Ajasse FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 203,
+        "Remark": "Active site",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.09042,
+        "Longitude (°E)": 4.55365
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.42417,
+          8.65288
+        ]
+      },
+      "properties": {
+        "S/N": 117,
+        "Waypoint ID": "KW117",
+        "Location Name": "Ile-Ile HEALTH",
+        "Features": "HEALTH CENTER",
+        "Elevation (m)": 480,
+        "Remark": "Confirmed GPS",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.65288,
+        "Longitude (°E)": 4.42417
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.42135,
+          8.6044
+        ]
+      },
+      "properties": {
+        "S/N": 118,
+        "Waypoint ID": "KW118",
+        "Location Name": "Asa-Igan FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 388,
+        "Remark": "LGA boundary",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.6044,
+        "Longitude (°E)": 4.42135
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.66943,
+          8.65473
+        ]
+      },
+      "properties": {
+        "S/N": 119,
+        "Waypoint ID": "KW119",
+        "Location Name": "Bode-Asa FULANI",
+        "Features": "FULANI SETTLEMENT",
+        "Elevation (m)": 254,
+        "Remark": "Field verified",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.65473,
+        "Longitude (°E)": 4.66943
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.57437,
+          8.49573
+        ]
+      },
+      "properties": {
+        "S/N": 120,
+        "Waypoint ID": "KW120",
+        "Location Name": "Malete-Gaa GRAZING",
+        "Features": "GRAZING AREA",
+        "Elevation (m)": 436,
+        "Remark": "Surveyed 2024",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.49573,
+        "Longitude (°E)": 4.57437
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.56855,
+          8.52504
+        ]
+      },
+      "properties": {
+        "S/N": 121,
+        "Waypoint ID": "KW121",
+        "Location Name": "Ajasse-Bode STREAM",
+        "Features": "STREAM",
+        "Elevation (m)": 396,
+        "Remark": "Active site",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.52504,
+        "Longitude (°E)": 4.56855
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.45305,
+          8.67097
+        ]
+      },
+      "properties": {
+        "S/N": 122,
+        "Waypoint ID": "KW122",
+        "Location Name": "Patan-Eiyenkorin LIVESTOCK",
+        "Features": "LIVESTOCK MARKET",
+        "Elevation (m)": 280,
+        "Remark": "Confirmed GPS",
+        "Cluster": "Kwara SOUTH",
+        "Latitude (°N)": 8.67097,
+        "Longitude (°E)": 4.45305
+      }
+    }
+  ]
+}

@@ -1,0 +1,355 @@
+.otg { background: var(--bg-light); }
+
+.otg__header { margin-bottom: 48px; }
+
+/* ── Card ─────────────────────────────────────────────────── */
+
+.otg__card {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 20px 72px rgba(0, 0, 0, 0.13);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  min-height: 440px;
+}
+
+/* ── Carousel ─────────────────────────────────────────────── */
+
+.otg__carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.otg__slide {
+  width: 100%;
+  height: 100%;
+  min-height: 440px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.55s ease;
+}
+
+/* Dot-grid texture on the gradient */
+.otg__slide-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.07) 1px, transparent 0);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+
+/* Large site number watermark */
+.otg__slide-num {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-family: 'Playfair Display', serif;
+  font-size: 6rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.08);
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Caption pill at bottom-left */
+.otg__slide-label {
+  position: absolute;
+  bottom: 56px;
+  left: 18px;
+  background: rgba(0, 0, 0, 0.50);
+  backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 5px 13px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Arrow buttons */
+.otg__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s ease;
+  z-index: 3;
+}
+
+.otg__arrow:hover { background: rgba(255, 255, 255, 0.30); }
+
+.otg__arrow--prev { left: 12px; }
+.otg__arrow--next { right: 12px; }
+
+/* Inner image dots */
+.otg__img-dots {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 3;
+}
+
+.otg__img-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.25s ease;
+}
+
+.otg__img-dot--active {
+  background: #ffffff;
+  width: 22px;
+  border-radius: 4px;
+}
+
+/* ── Content panel ────────────────────────────────────────── */
+
+.otg__content {
+  padding: 40px 44px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.otg__content-top {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Tags row */
+.otg__tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.otg__tag-cat {
+  padding: 5px 15px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: transparent;
+}
+
+.otg__tag-type {
+  padding: 5px 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+/* Title */
+.otg__name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.22;
+  letter-spacing: -0.015em;
+  margin-bottom: 16px;
+}
+
+/* Description */
+.otg__desc {
+  font-size: 0.945rem;
+  color: var(--text-dark-sec);
+  line-height: 1.78;
+  margin-bottom: 18px;
+}
+
+/* Location */
+.otg__loc {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #9ca3af;
+}
+
+/* Footer with Read More */
+.otg__footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 22px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  margin-top: 24px;
+}
+
+.otg__read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--gold-dark);
+  text-decoration: none;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  border: 1.5px solid rgba(196, 154, 62, 0.35);
+  background: rgba(196, 154, 62, 0.06);
+  transition: all 0.22s ease;
+}
+
+.otg__read-more:hover {
+  background: var(--gold-primary);
+  color: #1a1200;
+  border-color: var(--gold-primary);
+  gap: 10px;
+}
+
+/* ── Outer project pagination ─────────────────────────────── */
+
+.otg__pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+.otg__page-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.15);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.28s ease;
+}
+
+.otg__page-dot--active {
+  background: var(--gold-primary);
+  width: 30px;
+  border-radius: 5px;
+}
+
+.otg__page-dot:hover:not(.otg__page-dot--active) {
+  background: rgba(0, 0, 0, 0.30);
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .otg__card {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .otg__slide {
+    min-height: 280px;
+  }
+
+  .otg__content {
+    padding: 28px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .otg__slide {
+    min-height: 220px;
+  }
+
+  .otg__slide-num {
+    font-size: 4rem;
+  }
+
+  .otg__name {
+    font-size: 1.25rem;
+  }
+}
+
+/* ── Real photo support ───────────────────────────────────── */
+
+.otg__slide-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.otg__slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.12) 0%,
+    rgba(0, 0, 0, 0.52) 100%
+  );
+  z-index: 1;
+}
+
+/* Lift decorative layers above the photo */
+.otg__slide-pattern { z-index: 2; }
+.otg__slide-num     { z-index: 2; }
+.otg__slide-label   { z-index: 3; }
+
+/* ── Status badge ────────────────────────────────────────── */
+
+.otg__tag-status {
+  padding: 5px 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* ── Highlights bullet list ──────────────────────────────── */
+
+.otg__highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.otg__highlights li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--text-dark-sec);
+  line-height: 1.5;
+}
+
+.otg__highlight-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #16a34a;
+}

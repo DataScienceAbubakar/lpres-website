@@ -1,0 +1,125 @@
+.pov {
+  background: var(--bg-light);
+}
+
+.pov__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+  margin-bottom: 56px;
+}
+
+.pov__pdo-statement {
+  font-size: clamp(0.97rem, 1.5vw, 1.08rem);
+  color: var(--text-dark-sec);
+  line-height: 1.82;
+  font-weight: 400;
+  margin-top: 18px;
+}
+
+/* Left */
+.pov__title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin-top: 10px;
+}
+
+.pov__em {
+  font-style: italic;
+  color: #2e5e35;
+}
+
+.pov__rule {
+  width: 48px;
+  height: 3px;
+  background: var(--gold-primary);
+  border-radius: 2px;
+  margin-top: 24px;
+}
+
+/* Right */
+.pov__body {
+  font-size: 1.05rem;
+  color: var(--text-dark-sec);
+  line-height: 1.82;
+  margin-bottom: 28px;
+}
+
+.pov__pdo {
+  background: rgba(196, 154, 62, 0.07);
+  border: 1px solid rgba(196, 154, 62, 0.25);
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.pov__pdo-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-primary);
+  margin-bottom: 12px;
+}
+
+.pov__pdo-text {
+  font-size: 0.97rem;
+  color: var(--text-dark-sec);
+  line-height: 1.75;
+  font-style: italic;
+}
+
+/* Vision / Mission cards */
+.pov__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.pov__card {
+  border-radius: 18px;
+  padding: 36px 32px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+}
+
+.pov__card--vision  { background: #1a3320; color: white; }
+.pov__card--mission { background: linear-gradient(135deg,#3d2600,#6b4300); color: white; }
+
+.pov__card-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-light);
+  margin-bottom: 20px;
+}
+
+.pov__card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+.pov__card-body {
+  font-size: 0.98rem;
+  color: rgba(255,255,255,0.80);
+  line-height: 1.75;
+}
+
+@media (max-width: 900px) {
+  .pov__grid  { grid-template-columns: 1fr; gap: 36px; }
+  .pov__cards { grid-template-columns: 1fr; }
+}

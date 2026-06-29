@@ -4,11 +4,11 @@ import { useAuth } from '../../context/AuthContext';
 import { newsAPI } from '../../api/client';
 import {
   Plus, Edit2, Trash2, Eye, EyeOff, LogOut,
-  Newspaper, CheckCircle, Clock, LayoutDashboard,
+  Newspaper, CheckCircle, Clock, LayoutDashboard, FolderOpen, Briefcase,
 } from 'lucide-react';
 import './Admin.css';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
 
 export default function AdminDashboard() {
   const { admin, logout } = useAuth();
@@ -57,12 +57,16 @@ export default function AdminDashboard() {
 
         <nav className="admin-sidebar__nav">
           <div className="admin-sidebar__nav-item active">
-            <LayoutDashboard size={18} />
-            Dashboard
+            <LayoutDashboard size={18} /> Dashboard
           </div>
+          <Link to="/admin/gallery" className="admin-sidebar__nav-item">
+            <FolderOpen size={18} /> Gallery
+          </Link>
+          <Link to="/admin/projects" className="admin-sidebar__nav-item">
+            <Briefcase size={18} /> Projects
+          </Link>
           <Link to="/admin/news/new" className="admin-sidebar__nav-item">
-            <Plus size={18} />
-            New Article
+            <Plus size={18} /> New Article
           </Link>
         </nav>
 

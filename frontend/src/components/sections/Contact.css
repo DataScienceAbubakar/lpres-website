@@ -6,6 +6,20 @@
   margin-bottom: 56px;
 }
 
+/* Force light text inside the dark section */
+.contact .section-title {
+  color: #ffffff;
+  font-size: clamp(2rem, 3.6vw, 2.8rem);
+  font-family: 'Playfair Display', serif;
+  letter-spacing: -0.02em;
+}
+
+.contact .section-subtitle {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
 .contact__grid {
   display: grid;
   grid-template-columns: 1fr 1.4fr;
@@ -17,10 +31,10 @@
 .contact__info-title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-dark);
+  color: #ffffff;
   margin-bottom: 28px;
   padding-bottom: 14px;
-  border-bottom: 2px solid var(--gold-glow);
+  border-bottom: 2px solid rgba(196, 154, 62, 0.30);
 }
 
 .contact__info-item {
@@ -47,13 +61,13 @@
   display: block;
   font-size: 14px;
   font-weight: 700;
-  color: var(--text-dark);
+  color: #ffffff;
   margin-bottom: 4px;
 }
 
 .contact__info-item p {
   font-size: 14px;
-  color: var(--text-dark-sec);
+  color: rgba(255, 255, 255, 0.62);
   line-height: 1.6;
 }
 

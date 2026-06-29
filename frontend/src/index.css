@@ -362,3 +362,55 @@ a { color: inherit; text-decoration: none; }
   0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
   50%       { box-shadow: 0 0 0 12px rgba(34,197,94,0); }
 }
+
+/* ════════════════════════════════════════════════════════════
+   LIGHT MODE — Global overrides
+   Applied to hero-area elements only (Navbar, Hero, Ticker)
+   Logo green: #2d7a32
+   ════════════════════════════════════════════════════════════ */
+
+[data-theme="light"] .hero .btn-primary {
+  background: #2d7a32;
+  color: #ffffff;
+  box-shadow: 0 4px 24px rgba(45, 122, 50, 0.30);
+}
+
+[data-theme="light"] .hero .btn-primary:hover {
+  background: #3a8e40;
+  box-shadow: 0 6px 32px rgba(45, 122, 50, 0.45);
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   Scroll-triggered animations
+   ════════════════════════════════════════════════════════════ */
+
+[data-animate] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity  0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-animate="fade"] { transform: none; }
+
+[data-animate].in-view {
+  opacity: 1;
+  transform: none;
+}
+
+[data-delay="1"] { transition-delay: 0.08s; }
+[data-delay="2"] { transition-delay: 0.16s; }
+[data-delay="3"] { transition-delay: 0.24s; }
+[data-delay="4"] { transition-delay: 0.32s; }
+[data-delay="5"] { transition-delay: 0.40s; }
+[data-delay="6"] { transition-delay: 0.48s; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

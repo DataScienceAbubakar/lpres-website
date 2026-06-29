@@ -20,31 +20,23 @@ export default function Contact() {
     <section className="contact section" id="contact">
       <div className="container">
         <div className="contact__header text-center">
-          <span className="section-label dark">Get in Touch</span>
-          <h2 className="section-title">Contact Us</h2>
+          <span className="section-label dark">Partner With Us</span>
+          <h2 className="section-title">Get in Touch</h2>
           <p className="section-subtitle mx-auto text-center">
-            Reach out to our team for research collaborations, partnership enquiries, or general information.
+            Whether you're a farmer, investor, or development partner, we want to hear from you.
           </p>
         </div>
 
         <div className="contact__grid">
           {/* Info panel */}
           <div className="contact__info">
-            <h3 className="contact__info-title">Our Offices</h3>
+            <h3 className="contact__info-title">Contact Details</h3>
 
             <div className="contact__info-item">
               <div className="contact__info-icon"><MapPin size={20} /></div>
               <div>
                 <strong>Head Office</strong>
-                <p>LPRES Secretariat, Ministry of Agriculture Complex,<br />Ilorin, Kwara State, Nigeria</p>
-              </div>
-            </div>
-
-            <div className="contact__info-item">
-              <div className="contact__info-icon"><MapPin size={20} /></div>
-              <div>
-                <strong>Research Centre</strong>
-                <p>Ahmadu Bello University Collaboration Office,<br />Zaria, Kaduna State, Nigeria</p>
+                <p>L-PRES Secretariat, Ministry of Agriculture Complex,<br />Ilorin, Kwara State, Nigeria</p>
               </div>
             </div>
 
@@ -52,7 +44,7 @@ export default function Contact() {
               <div className="contact__info-icon"><Phone size={20} /></div>
               <div>
                 <strong>Phone</strong>
-                <p>+234 (0) 803 456 7890<br />+234 (0) 817 234 5678</p>
+                <p>+234 (0) 800 LPRES KWA</p>
               </div>
             </div>
 
@@ -60,7 +52,7 @@ export default function Contact() {
               <div className="contact__info-icon"><Mail size={20} /></div>
               <div>
                 <strong>Email</strong>
-                <p>info@lpres.gov.ng<br />research@lpres.gov.ng</p>
+                <p>contact@lpreskwara.gov.ng</p>
               </div>
             </div>
 

@@ -1,0 +1,50 @@
+[build]
+  command = "cd frontend && npm run build"
+  publish = "frontend/dist"
+
+[functions]
+  directory = "netlify/functions"
+
+[build.environment]
+  VITE_API_URL = ""
+
+# API redirects — must come BEFORE the SPA catch-all
+[[redirects]]
+  from   = "/api/chat"
+  to     = "/.netlify/functions/chat"
+  status = 200
+[[redirects]]
+  from   = "/api/projects"
+  to     = "/.netlify/functions/projects"
+  status = 200
+
+[[redirects]]
+  from   = "/api/projects/*"
+  to     = "/.netlify/functions/projects"
+  status = 200
+
+[[redirects]]
+  from   = "/api/gallery"
+  to     = "/.netlify/functions/gallery"
+  status = 200
+
+[[redirects]]
+  from   = "/api/gallery/*"
+  to     = "/.netlify/functions/gallery"
+  status = 200
+
+[[redirects]]
+  from   = "/api/news"
+  to     = "/.netlify/functions/news"
+  status = 200
+
+[[redirects]]
+  from   = "/api/news/*"
+  to     = "/.netlify/functions/news"
+  status = 200
+
+# SPA catch-all — must be LAST
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200

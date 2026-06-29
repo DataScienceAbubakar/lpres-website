@@ -1,0 +1,98 @@
+.cv {
+  background: var(--bg-primary);
+}
+
+.cv .section-label { color: var(--gold-light); }
+.cv .section-title  { color: var(--text-primary); }
+.cv .section-subtitle { color: var(--text-secondary); }
+
+.cv__header { margin-bottom: 56px; }
+
+.cv__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.cv__card {
+  padding: 28px 22px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-dark);
+  border-radius: 16px;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cv__card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, color-mix(in srgb, var(--vc) 8%, transparent), transparent 60%);
+  pointer-events: none;
+}
+
+.cv__card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--vc);
+  transform: translateY(-5px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+}
+
+.cv__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  transition: transform 0.25s ease;
+}
+
+.cv__card:hover .cv__icon { transform: scale(1.1); }
+
+.cv__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.cv__desc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.72;
+}
+
+.cv__accent-line {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--vc);
+  border-radius: 0 0 16px 16px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.cv__card:hover .cv__accent-line { transform: scaleX(1); }
+
+/* 7 cards: 4 on first row, 3 on second row centered */
+@media (min-width: 961px) {
+  .cv__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  /* 5th, 6th, 7th cards offset to center a row of 3 */
+  .cv__card:nth-child(5) { grid-column: 1 / 2; }
+  .cv__card:nth-child(6) { grid-column: 2 / 3; }
+  .cv__card:nth-child(7) { grid-column: 3 / 4; }
+}
+
+@media (max-width: 960px) {
+  .cv__grid { grid-template-columns: repeat(2, 1fr); }
+  .cv__card:nth-child(n) { grid-column: auto; }
+}
+@media (max-width: 580px) {
+  .cv__grid { grid-template-columns: 1fr; }
+}
