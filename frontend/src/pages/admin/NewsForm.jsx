@@ -5,6 +5,15 @@ import { Save, ArrowLeft, Upload, X, Image, LayoutTemplate, Eye } from 'lucide-r
 import toast from 'react-hot-toast';
 import './Admin.css';
 
+function fileToDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 const CATEGORIES = ['News', 'Events', 'Research', 'Technology', 'Policy', 'Announcement'];
 const TEMPLATES = [
   {
@@ -97,16 +106,23 @@ export default function NewsForm() {
     e.preventDefault();
     setSaving(true);
     try {
-      const fd = new FormData();
-      Object.entries(form).forEach(([k, v]) => fd.append(k, v));
-      if (featuredFile) fd.append('featured_image', featuredFile);
-      galleryFiles.forEach(f => fd.append('images', f));
+      // Convert any File objects to base64 data URLs before sending JSON
+      let featured_image = existingFeatured || null;
+      if (featuredFile) featured_image = await fileToDataURL(featuredFile);
+
+      let images = [...existingGallery];
+      if (galleryFiles.length > 0) {
+        const newImgs = await Promise.all(galleryFiles.map(fileToDataURL));
+        images = [...images, ...newImgs];
+      }
+
+      const payload = { ...form, featured_image, images };
 
       if (isEdit) {
-        await newsAPI.update(id, fd);
+        await newsAPI.update(id, payload);
         toast.success('Article updated successfully!');
       } else {
-        await newsAPI.create(fd);
+        await newsAPI.create(payload);
         toast.success('Article created successfully!');
       }
       navigate('/admin/dashboard');
@@ -281,7 +297,7 @@ export default function NewsForm() {
             >
               {featuredPreview || existingFeatured ? (
                 <img
-                  src={featuredPreview || (existingFeatured.startsWith('http') ? existingFeatured : `${API_BASE}${existingFeatured}`)}
+                  src={featuredPreview || (existingFeatured.startsWith('http') || existingFeatured.startsWith('data:') ? existingFeatured : `${API_BASE}${existingFeatured}`)}
                   alt="Featured"
                   className="admin-upload-preview"
                 />
@@ -312,7 +328,7 @@ export default function NewsForm() {
             {(existingGallery.length > 0 || galleryPreviews.length > 0) && (
               <div className="admin-gallery-grid">
                 {existingGallery.map((img, i) => {
-                  const src = img.startsWith('http') ? img : `${API_BASE}${img}`;
+                  const src = (img.startsWith('http') || img.startsWith('data:')) ? img : `${API_BASE}${img}`;
                   return <img key={`existing-${i}`} src={src} alt="" className="admin-gallery-thumb" />;
                 })}
                 {galleryPreviews.map((src, i) => (

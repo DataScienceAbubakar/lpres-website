@@ -1,9 +1,9 @@
 /* ═══════════════════════════════════════════════════════
-   OurTeam section
+   OurTeam — photo-dominant portrait cards
    ═══════════════════════════════════════════════════════ */
 
 .ot {
-  background: var(--bg-light);
+  background: var(--bg-light, #f8faf8);
   padding: 96px 0;
 }
 
@@ -17,7 +17,7 @@
   font-family: 'Playfair Display', serif;
   font-size: clamp(2rem, 3.5vw, 2.8rem);
   font-weight: 700;
-  color: var(--text-dark);
+  color: var(--text-dark, #111827);
   letter-spacing: -0.02em;
   margin: 10px 0 16px;
 }
@@ -35,141 +35,136 @@
 .ot__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  gap: 20px;
 }
 
 /* ── Card ────────────────────────────────────────────────── */
 
 .ot__card {
   background: #ffffff;
-  border-radius: 18px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
   border: 1px solid rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  position: relative;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.28s ease;
+  cursor: default;
 }
 
 .ot__card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.13);
+  transform: translateY(-7px) scale(1.015);
+  box-shadow: 0 20px 52px rgba(0, 0, 0, 0.14);
 }
 
-/* Coloured top accent bar */
-.ot__accent-bar {
-  width: 100%;
-  height: 5px;
-  flex-shrink: 0;
-}
-
-/* ── Photo ───────────────────────────────────────────────── */
+/* ── Photo area (≈70% of card) ───────────────────────────── */
 
 .ot__photo-wrap {
   position: relative;
-  margin: 28px auto 0;
-  width: 96px;
-  height: 96px;
+  width: 100%;
+  /* 70% of card — aspect ratio drives height; card is portrait ~4:5 */
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
   flex-shrink: 0;
 }
 
 .ot__photo {
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center top;
   display: block;
-  position: relative;
-  z-index: 1;
+  transition: transform 0.5s ease;
 }
 
-/* Coloured ring around photo */
-.ot__photo-ring {
+.ot__card:hover .ot__photo {
+  transform: scale(1.05);
+}
+
+/* Soft gradient fade from photo into card bottom */
+.ot__photo-fade {
   position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 2.5px solid;
-  opacity: 0.45;
-  z-index: 0;
-  transition: opacity 0.25s ease;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.92) 100%);
+  pointer-events: none;
 }
 
-.ot__card:hover .ot__photo-ring {
-  opacity: 0.85;
-}
-
-/* ── Body ────────────────────────────────────────────────── */
+/* ── Body (≈30% of card) ─────────────────────────────────── */
 
 .ot__body {
-  padding: 20px 22px 28px;
+  padding: 14px 18px 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   flex: 1;
+  position: relative;
+  background: #ffffff;
+}
+
+.ot__accent-line {
+  width: 32px;
+  height: 3px;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
 }
 
 .ot__name {
   font-family: 'Playfair Display', serif;
-  font-size: 1.05rem;
+  font-size: 0.97rem;
   font-weight: 700;
   color: #111827;
-  line-height: 1.25;
-  margin-bottom: 6px;
+  line-height: 1.3;
+  margin: 0 0 6px;
 }
 
 .ot__role {
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.035em;
   text-transform: uppercase;
-  margin-bottom: 14px;
+  color: var(--accent, #1a5c26);
+  line-height: 1.45;
   display: block;
-  line-height: 1.4;
-}
-
-.ot__bio {
-  font-size: 13px;
-  color: #6b7280;
-  line-height: 1.72;
-  margin: 0;
 }
 
 /* ── Responsive ──────────────────────────────────────────── */
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
   .ot__grid { grid-template-columns: repeat(3, 1fr); }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 860px) {
   .ot { padding: 72px 0; }
-  .ot__grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .ot__grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
 }
 
-@media (max-width: 480px) {
-  .ot__grid { grid-template-columns: 1fr; gap: 16px; }
-  .ot__photo-wrap { width: 88px; height: 88px; }
-  .ot__photo { width: 88px; height: 88px; }
+@media (max-width: 600px) {
+  .ot__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .ot__body { padding: 10px 13px 16px; }
+  .ot__name { font-size: 0.88rem; }
+  .ot__role { font-size: 10px; }
 }
 
-/* ═══════════════════════════════════════════════════════
-   LIGHT MODE (this section already IS light — just ensure
-   cards stay clean on the light-green bg variant)
-   ═══════════════════════════════════════════════════════ */
+@media (max-width: 380px) {
+  .ot__grid { grid-template-columns: 1fr; }
+}
+
+/* ── Light theme ─────────────────────────────────────────── */
 
 [data-theme="light"] .ot {
   background: #f4fbf5;
 }
 
 [data-theme="light"] .ot__card {
-  background: #ffffff;
   border-color: rgba(45, 122, 50, 0.10);
-  box-shadow: 0 4px 20px rgba(45, 122, 50, 0.08);
+  box-shadow: 0 2px 16px rgba(45, 122, 50, 0.07);
 }
 
 [data-theme="light"] .ot__card:hover {
-  box-shadow: 0 16px 44px rgba(45, 122, 50, 0.14);
+  box-shadow: 0 20px 48px rgba(45, 122, 50, 0.14);
 }

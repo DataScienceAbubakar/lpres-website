@@ -2,60 +2,88 @@ import './OurTeam.css';
 
 const TEAM = [
   {
-    name: 'Dr. Abdullahi Musa',
+    name: 'Olusoji Oyawoye',
     role: 'State Project Coordinator',
-    photo: 'https://randomuser.me/api/portraits/men/32.jpg',
-    bio: 'Leads the overall coordination and strategic direction of Kwara L-PRES, ensuring alignment with national livestock development goals and World Bank project requirements.',
-    accent: '#2e9e50',
+    photo: '/team/coordinator.jpg',
+    accent: '#1a5c26',
   },
   {
-    name: 'Dr. Fatima Bello',
-    role: 'Deputy Coordinator / Technical Lead',
-    photo: 'https://randomuser.me/api/portraits/women/44.jpg',
-    bio: 'Provides technical oversight across all project components, driving livestock value chain improvements and coordinating interventions with implementing partners.',
+    name: 'Jidda Aminat Atinuke',
+    role: 'Administration Officer',
+    photo: '/team/admin-officer.jpg',
     accent: '#c49a3e',
   },
   {
-    name: 'Engr. Samuel Adeyemi',
-    role: 'Infrastructure & Facilities Manager',
-    photo: 'https://randomuser.me/api/portraits/men/17.jpg',
-    bio: 'Manages the planning and delivery of key livestock infrastructure investments including abattoirs, grazing centres, and market facilities across Kwara State.',
-    accent: '#0891b2',
-  },
-  {
-    name: 'Mrs. Aisha Lawal',
-    role: 'M&E and Results Measurement Officer',
-    photo: 'https://randomuser.me/api/portraits/women/68.jpg',
-    bio: "Designs and manages the project's monitoring and evaluation framework, ensuring data-driven decision-making and timely results reporting to stakeholders.",
+    name: 'Kudirat Zubair-Oyewo',
+    role: 'Monitoring & Evaluation Officer',
+    photo: '/team/me-officer.jpg',
     accent: '#7c3aed',
   },
   {
-    name: 'Mr. Idris Abubakar',
-    role: 'Value Chain Development Specialist',
-    photo: 'https://randomuser.me/api/portraits/men/54.jpg',
-    bio: 'Leads interventions that strengthen priority value chains — cattle, sheep, and goats — improving market linkages, productivity, and income for livestock producers.',
-    accent: '#dc2626',
+    name: 'Owowlabi Ezekiel Adelowo',
+    role: 'Procurement Officer',
+    photo: '/team/procurement-officer.jpg',
+    accent: '#0891b2',
   },
   {
-    name: 'Dr. Grace Okafor',
-    role: 'Animal Health & Production Specialist',
-    photo: 'https://randomuser.me/api/portraits/women/29.jpg',
-    bio: 'Coordinates veterinary services, disease surveillance, and animal health interventions, working closely with state veterinary departments and community extension agents.',
-    accent: '#16a34a',
-  },
-  {
-    name: 'Mr. Emmanuel Osei',
-    role: 'Financial Management Specialist',
-    photo: 'https://randomuser.me/api/portraits/men/75.jpg',
-    bio: 'Oversees fiduciary management, financial reporting, and compliance with World Bank financial management requirements across all project components.',
+    name: 'Salman Akeem Ayodeji',
+    role: 'Project Accountant',
+    photo: '/team/accountant.jpg',
     accent: '#6366f1',
   },
   {
-    name: 'Mrs. Zainab Aliyu',
-    role: 'Communication & Outreach Officer',
-    photo: 'https://randomuser.me/api/portraits/women/12.jpg',
-    bio: 'Manages stakeholder communication, community engagement, media relations, and public outreach to promote awareness and transparency around project activities.',
+    name: 'Engr. Isaac Yanda Usman',
+    role: 'Project Engineer',
+    photo: '/team/engineer.jpg',
+    accent: '#dc6803',
+  },
+  {
+    name: 'Dr. Bukola Richards',
+    role: 'Animal Health Officer',
+    photo: '/team/animal-health.jpg',
+    accent: '#2e9e50',
+  },
+  {
+    name: 'Folakemi Iseyemi',
+    role: 'Social Safeguards Officer',
+    photo: '/team/social-safeguards.jpg',
     accent: '#c026d3',
+  },
+  {
+    name: 'Habeeb Tunde Affinni',
+    role: 'Animal Husbandry Officer',
+    photo: '/team/animal-husbandry.jpg',
+    accent: '#16a34a',
+  },
+  {
+    name: 'Kuburat Ayoola Omoniyi',
+    role: 'Project Gender Officer',
+    photo: '/team/gender-officer.jpg',
+    accent: '#db2777',
+  },
+  {
+    name: 'Nureni Rasaq',
+    role: 'Project Extension Officer',
+    photo: '/team/extension-officer.jpg',
+    accent: '#b45309',
+  },
+  {
+    name: 'Oluwaseyi Dara',
+    role: 'Market Linkage & Value Chain Officer',
+    photo: '/team/market-linkage.jpg',
+    accent: '#0369a1',
+  },
+  {
+    name: 'Rukayat Aminu',
+    role: 'Project Internal Auditor',
+    photo: '/team/internal-auditor.jpg',
+    accent: '#dc2626',
+  },
+  {
+    name: 'Yusuf Ganiyu Adebisi',
+    role: 'Communication & ICT Officer',
+    photo: '/team/ict-officer.jpg',
+    accent: '#059669',
   },
 ];
 
@@ -75,26 +103,19 @@ export default function OurTeam() {
         <div className="ot__grid">
           {TEAM.map((member) => (
             <div key={member.name} className="ot__card">
-              {/* Coloured accent bar at top */}
-              <div className="ot__accent-bar" style={{ background: member.accent }} />
-
-              {/* Photo */}
               <div className="ot__photo-wrap">
                 <img
                   src={member.photo}
                   alt={member.name}
                   className="ot__photo"
                   loading="lazy"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
                 />
-                <div className="ot__photo-ring" style={{ borderColor: member.accent }} />
+                <div className="ot__photo-fade" />
               </div>
-
-              {/* Content */}
-              <div className="ot__body">
+              <div className="ot__body" style={{ '--accent': member.accent }}>
+                <div className="ot__accent-line" style={{ background: member.accent }} />
                 <h3 className="ot__name">{member.name}</h3>
-                <span className="ot__role" style={{ color: member.accent }}>{member.role}</span>
-                <p className="ot__bio">{member.bio}</p>
+                <span className="ot__role">{member.role}</span>
               </div>
             </div>
           ))}

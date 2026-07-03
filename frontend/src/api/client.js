@@ -29,8 +29,8 @@ export const newsAPI = {
   list: (skip = 0, limit = 12) => api.get(`/api/news/?skip=${skip}&limit=${limit}`),
   get: (slug) => api.get(`/api/news/${slug}`),
   adminList: (skip = 0) => api.get(`/api/news/admin/all?skip=${skip}`),
-  create: (formData) => api.post('/api/news/admin/create', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
-  update: (id, formData) => api.put(`/api/news/admin/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  create: (data) => api.post('/api/news/admin/create', data),
+  update: (id, data) => api.put(`/api/news/admin/${id}`, data),
   togglePublish: (id) => api.patch(`/api/news/admin/${id}/publish`),
   delete: (id) => api.delete(`/api/news/admin/${id}`),
 };
