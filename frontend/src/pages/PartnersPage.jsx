@@ -104,7 +104,7 @@ export default function PartnersPage() {
               </p>
               <p>
                 This multi-level partnership ensures that project interventions are well-resourced,
-                technically sound, politically supported, and community-driven — combining the
+                technically sound, politically supported, and community-driven, combining the
                 strengths of each partner to maximise development impact.
               </p>
             </div>
@@ -165,7 +165,7 @@ export default function PartnersPage() {
         <div className="container pp2__cta-row">
           <div>
             <h3 className="pp2__cta-title">Want to Partner with L-PRES?</h3>
-            <p className="pp2__cta-sub">Whether you are an investor, researcher, or development organisation — get in touch.</p>
+            <p className="pp2__cta-sub">Whether you are an investor, researcher, or development organisation, get in touch.</p>
           </div>
           <div className="pp2__cta-btns">
             <Link to="/contact" className="btn btn-primary">

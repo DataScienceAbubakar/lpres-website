@@ -2,13 +2,16 @@
  * Template 1 — Magazine Style
  * Large featured image left | Title + body right, author below
  */
+import { useState } from 'react';
 import { Calendar, User, Tag, ChevronLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Lightbox from './Lightbox';
 import './Templates.css';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export default function Template1({ article }) {
+  const [lbIndex, setLbIndex] = useState(null);
   const imgSrc = article.featured_image
     ? (article.featured_image.startsWith('http') ? article.featured_image : `${API_BASE}${article.featured_image}`)
     : null;
@@ -36,7 +39,7 @@ export default function Template1({ article }) {
                 <div className="t1__gallery-grid">
                   {article.images.map((img, i) => {
                     const src = img.startsWith('http') ? img : `${API_BASE}${img}`;
-                    return <img key={i} src={src} alt={`Gallery ${i + 1}`} className="t1__gallery-img" />;
+                    return <img key={i} src={src} alt={`Gallery ${i + 1}`} className="t1__gallery-img" onClick={() => setLbIndex(i)} />;
                   })}
                 </div>
               </div>
@@ -85,6 +88,14 @@ export default function Template1({ article }) {
           </article>
         </div>
       </div>
+
+      {lbIndex !== null && (
+        <Lightbox
+          images={article.images.map(img => img.startsWith('http') ? img : `${API_BASE}${img}`)}
+          startIndex={lbIndex}
+          onClose={() => setLbIndex(null)}
+        />
+      )}
     </div>
   );
 }

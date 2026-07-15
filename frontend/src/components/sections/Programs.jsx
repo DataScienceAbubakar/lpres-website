@@ -19,7 +19,7 @@ const PROGRAMS = [
   {
     icon: Droplets,
     title: 'Dairy & Aquaculture',
-    desc: 'Establishing milk collection centres, processing facilities, and a cold chain network — while developing aquaculture as a complementary protein value chain.',
+    desc: 'Establishing milk collection centres, processing facilities, and a cold chain network, while developing aquaculture as a complementary protein value chain.',
     tags: ['Milk Processing', 'Cold Chain', 'Aqua'],
     color: '#22d3ee',
   },
@@ -33,7 +33,7 @@ const PROGRAMS = [
   {
     icon: Map,
     title: 'Geospatial Decision Support',
-    desc: 'The LPRES GDSS platform — satellite imagery, GIS mapping, and spatial analytics that guide livestock corridor management and resource allocation.',
+    desc: 'The LPRES GDSS platform: satellite imagery, GIS mapping, and spatial analytics that guide livestock corridor management and resource allocation.',
     tags: ['GDSS', 'GIS', 'Remote Sensing'],
     color: '#4ade80',
   },

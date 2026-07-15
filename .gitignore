@@ -23,6 +23,17 @@ npm-debug.log*
 # Vite
 frontend/.env.local
 
+# Netlify local state
+.netlify/
+
+# Uploaded media (runtime content, not source)
+backend/uploads/*
+!backend/uploads/.gitkeep
+frontend/public/uploads/*
+!frontend/public/uploads/seed_hero.jpg
+!frontend/public/uploads/seed_spc.png
+!frontend/public/uploads/seed_video.mp4
+
 # OS
 .DS_Store
 Thumbs.db

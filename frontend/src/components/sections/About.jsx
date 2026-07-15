@@ -25,7 +25,7 @@ export default function About() {
             </p>
             <p className="about__body">
               L-PRES operates across all 16 Local Government Areas of Kwara State, supporting
-              over 12,400 direct beneficiaries — smallholder cattle herders, poultry farmers,
+              over 12,400 direct beneficiaries: smallholder cattle herders, poultry farmers,
               dairy producers, and the communities that depend on livestock-linked livelihoods.
             </p>
             <p className="about__body">

@@ -28,6 +28,8 @@ class NewsArticleCreate(BaseModel):
     is_published: bool = False
     excerpt: Optional[str] = None
     category: str = "News"
+    featured_image: Optional[str] = None   # base64 data URL or http URL
+    images: Optional[List[str]] = []
 
 
 class NewsArticleUpdate(BaseModel):
@@ -39,6 +41,8 @@ class NewsArticleUpdate(BaseModel):
     is_published: Optional[bool] = None
     excerpt: Optional[str] = None
     category: Optional[str] = None
+    featured_image: Optional[str] = None   # base64 data URL or http URL
+    images: Optional[List[str]] = None
 
 
 class NewsArticleOut(BaseModel):
@@ -54,6 +58,46 @@ class NewsArticleOut(BaseModel):
     slug: str
     excerpt: Optional[str]
     category: str
+    created_at: datetime
+    updated_at: Optional[datetime]
+
+    class Config:
+        from_attributes = True
+
+
+# ── Gallery ───────────────────────────────────────────────────
+
+class GalleryItemOut(BaseModel):
+    id: int
+    title: str
+    description: Optional[str]
+    file_url: str
+    thumbnail_url: Optional[str]
+    media_type: str
+    category: str
+    is_published: bool
+    sort_order: int
+    created_at: datetime
+    updated_at: Optional[datetime]
+
+    class Config:
+        from_attributes = True
+
+
+# ── Projects ──────────────────────────────────────────────────
+
+class ProjectOut(BaseModel):
+    id: int
+    name: str
+    lga: str
+    cluster: Optional[str]
+    description: Optional[str]
+    status: str
+    cover_image: Optional[str]
+    images: List[str]
+    highlights: List[str]
+    is_published: bool
+    sort_order: int
     created_at: datetime
     updated_at: Optional[datetime]
 

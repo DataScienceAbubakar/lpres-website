@@ -7,6 +7,7 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Home from './pages/Home';
 import HomeLight from './pages/HomeLight';
+import Home2 from './pages/Home2';
 import AboutPage from './pages/AboutPage';
 import ProgramsPage from './pages/ProgramsPage';
 import ResultsPage from './pages/ResultsPage';
@@ -108,6 +109,7 @@ export default function App() {
           <Route path="/contact"   element={<PublicLayout><ContactPage /></PublicLayout>} />
           <Route path="/gallery"   element={<PublicLayout><GalleryPage /></PublicLayout>} />
           <Route path="/home-light" element={<HomeLight />} />
+          <Route path="/home2"      element={<PublicLayout><Home2 /></PublicLayout>} />
 
           {/* Admin routes */}
           <Route path="/admin/login"       element={<AdminLogin />} />

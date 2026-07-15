@@ -8,7 +8,7 @@ const LINKS = [
   { label: 'Value Chains',          href: '#value-chains',         icon: GitBranch,     color: '#7c3aed' },
   { label: 'PDO',                   href: '#about',                icon: Target,        color: '#dc2626' },
   { label: 'Core Values',           href: '#values',               icon: Star,          color: '#059669' },
-  { label: 'Project Portfolio',      href: '#project-sites',        icon: MapPin,        color: '#f59e0b' },
+  { label: 'Project Highlights',      href: '#project-sites',        icon: MapPin,        color: '#f59e0b' },
   { label: 'Our Partners',          href: '#partners',             icon: Users,         color: '#6366f1' },
   { label: 'Publications',          href: '#publications',         icon: BookOpen,      color: '#ec4899' },
   { label: 'Contact Us',            href: '#contact',              icon: Mail,          color: '#16a34a' },

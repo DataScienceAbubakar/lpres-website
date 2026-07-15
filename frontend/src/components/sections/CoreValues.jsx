@@ -52,7 +52,7 @@ export default function CoreValues() {
       <div className="container">
         <div className="cv__header text-center" data-animate>
           <span className="section-label">What We Stand For</span>
-          <h2 className="section-title">Our Core Values.</h2>
+          <h2 className="section-title">Our Core Values</h2>
           <p className="section-subtitle mx-auto text-center">
             Seven principles that guide every intervention, partnership, and decision within the L-PRES programme.
           </p>

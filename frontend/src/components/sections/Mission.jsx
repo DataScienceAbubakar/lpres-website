@@ -19,7 +19,7 @@ export default function Mission() {
             <p className="mission__card-text">
               A Kwara State where a commercially viable, climate-resilient, and equitably
               organised livestock sector drives prosperity for farmers, herders, and their
-              families — underpinned by world-class infrastructure, evidence-based policy,
+              families, underpinned by world-class infrastructure, evidence-based policy,
               and harmonious coexistence of all value chain actors.
             </p>
           </div>

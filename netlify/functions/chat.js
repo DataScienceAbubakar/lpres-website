@@ -66,7 +66,7 @@ exports.handler = async (event) => {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
       body: JSON.stringify({
-        reply: "I'm the L-PRES AI Assistant. The AI service is being configured — please visit our **Contact** page for direct assistance in the meantime.",
+        reply: "I'm the L-PRES AI Assistant. The AI service is being configured, please visit our **Contact** page for direct assistance in the meantime.",
       }),
     };
   }

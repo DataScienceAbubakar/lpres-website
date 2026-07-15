@@ -34,60 +34,58 @@ function buildSlides(project) {
 /* ── Static fallback shown when API returns nothing ────────── */
 const FALLBACK = [
   {
-    name: 'Kwara Cattle Development Centre',
-    location: 'Ilorin, Kwara State',
-    category: 'Infrastructure',
-    tag: 'Cattle Breeding',
-    tagColor: '#c49a3e',
-    desc: 'A modern facility upgrading commercial cattle breeding and fattening for over 2,400 registered farmers across Kwara State, providing quality breeds, veterinary services, and technical extension support.',
+    name: 'Automatic Weather Stations',
+    location: 'Three Senatorial Districts, Kwara State',
+    category: 'Climate Services',
+    tag: 'Weather Monitoring',
+    tagColor: '#2563eb',
+    desc: 'Kwara L-PRES is combining climate science with modern livestock production through the establishment of three Automatic Weather Stations across Kwara State, one in each senatorial district. The stations generate real-time weather data that is shared with farmers through mobile devices, enabling livestock farmers and herders to make informed decisions, plan grazing activities more effectively, prepare for extreme weather events, and reduce potential losses.',
     slides: [
-      { bg: 'linear-gradient(145deg,#0d2612 0%,#2e5e35 60%,#3d7a45 100%)', label: 'Breeding Facility' },
-      { bg: 'linear-gradient(145deg,#1a3320 0%,#4a8a52 100%)', label: 'Animal Housing' },
+      { bg: 'linear-gradient(145deg,#0a1f3d 0%,#1e40af 60%,#3b82f6 100%)', label: 'Weather Station' },
     ],
   },
   {
-    name: 'Modern Abattoir & Processing Plant',
-    location: 'Ilorin, Kwara State',
-    category: 'Infrastructure',
-    tag: 'Beef Processing',
-    tagColor: '#dc2626',
-    desc: 'A N250M state-of-the-art facility providing hygienic meat processing and cold storage for local beef producers, connecting smallholder farmers to formal markets across Nigeria.',
-    slides: [
-      { bg: 'linear-gradient(145deg,#1a0505 0%,#7f1d1d 60%,#991b1b 100%)', label: 'Processing Plant' },
-      { bg: 'linear-gradient(145deg,#1a0a00 0%,#7c2d12 100%)', label: 'Cold Storage' },
-    ],
-  },
-  {
-    name: 'Pastoral Cooperative Grazing Centre',
-    location: 'North Kwara LGAs',
+    name: 'Pasture Development',
+    location: 'Across Kwara State',
     category: 'Pastoral Services',
-    tag: 'Grazing & Vet',
+    tag: 'Pasture & Grazing',
     tagColor: '#16a34a',
-    desc: 'Organised cooperative grazing and veterinary centre serving 1,200 beneficiaries across the northern corridor, reducing farmer-herder resource conflicts.',
+    desc: 'Kwara L-PRES is expanding access to improved grazing resources through the establishment of cultivated pasture plots. These pastures provide nutritious forage for livestock, promote sustainable grazing practices, reduce pressure on natural vegetation, and support healthier, more productive animals.',
     slides: [
-      { bg: 'linear-gradient(145deg,#052e16 0%,#166534 60%,#15803d 100%)', label: 'Grazing Reserve' },
+      { bg: 'linear-gradient(145deg,#052e16 0%,#166534 60%,#22c55e 100%)', label: 'Pasture Plot' },
     ],
   },
   {
-    name: 'Dairy Cold Chain Hub',
-    location: 'Offa, Kwara State',
-    category: 'Value Chain',
-    tag: 'Dairy / Cold Chain',
-    tagColor: '#0891b2',
-    desc: 'A modern cold-chain logistics and milk collection centre empowering 400 dairy-producing families with reliable market access, quality control systems, and value addition capacity.',
+    name: 'Feedlots',
+    location: 'Kwara State',
+    category: 'Infrastructure',
+    tag: 'Livestock Finishing',
+    tagColor: '#d97706',
+    desc: 'The project has established modern feedlots to support intensive livestock finishing and improved productivity. Equipped with reliable water supply systems and drinking troughs, these facilities provide a controlled environment where animals receive adequate nutrition and care, resulting in better weight gain, improved animal health, and higher market value.',
     slides: [
-      { bg: 'linear-gradient(145deg,#0c2a3f 0%,#0e7490 60%,#06b6d4 100%)', label: 'Cold Storage' },
+      { bg: 'linear-gradient(145deg,#1a1005 0%,#92400e 60%,#d97706 100%)', label: 'Feedlot Facility' },
     ],
   },
   {
-    name: 'Kwara Regional Livestock Market',
-    location: 'Lafiagi, Kwara State',
-    category: 'Market Access',
-    tag: 'Livestock Market',
+    name: 'Veterinary Diagnostic Centre',
+    location: 'Ilorin, Kwara State',
+    category: 'Animal Health',
+    tag: 'Disease Surveillance',
     tagColor: '#7c3aed',
-    desc: 'A revitalised regional trading centre with modern holding pens, water infrastructure, and direct buyer linkages — improving price discovery for over 800 producers weekly.',
+    desc: 'Kwara L-PRES rehabilitated and equipped the State Veterinary Diagnostic Centre with modern facilities to strengthen animal healthcare services across the state. The upgraded facility enhances disease surveillance, improves diagnostic capacity, supports vaccine storage through a functional cold chain system, and contributes to more effective prevention and control of livestock diseases.',
     slides: [
-      { bg: 'linear-gradient(145deg,#2d1a5e 0%,#5b21b6 60%,#7c3aed 100%)', label: 'Trading Centre' },
+      { bg: 'linear-gradient(145deg,#2d1a5e 0%,#5b21b6 60%,#7c3aed 100%)', label: 'Diagnostic Centre' },
+    ],
+  },
+  {
+    name: 'Water Troughs',
+    location: 'Strategic Locations, Kwara State',
+    category: 'Water Infrastructure',
+    tag: 'Water Access',
+    tagColor: '#0891b2',
+    desc: 'To improve access to clean water for livestock, Kwara L-PRES has constructed water troughs at strategic locations across the state. These facilities provide reliable drinking points for animals, reduce the distance travelled in search of water, support healthier livestock, and contribute to more efficient and sustainable livestock production.',
+    slides: [
+      { bg: 'linear-gradient(145deg,#062a2e 0%,#0e7490 60%,#22d3ee 100%)', label: 'Water Trough' },
     ],
   },
 ];
@@ -125,7 +123,7 @@ export default function OnTheGround() {
 
         <div className="otg__header text-center" data-animate>
           <span className="section-label dark">On The Ground</span>
-          <h2 className="section-title">Project Portfolio</h2>
+          <h2 className="section-title">Project Highlights</h2>
           <p className="section-subtitle mx-auto text-center">
             Key infrastructure investments and field operations driving transformation across Kwara State.
           </p>

@@ -6,7 +6,7 @@ const TICKER_STATS = [
   { icon: Users,         value: 84446,  suffix: '',  label: 'Direct Beneficiaries', color: '#c49a3e' },
   { icon: MapPin,        value: 16,     suffix: '',  label: 'LGAs Covered',          color: '#2e5e35' },
   { icon: Syringe,       value: 238718, suffix: '',  label: 'Animals Vaccinated',    color: '#0891b2' },
-  { icon: Briefcase,     value: 8951,   suffix: '',  label: 'VC Actors Profiled',    color: '#7c3aed' },
+  { icon: Briefcase,     value: 8951,   suffix: '',  label: 'Value Chain Actors Profiled',    color: '#7c3aed' },
   { icon: GraduationCap, value: 2363,   suffix: '',  label: 'Farmers Trained',       color: '#dc2626' },
 ];
 

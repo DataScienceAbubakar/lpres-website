@@ -6,9 +6,9 @@
  */
 const crypto = require('crypto');
 
-const SECRET   = process.env.JWT_SECRET       || 'lpres-kwara-admin-2024-secret';
-const ADM_USER = process.env.ADMIN_USERNAME   || 'admin';
-const ADM_PASS = process.env.ADMIN_PASSWORD   || 'lpres@admin2024';
+const SECRET   = process.env.JWT_SECRET;
+const ADM_USER = process.env.ADMIN_USERNAME;
+const ADM_PASS = process.env.ADMIN_PASSWORD;
 
 const HEADERS = {
   'Content-Type': 'application/json',
@@ -58,6 +58,14 @@ exports.handler = async (event) => {
   // CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers: HEADERS, body: '' };
+  }
+
+  if (!SECRET || !ADM_USER || !ADM_PASS) {
+    return {
+      statusCode: 500,
+      headers: HEADERS,
+      body: JSON.stringify({ detail: 'Admin auth is not configured: set JWT_SECRET, ADMIN_USERNAME, and ADMIN_PASSWORD environment variables' }),
+    };
   }
 
   const path = event.path.replace(/^\/api\/admin\/?/, '').replace(/\/$/, '');

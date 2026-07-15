@@ -46,7 +46,7 @@ export default function ValueChains() {
       <div className="container">
         <div className="vc__header text-center">
           <span className="section-label">Strategic Focus</span>
-          <h2 className="section-title">Priority Value Chains.</h2>
+          <h2 className="section-title">Priority Value Chains</h2>
           <p className="section-subtitle mx-auto text-center">
             Kwara L-PRES focuses on livestock value chains with significant potential to improve livelihoods,
             strengthen food security, and drive economic growth.

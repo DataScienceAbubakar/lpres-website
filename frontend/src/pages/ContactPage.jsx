@@ -8,13 +8,13 @@ const INFO_ITEMS = [
     icon: MapPin,
     color: '#2e5e35',
     label: 'Head Office',
-    text: 'L-PRES Secretariat, Ministry of Agriculture Complex, Ilorin, Kwara State, Nigeria',
+    text: 'State Coordination Office, No. 11, Achimugu Road, G.R.A, Ilorin, Kwara State',
   },
   {
     icon: Phone,
     color: '#c49a3e',
     label: 'Phone',
-    text: '+234 (0) 800 LPRES KWA',
+    text: '+2348035068906, +2348036014717',
   },
   {
     icon: Mail,
@@ -63,7 +63,7 @@ export default function ContactPage() {
           </nav>
           <h1 className="cp__hero-title">Get in Touch</h1>
           <p className="cp__hero-sub">
-            Whether you're a farmer, investor, researcher, or development partner — we'd love to hear from you.
+            Whether you're a farmer, investor, researcher, or development partner, we'd love to hear from you.
           </p>
         </div>
       </div>
@@ -112,7 +112,7 @@ export default function ContactPage() {
             {/* Map placeholder */}
             <div className="cp__map-placeholder">
               <MapPin size={28} className="cp__map-pin" />
-              <span>Ministry of Agriculture Complex, Ilorin</span>
+              <span>No. 11, Achimugu Road, G.R.A, Ilorin</span>
             </div>
           </aside>
 

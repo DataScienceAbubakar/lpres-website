@@ -1,7 +1,7 @@
 const ITEMS = [
   {
     id: 1,
-    title: "L-PRES Field Survey — Kwara North",
+    title: "L-PRES Field Survey, Kwara North",
     description: "Field teams conducting livestock health assessment across the northern corridor communities in Baruten LGA.",
     file_url: "/uploads/seed_hero.jpg",
     thumbnail_url: "/uploads/seed_hero.jpg",
@@ -27,7 +27,7 @@ const ITEMS = [
   },
   {
     id: 3,
-    title: "Farmer Training — Value Chain Development",
+    title: "Farmer Training: Value Chain Development",
     description: "Extension agents training smallholder farmers on improved livestock management, record keeping, and market linkage strategies.",
     file_url: "/uploads/3f91f5451d9743d9bc908498a4d37768.jpg",
     thumbnail_url: "/uploads/3f91f5451d9743d9bc908498a4d37768.jpg",
@@ -53,7 +53,7 @@ const ITEMS = [
   },
   {
     id: 5,
-    title: "Animal Health Campaign — Ilorin East",
+    title: "Animal Health Campaign, Ilorin East",
     description: "Veterinary team administering vaccines and conducting health screenings during the quarterly animal health outreach programme.",
     file_url: "/uploads/5eade72c30034904b983a020a9995867.jpeg",
     thumbnail_url: "/uploads/5eade72c30034904b983a020a9995867.jpeg",
@@ -66,7 +66,7 @@ const ITEMS = [
   },
   {
     id: 6,
-    title: "Water Point Construction — Edu LGA",
+    title: "Water Point Construction, Edu LGA",
     description: "One of 67 water infrastructure projects completed under L-PRES, serving pastoral communities and reducing resource conflict.",
     file_url: "/uploads/8a690bf164b34435b37806ecd0ef55e1.jpg",
     thumbnail_url: "/uploads/8a690bf164b34435b37806ecd0ef55e1.jpg",

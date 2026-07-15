@@ -14,7 +14,7 @@ const PUBS = [
   {
     icon: TrendingUp,
     type: 'Impact Assessment',
-    title: 'Mid-Term Impact Assessment Report — Year 2',
+    title: 'Mid-Term Impact Assessment Report, Year 2',
     date: 'December 2023',
     desc: 'Detailed assessment of beneficiary outcomes, livestock productivity gains, and income improvements across all 16 LGAs in Year 2.',
     badge: 'Assessment',
@@ -46,7 +46,7 @@ export default function Publications() {
       <div className="container">
         <div className="pubs__header text-center">
           <span className="section-label">Knowledge Hub</span>
-          <h2 className="section-title">Publications &amp; Reports.</h2>
+          <h2 className="section-title">Publications &amp; Reports</h2>
           <p className="section-subtitle mx-auto">
             Access our latest technical frameworks, impact assessments, and annual programme reports
             detailing our progress across Kwara State.

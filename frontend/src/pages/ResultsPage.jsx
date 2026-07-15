@@ -160,7 +160,7 @@ export default function ResultsPage() {
           </nav>
           <h1 className="rp__hero-title">Programme Impact</h1>
           <p className="rp__hero-sub">
-            Measurable outcomes delivered across all 16 LGAs of Kwara State — as at May 2026
+            Measurable outcomes delivered across all 16 LGAs of Kwara State, as at May 2026
           </p>
           <div className="rp__hero-badge">
             <span className="rp__live-dot" />
@@ -202,7 +202,7 @@ export default function ResultsPage() {
               <p>
                 Key achievements include the vaccination of over 238,000 animals, the training of more
                 than 2,300 livestock farmers, the construction or rehabilitation of 67 water points,
-                and the completion of 24 climate-resilient infrastructure facilities — all contributing
+                and the completion of 24 climate-resilient infrastructure facilities, all contributing
                 to improved productivity, reduced conflicts, and stronger value chains.
               </p>
               <Link to="/programs" className="btn btn-primary rp__narrative-btn">

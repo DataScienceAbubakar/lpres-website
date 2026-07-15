@@ -4,7 +4,7 @@ import './ChatBot.css';
 
 const WELCOME = `👋 Hello! I'm the **L-PRES AI Assistant**.
 
-I can help you learn about the Kwara Livestock Productivity & Resilience Support Project — our coverage, activities, impact, and how to navigate the site.
+I can help you learn about the Kwara Livestock Productivity & Resilience Support Project, including our coverage, activities, impact, and how to navigate the site.
 
 What would you like to know?`;
 

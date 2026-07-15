@@ -2,13 +2,16 @@
  * Template 2 — Classic Article
  * Full-width hero image, centred content, sidebar with article info
  */
+import { useState } from 'react';
 import { Calendar, User, Tag, ChevronLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Lightbox from './Lightbox';
 import './Templates.css';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export default function Template2({ article }) {
+  const [lbIndex, setLbIndex] = useState(null);
   const imgSrc = article.featured_image
     ? (article.featured_image.startsWith('http') ? article.featured_image : `${API_BASE}${article.featured_image}`)
     : null;
@@ -95,13 +98,21 @@ export default function Template2({ article }) {
                 <h4 className="t2__aside-title">Gallery</h4>
                 {article.images.map((img, i) => {
                   const src = img.startsWith('http') ? img : `${API_BASE}${img}`;
-                  return <img key={i} src={src} alt={`Gallery ${i + 1}`} className="t2__gallery-img" />;
+                  return <img key={i} src={src} alt={`Gallery ${i + 1}`} className="t2__gallery-img" style={{cursor:'pointer'}} onClick={() => setLbIndex(i)} />;
                 })}
               </div>
             )}
           </aside>
         </div>
       </div>
+
+      {lbIndex !== null && (
+        <Lightbox
+          images={article.images.map(img => img.startsWith('http') ? img : `${API_BASE}${img}`)}
+          startIndex={lbIndex}
+          onClose={() => setLbIndex(null)}
+        />
+      )}
     </div>
   );
 }

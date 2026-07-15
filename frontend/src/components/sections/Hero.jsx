@@ -299,7 +299,7 @@ export default function Hero() {
 
           <p className="hero__subtitle">
             A statewide programme transforming livestock productivity,
-            resilience, and commercialisation — built with the farmers,
+            resilience, and commercialisation, built with the farmers,
             herders, and communities of Kwara.
           </p>
 

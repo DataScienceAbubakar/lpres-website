@@ -8,7 +8,7 @@ const STATS = [
   { icon: Users,       value: 521,    suffix: '',  label: 'Govt. Personnel Trained',  sub: 'Livestock service delivery',               color: '#2e5e35' },
   { icon: Droplets,    value: 67,     suffix: '',  label: 'Water Points',             sub: 'Constructed or rehabilitated',             color: '#0891b2' },
   { icon: Building2,   value: 24,     suffix: '',  label: 'Infrastructure Projects',  sub: 'Climate-resilient facilities',             color: '#7c3aed' },
-  { icon: Briefcase,   value: 8951,   suffix: '',  label: 'VC Actors Profiled',       sub: 'Across priority livestock chains',         color: '#dc2626' },
+  { icon: Briefcase,   value: 8951,   suffix: '',  label: 'Value Chain Actors Profiled',       sub: 'Across priority livestock chains',         color: '#dc2626' },
   { icon: Handshake,   value: 100,    suffix: '+', label: 'Stakeholder Engagements',  sub: 'Producers, communities & partners',        color: '#d97706' },
 ];
 

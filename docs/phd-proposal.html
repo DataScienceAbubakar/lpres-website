@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PhD Proposal — Geometry- and Structure-Aware Graph Learning</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0a1628;
+  --blue:#1a3a6b;
+  --accent:#2563eb;
+  --gold:#c49a3e;
+  --teal:#0f766e;
+  --ink:#111827;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --cream:#fafaf7;
+  --light:#f0f4ff;
+}
+html{font-size:10.5pt;}
+body{
+  font-family:'EB Garamond',Georgia,serif;
+  background:#fff;
+  color:var(--ink);
+  line-height:1.75;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+@page{margin:18mm 17mm 20mm;}
+.pb{page-break-before:always;break-before:page;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+
+/* ── COVER ── */
+.cover{min-height:100vh;background:var(--navy);display:flex;flex-direction:column;position:relative;overflow:hidden;page-break-after:always;}
+.cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 70% 30%,rgba(37,99,235,0.18) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 10% 80%,rgba(15,118,110,0.12) 0%,transparent 55%);}
+.cover__grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;}
+.cover__header{position:relative;z-index:2;padding:32px 52px;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;justify-content:space-between;align-items:center;}
+.cover__inst{font-family:'Inter',sans-serif;font-size:9pt;color:rgba(255,255,255,0.4);letter-spacing:.5px;}
+.cover__badge{font-family:'Inter',sans-serif;font-size:7.5pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);border:1px solid rgba(37,99,235,0.4);border-radius:20px;padding:4px 14px;}
+.cover__body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:56px 52px 40px;position:relative;z-index:2;}
+.cover__eyebrow{font-family:'Inter',sans-serif;font-size:8pt;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.cover__eyebrow::before{content:'';width:32px;height:2px;background:var(--gold);}
+.cover__title{font-family:'EB Garamond',serif;font-size:34pt;font-weight:600;color:#fff;line-height:1.1;margin-bottom:6px;}
+.cover__title em{color:#93c5fd;font-style:italic;}
+.cover__sub{font-family:'Inter',sans-serif;font-size:10.5pt;color:rgba(255,255,255,0.45);font-weight:300;max-width:500px;line-height:1.65;margin-bottom:48px;margin-top:8px;}
+.cover__meta{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:580px;}
+.cover__meta-item label{font-family:'Inter',sans-serif;font-size:7.5pt;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);display:block;margin-bottom:4px;}
+.cover__meta-item span{font-family:'Inter',sans-serif;font-size:10pt;color:rgba(255,255,255,0.8);}
+.cover__footer{position:relative;z-index:2;padding:20px 52px 36px;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;}
+.cover__footer-left{font-family:'Inter',sans-serif;font-size:8.5pt;color:rgba(255,255,255,0.25);}
+.cover__tags{display:flex;gap:8px;}
+.cover__tag{font-family:'Inter',sans-serif;font-size:7.5pt;font-weight:600;padding:3px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);}
+
+/* ── BODY ── */
+.page{padding:44px 52px;}
+.page--white{background:#fff;}
+.page--cream{background:var(--cream);}
+.page--blue{background:var(--light);}
+
+.ch-num{font-family:'Inter',sans-serif;font-size:7.5pt;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
+.ch-title{font-family:'EB Garamond',serif;font-size:22pt;font-weight:600;color:var(--navy);line-height:1.1;margin-bottom:8px;}
+.ch-title em{color:var(--teal);font-style:italic;}
+.ch-intro{font-size:11pt;color:var(--muted);max-width:580px;line-height:1.7;margin-bottom:28px;padding-bottom:18px;border-bottom:2px solid var(--border);}
+
+h2{font-family:'EB Garamond',serif;font-size:15pt;font-weight:600;color:var(--navy);margin:26px 0 10px;}
+h3{font-family:'Inter',sans-serif;font-size:10.5pt;font-weight:700;color:var(--blue);margin:18px 0 8px;}
+h4{font-family:'Inter',sans-serif;font-size:9.5pt;font-weight:700;color:var(--ink);margin:14px 0 6px;}
+p{margin-bottom:10px;font-size:10.5pt;}
+ul,ol{padding-left:22px;margin-bottom:12px;}
+li{margin-bottom:5px;font-size:10.5pt;}
+strong{font-weight:600;}
+em{font-style:italic;}
+
+/* math-like display */
+.eq{
+  font-family:'JetBrains Mono',monospace;
+  background:#f8fafc;border:1px solid #e2e8f0;border-left:3px solid var(--accent);
+  border-radius:0 8px 8px 0;padding:12px 16px;margin:14px 0;
+  font-size:9.5pt;color:#1e3a5f;line-height:1.8;
+  page-break-inside:avoid;
+}
+.eq-label{font-family:'Inter',sans-serif;font-size:7.5pt;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.eq-plain{background:#fff8e7;border-color:var(--gold);border-left:3px solid var(--gold);font-family:'EB Garamond',serif;font-size:10.5pt;color:#78350f;font-style:italic;}
+
+/* callouts */
+.callout{border-radius:10px;padding:13px 16px;margin:14px 0;display:flex;gap:12px;align-items:flex-start;page-break-inside:avoid;}
+.callout__icon{font-size:16px;flex-shrink:0;margin-top:2px;}
+.callout__label{font-family:'Inter',sans-serif;font-size:7.5pt;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.callout__text{font-size:9.5pt;line-height:1.65;}
+.c-blue{background:#eff6ff;border-left:4px solid #3b82f6;}
+.c-blue .callout__label{color:#1e3a8a;}
+.c-blue .callout__text{color:#1e40af;}
+.c-green{background:#f0fdf4;border-left:4px solid #22c55e;}
+.c-green .callout__label{color:#14532d;}
+.c-green .callout__text{color:#166534;}
+.c-gold{background:#fffbeb;border-left:4px solid #f59e0b;}
+.c-gold .callout__label{color:#78350f;}
+.c-gold .callout__text{color:#92400e;}
+.c-red{background:#fef2f2;border-left:4px solid #ef4444;}
+.c-red .callout__label{color:#7f1d1d;}
+.c-red .callout__text{color:#991b1b;}
+.c-teal{background:#f0fdfa;border-left:4px solid #14b8a6;}
+.c-teal .callout__label{color:#134e4a;}
+.c-teal .callout__text{color:#0f766e;}
+
+/* cards */
+.card-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+.card-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:12px 0;}
+.card{border:1px solid var(--border);border-radius:10px;padding:15px 16px;page-break-inside:avoid;}
+.card--blue{border-color:rgba(37,99,235,.25);background:#eff6ff;}
+.card--teal{border-color:rgba(20,184,166,.3);background:#f0fdfa;}
+.card--gold{border-color:rgba(196,154,62,.3);background:#fffbeb;}
+.card--navy{border-color:rgba(10,22,40,.2);background:#f8fafc;}
+.card__icon{font-size:20px;margin-bottom:8px;}
+.card__title{font-family:'Inter',sans-serif;font-size:10pt;font-weight:700;color:var(--ink);margin-bottom:5px;}
+.card__text{font-family:'Inter',sans-serif;font-size:9pt;color:var(--muted);line-height:1.6;}
+
+/* stage boxes */
+.stage{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:16px 0;page-break-inside:avoid;}
+.stage__header{background:var(--blue);color:#fff;padding:10px 18px;display:flex;align-items:center;gap:12px;}
+.stage__num{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:9pt;font-weight:800;flex-shrink:0;}
+.stage__name{font-family:'Inter',sans-serif;font-size:10pt;font-weight:700;}
+.stage__sub{font-family:'Inter',sans-serif;font-size:8pt;color:rgba(255,255,255,.55);margin-left:auto;}
+.stage__body{padding:16px 18px;background:#fff;}
+.stage__body p,.stage__body li{font-size:10pt;}
+
+/* paper list */
+.paper-item{border-bottom:1px solid var(--border);padding:12px 0;page-break-inside:avoid;}
+.paper-item:last-child{border-bottom:none;}
+.paper-num{font-family:'Inter',sans-serif;font-size:8pt;font-weight:800;color:var(--accent);margin-bottom:4px;}
+.paper-title{font-family:'EB Garamond',serif;font-size:11pt;font-weight:600;color:var(--navy);margin-bottom:3px;}
+.paper-meta{font-family:'Inter',sans-serif;font-size:8.5pt;color:var(--muted);margin-bottom:5px;}
+.paper-why{font-family:'Inter',sans-serif;font-size:9pt;color:#374151;line-height:1.55;}
+.paper-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+.ptag{font-family:'Inter',sans-serif;font-size:7.5pt;font-weight:700;padding:2px 8px;border-radius:20px;}
+.ptag-blue{background:#dbeafe;color:#1e40af;}
+.ptag-teal{background:#ccfbf1;color:#0f766e;}
+.ptag-gold{background:#fef3c7;color:#92400e;}
+.ptag-red{background:#fee2e2;color:#991b1b;}
+.ptag-green{background:#dcfce7;color:#15803d;}
+
+/* timeline */
+.timeline{border-left:2px solid var(--accent);padding-left:20px;margin:14px 0;}
+.tl-item{position:relative;margin-bottom:16px;page-break-inside:avoid;}
+.tl-item::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid #fff;box-shadow:0 0 0 2px var(--accent);position:absolute;left:-26px;top:4px;}
+.tl-phase{font-family:'Inter',sans-serif;font-size:8pt;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:3px;}
+.tl-title{font-family:'Inter',sans-serif;font-size:10pt;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.tl-text{font-family:'Inter',sans-serif;font-size:9pt;color:var(--muted);line-height:1.6;}
+
+/* table */
+table{width:100%;border-collapse:collapse;margin:14px 0 20px;font-size:9.5pt;page-break-inside:avoid;}
+th{background:var(--blue);color:#fff;padding:8px 12px;text-align:left;font-family:'Inter',sans-serif;font-size:8.5pt;font-weight:700;}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+tr:nth-child(even) td{background:#f9fafb;}
+
+/* digital twin diagram */
+.dt-diagram{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;align-items:center;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:16px 0;page-break-inside:avoid;}
+.dt-col{padding:18px;background:#f8fafc;}
+.dt-col--dark{background:var(--navy);}
+.dt-arrow{background:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;height:100%;border-left:1px solid var(--border);border-right:1px solid var(--border);}
+.dt-col-title{font-family:'Inter',sans-serif;font-size:9pt;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.dt-col--dark .dt-col-title{color:var(--gold);}
+.dt-col-title:not(.dt-col--dark .dt-col-title){color:var(--blue);}
+.dt-item{font-family:'Inter',sans-serif;font-size:8.5pt;color:var(--muted);padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:flex-start;}
+.dt-col--dark .dt-item{color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.06);}
+.dt-item:last-child{border-bottom:none;}
+
+/* references */
+.ref-item{font-size:9pt;padding:5px 0 5px 28px;text-indent:-28px;border-bottom:1px solid #f3f4f6;line-height:1.6;color:#374151;}
+.ref-num{font-weight:700;color:var(--accent);}
+
+hr{border:none;border-top:1px solid var(--border);margin:22px 0;}
+.page-rule{height:3px;background:linear-gradient(to right,var(--accent),var(--teal),transparent);margin-bottom:36px;border-radius:2px;}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     COVER PAGE
+══════════════════════════════════ -->
+<div class="cover">
+  <div class="cover__grid"></div>
+
+  <div class="cover__header">
+    <div class="cover__inst">PhD Research Proposal · Computer Science / Machine Learning</div>
+    <div class="cover__badge">Expanded Research Proposal · 2025</div>
+  </div>
+
+  <div class="cover__body">
+    <div class="cover__eyebrow">Doctoral Research Proposal</div>
+    <h1 class="cover__title">
+      Geometry- and Structure-Aware<br>
+      Graph Learning for <em>Large-Scale</em><br>
+      Spatio-Temporal Interaction Networks
+    </h1>
+    <p class="cover__sub">
+      Integrating spatial geometry, topological structure, temporal dynamics, and
+      Digital Twin principles into scalable graph neural network architectures for
+      real-world infrastructure and interaction systems.
+    </p>
+
+    <div class="cover__meta">
+      <div class="cover__meta-item">
+        <label>Research Domain</label>
+        <span>Machine Learning · Graph Neural Networks</span>
+      </div>
+      <div class="cover__meta-item">
+        <label>Application Areas</label>
+        <span>Infrastructure · Mobility · Digital Twins</span>
+      </div>
+      <div class="cover__meta-item">
+        <label>Proposed Duration</label>
+        <span>3.5 – 4 Years (Full-time PhD)</span>
+      </div>
+      <div class="cover__meta-item">
+        <label>Document Version</label>
+        <span>Expanded — June 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover__footer">
+    <div class="cover__footer-left">Submitted for consideration · PhD Programme Application</div>
+    <div class="cover__tags">
+      <div class="cover__tag">GNNs</div>
+      <div class="cover__tag">Spatio-Temporal</div>
+      <div class="cover__tag">Digital Twins</div>
+      <div class="cover__tag">Graph Learning</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     ABSTRACT
+══════════════════════════════════ -->
+<div class="page page--white pb">
+  <div class="page-rule"></div>
+  <div class="ch-num">Abstract</div>
+  <h1 class="ch-title">Research <em>Overview</em></h1>
+  <p class="ch-intro">A concise summary of the research problem, proposed approach, and expected contributions.</p>
+
+  <p>
+    Many real-world systems — including road networks, energy grids, water distribution systems,
+    communication infrastructures, and mobility platforms — can be represented as <strong>large-scale
+    spatio-temporal interaction graphs</strong>: networks where nodes occupy physical locations in space,
+    edges encode relationships that change over time, and the geometry of the environment fundamentally
+    shapes how influence, failure, and information propagate.
+  </p>
+  <p>
+    Despite major advances in Graph Neural Networks (GNNs), current architectures remain
+    <strong>geometry-agnostic and structure-agnostic</strong>. They treat nodes as abstract symbols,
+    ignore physical distances between nodes, discard directional relationships, and model time
+    through crude discrete snapshots. This is a fundamental mismatch with real-world networks,
+    where spatial distance governs interaction strength, directionality constrains flow, and
+    topology evolves continuously.
+  </p>
+  <p>
+    This research proposes a unified theoretical and computational framework for
+    <strong>geometry- and structure-aware graph learning</strong> that embeds spatial metrics,
+    topological constraints, and temporal dynamics directly into graph representation and
+    message-passing operators. Furthermore, this work introduces <strong>Digital Twins</strong>
+    as a key application and validation context: the geometry-aware GNN framework developed here
+    will serve as the computational intelligence layer inside Digital Twin systems for physical
+    infrastructure networks, enabling real-time monitoring, predictive maintenance, and failure
+    propagation modelling at scale.
+  </p>
+  <p>
+    The expected contributions include: (i) novel geometry-aware and direction-sensitive
+    message-passing operators; (ii) continuous-time temporal graph extensions; (iii)
+    theoretical expressiveness analysis; (iv) scalable implementation strategies; and (v)
+    a Digital Twin integration architecture for infrastructure graph systems.
+  </p>
+
+  <div class="callout c-blue no-break">
+    <div class="callout__icon">🎯</div>
+    <div class="callout__body">
+      <div class="callout__label">Core Research Question</div>
+      <div class="callout__text">
+        How can spatial geometry, network topology, and temporal dynamics be embedded directly
+        and systematically into graph learning operators to produce more expressive, accurate,
+        and scalable models for real-world spatio-temporal interaction networks — and how can
+        such models power next-generation Digital Twin systems for physical infrastructure?
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     CHAPTER 1 — INTRODUCTION
+══════════════════════════════════ -->
+<div class="page page--cream pb">
+  <div class="page-rule"></div>
+  <div class="ch-num">Chapter 1</div>
+  <h1 class="ch-title">Introduction &amp; <em>Background</em></h1>
+  <p class="ch-intro">
+    The case for geometry-aware graph learning — what the field currently does, what it ignores,
+    and why this matters for both science and real-world systems.
+  </p>
+
+  <h2>The Graph Learning Revolution</h2>
+  <p>
+    Graph Neural Networks have transformed machine learning across domains — from drug discovery
+    and social network analysis to physics simulations and recommendation systems. The core idea
+    is elegant: represent data as a graph of nodes and edges, then learn representations by
+    iteratively aggregating information from each node's neighbours. This <em>message-passing</em>
+    paradigm, formalised by Gilmer et al. (2017) and analysed theoretically by Xu et al. (2019),
+    has proven remarkably effective.
+  </p>
+  <p>
+    Yet as GNNs are applied to increasingly real-world systems — road networks, power grids,
+    sensor arrays, urban mobility infrastructure — a critical limitation emerges:
+    <strong>the geometry of the physical world is largely invisible to these models.</strong>
+  </p>
+
+  <h2>The Geometry Blindness Problem</h2>
+  <p>
+    Consider a road network. Two intersections 500 metres apart behave fundamentally differently
+    from two intersections 50 kilometres apart — even if they have the same number of connections.
+    Traffic flows differently, failure propagates differently, congestion patterns differ.
+    A standard GNN treats both cases identically: it sees only the graph topology, not the
+    physical distance.
+  </p>
+  <p>
+    Similarly, in an energy grid, the direction of power flow along a transmission line matters
+    enormously. In a water distribution network, elevation differences govern pressure and flow.
+    In a mobility system, travel direction determines interaction patterns. Standard GNN
+    message-passing is <em>permutation-invariant</em> — it aggregates neighbour features without
+    regard to their spatial position or directional relationship.
+  </p>
+
+  <div class="card-grid-2">
+    <div class="card card--blue no-break">
+      <div class="card__icon">🌐</div>
+      <div class="card__title">What GNNs DO model well</div>
+      <div class="card__text">Graph topology and connectivity; node attribute propagation; abstract relational reasoning; pattern matching in combinatorial structures.</div>
+    </div>
+    <div class="card card--gold no-break">
+      <div class="card__icon">⚠️</div>
+      <div class="card__title">What GNNs MISS in real systems</div>
+      <div class="card__text">Physical distance between nodes; directional constraints on edges; spatial locality and anisotropy; continuous temporal evolution; geometric embedding of the network.</div>
+    </div>
+  </div>
+
+  <h2>The Temporal Evolution Gap</h2>
+  <p>
+    Real networks are not static. Road networks experience time-varying congestion.
+    Power grids adapt load dynamically. Sensor networks capture continuously evolving
+    physical phenomena. Most GNN approaches handle temporal data by taking snapshots
+    at discrete time steps — losing the continuous dynamics that drive real system behaviour.
+    Continuous-time graph models remain an active and largely unsolved research frontier.
+  </p>
+
+  <h2>Why This Research, Why Now</h2>
+  <p>
+    Three convergent trends make this the right moment for this research:
+  </p>
+  <ol>
+    <li><strong>Data availability:</strong> IoT sensor networks, satellite imagery, and connected infrastructure now generate rich, geolocated graph data at unprecedented scale.</li>
+    <li><strong>Digital Twin adoption:</strong> Industry and government are investing heavily in Digital Twins — virtual replicas of physical systems — which require exactly the kind of geometry-aware, temporally evolving graph models this research proposes.</li>
+    <li><strong>Theoretical gaps:</strong> Despite rapid empirical progress, the theoretical foundations of geometry-aware and temporally continuous graph learning remain under-explored — creating clear space for foundational PhD-level contributions.</li>
+  </ol>
+</div>
+
+
+<!-- ══════════════════════════════════
+     CHAPTER 2 — LITERATURE REVIEW
+══════════════════════════════════ -->
+<div class="page page--white pb">
+  <div class="page-rule"></div>
+  <div class="ch-num">Chapter 2</div>
+  <h1 class="ch-title">Literature <em>Review</em></h1>
+  <p class="ch-intro">
+    A structured review of the key bodies of work this research builds upon, identifies gaps in,
+    and aims to advance.
+  </p>
+
+  <h2>2.1 Foundational Graph Neural Networks</h2>
+  <p>
+    The modern GNN era begins with Kipf &amp; Welling's (2017) Graph Convolutional Network (GCN),
+    which showed that spectral convolution on graphs could be approximated by a simple
+    neighbourhood aggregation rule. Veličković et al. (2018) introduced Graph Attention Networks
+    (GAT), adding learnable attention weights to control each neighbour's contribution.
+    Hamilton et al. (2017) proposed GraphSAGE, enabling inductive learning on unseen nodes
+    through sampled neighbourhood aggregation.
+  </p>
+  <p>
+    Xu et al. (2019) provided the critical theoretical analysis, proving that the expressive
+    power of message-passing GNNs is bounded by the Weisfeiler-Leman (WL) graph isomorphism test.
+    This result reveals a fundamental ceiling on what standard GNNs can distinguish — motivating
+    the search for architectures with greater structural expressiveness, which this research
+    addresses through geometric enrichment.
+  </p>
+
+  <h2>2.2 Geometric and Equivariant Graph Learning</h2>
+  <p>
+    The field of geometric deep learning (Bronstein et al., 2021) provides the theoretical
+    foundation for incorporating geometric structure into learning. Satorras et al. (2021)
+    introduced E(n)-Equivariant GNNs (EGNNs), ensuring that predictions are invariant or
+    equivariant under rotations, translations, and reflections — essential for physical systems.
+    Beaini et al. (2021) proposed Directional Graph Networks (DGN), using vector fields to
+    introduce directional information into message passing.
+  </p>
+  <p>
+    Gasteiger et al. (2020) demonstrated that encoding directional information via angular
+    embeddings significantly improves molecular property prediction — a result this research
+    seeks to transfer to infrastructure and interaction network domains, where the geometry
+    is Euclidean rather than molecular but the principle holds directly.
+  </p>
+
+  <h2>2.3 Temporal and Dynamic Graph Models</h2>
+  <p>
+    Modelling evolving graphs is an active research frontier. Xu et al. (2020) introduced
+    the Temporal Graph Network (TGN) framework, using memory modules and temporal attention
+    to handle continuous-time dynamic graphs — a key baseline for this research.
+    Rossi et al. (2020) extended this to efficient streaming graph learning.
+    Kazemi et al. (2020) provided a comprehensive survey of representation learning for
+    dynamic graphs, identifying open problems including the lack of geometry-aware
+    continuous-time models — exactly the gap this research addresses.
+  </p>
+
+  <h2>2.4 Spatio-Temporal Graph Models for Infrastructure</h2>
+  <p>
+    Traffic and infrastructure forecasting has produced a rich body of spatio-temporal GNN work.
+    Li et al. (2018) pioneered Diffusion Convolutional Recurrent Neural Networks (DCRNN),
+    modelling traffic as a diffusion process on road graphs. Wu et al. (2019) proposed
+    Graph WaveNet, using adaptive adjacency matrices to capture hidden spatial dependencies
+    without relying solely on physical proximity — a key motivation for learnable geometry
+    kernels in this research. Zheng et al. (2020) demonstrated multi-attention mechanisms
+    for urban traffic prediction at scale.
+  </p>
+  <p>
+    However, a common limitation across these works is their reliance on fixed, pre-defined
+    graph structures that encode geography only implicitly. None simultaneously addresses
+    geometry-awareness, direction-sensitivity, and continuous-time evolution within a
+    unified theoretical framework.
+  </p>
+
+  <h2>2.5 Digital Twins and Graph-Based Intelligence</h2>
+  <p>
+    The Digital Twin concept — a live virtual replica of a physical system that evolves
+    in synchrony with its real counterpart — was formalised by Grieves &amp; Vickers (2017)
+    and has since become a major industrial and research priority. Fuller et al. (2020)
+    provide a comprehensive review of enabling technologies, identifying machine learning
+    as a critical missing layer for intelligence inside Digital Twins. Rasheed et al. (2020)
+    specifically highlight the need for models that capture spatial and temporal dynamics
+    of physical systems — aligning precisely with the research proposed here.
+  </p>
+  <p>
+    Critically, while Digital Twin platforms exist for infrastructure (energy, water, transport),
+    their AI components remain largely statistical or physics-based. <strong>No existing work
+    systematically integrates geometry-aware graph learning as the intelligence layer inside
+    a Digital Twin for large-scale interaction networks</strong> — this represents a clear and
+    significant research gap.
+  </p>
+
+  <div class="callout c-teal no-break">
+    <div class="callout__icon">🔍</div>
+    <div class="callout__body">
+      <div class="callout__label">Key Research Gap Identified</div>
+      <div class="callout__text">
+        No existing framework simultaneously integrates (i) geometry-aware message passing,
+        (ii) direction-sensitive aggregation, (iii) continuous-time temporal evolution, and
+        (iv) a scalable deployment architecture within Digital Twin systems. This proposal
+        addresses all four gaps in a unified theoretical and applied framework.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     CHAPTER 3 — PROBLEM STATEMENT
+══════════════════════════════════ -->
+<div class="page page--cream pb">
+  <div class="page-rule"></div>
+  <div class="ch-num">Chapter 3</div>
+  <h1 class="ch-title">Problem <em>Statement</em></h1>
+  <p class="ch-intro">
+    The formal definition of what standard GNNs cannot do — and why this matters — explained
+    both mathematically and in plain language.
+  </p>
+
+  <h2>Formal Definition</h2>
+  <p>Let a spatio-temporal interaction network be defined as a time-varying attributed graph:</p>
+
+  <div class="eq no-break">
+    <div class="eq-label">Definition — Spatio-Temporal Interaction Graph</div>
+    G_t = (V, E_t, X_t, S)<br><br>
+    where:<br>
+    · V = set of nodes (e.g. intersections, sensors, substations)<br>
+    · E_t ⊆ V × V = time-dependent edge set (connections at time t)<br>
+    · X_t ∈ ℝ^(|V| × d_x) = node feature matrix at time t<br>
+    · S : V → ℝ^d = spatial embedding (each node has coordinates in d-dimensional space)
+  </div>
+
+  <h2>What Standard GNNs Compute</h2>
+  <p>A standard message-passing GNN updates node embeddings at layer k as:</p>
+
+  <div class="eq no-break">
+    <div class="eq-label">Standard GNN Message Passing (Gilmer et al., 2017)</div>
+    h_i^(k+1) = φ( h_i^(k),  ⊕_{j ∈ N(i)} ψ(h_i^(k), h_j^(k), e_ij) )<br><br>
+    where:<br>
+    · h_i^(k) = embedding of node i at layer k<br>
+    · N(i) = neighbours of node i<br>
+    · ψ = message function (computes what each neighbour sends)<br>
+    · ⊕ = permutation-invariant aggregation (sum, mean, max)<br>
+    · φ = update function (updates node using aggregated messages)<br>
+    · e_ij = edge features (if any)
+  </div>
+
+  <div class="callout c-gold no-break">
+    <div class="callout__icon">💡</div>
+    <div class="callout__body">
+      <div class="callout__label">Plain Language Explanation</div>
+      <div class="callout__text">
+        Think of message passing like this: every node "listens" to all its neighbours and
+        combines what it hears into an updated understanding of itself. The problem is that
+        in a standard GNN, it doesn't matter whether a neighbour is 1 km away or 100 km away
+        — or whether it is to the north or the south. The model treats all neighbours equally,
+        regardless of where they are in space. For a social network, this might be fine.
+        For a road network, power grid, or water system, it is a serious limitation.
+      </div>
+    </div>
+  </div>
+
+  <h2>Four Specific Failures</h2>
+
+  <div class="card-grid-2">
+    <div class="card card--navy no-break">
+      <div class="card__title">❌ Failure 1: Distance Blindness</div>
+      <div class="card__text">The aggregation ⊕ treats a neighbour 500m away identically to one 500km away. Physical influence almost always decays with distance — this constraint is entirely absent.</div>
+    </div>
+    <div class="card card--navy no-break">
+      <div class="card__title">❌ Failure 2: Direction Blindness</div>
+      <div class="card__text">Permutation-invariant aggregation means it doesn't matter if a neighbour is "upstream" or "downstream", north or south. Anisotropic (direction-dependent) interactions are invisible.</div>
+    </div>
+    <div class="card card--navy no-break">
+      <div class="card__title">❌ Failure 3: Static Structure</div>
+      <div class="card__text">Most GNNs assume a fixed edge set E. Real networks evolve — roads close, grid connections change, sensors appear and disappear. Discrete snapshots miss continuous dynamics.</div>
+    </div>
+    <div class="card card--navy no-break">
+      <div class="card__title">❌ Failure 4: Scale Collapse</div>
+      <div class="card__text">Standard message passing scales quadratically with edges. Large infrastructure graphs (millions of nodes) overwhelm standard GNN implementations without specialised treatment.</div>
+    </div>
+  </div>
+
+  <h2>Proposed Fix — Intuition</h2>
+  <p>
+    This research proposes augmenting the message function ψ with a <strong>geometry-sensitive kernel</strong>
+    that modulates the influence of each neighbour based on: (a) how far away it is, (b) what
+    direction it lies in, and (c) how recently or how long ago the interaction occurred.
+    The result is a message-passing operator that is no longer blind to the physical world.
+  </p>
+
+  <div class="eq no-break">
+    <div class="eq-label">Proposed Geometry-Aware Message (Conceptual)</div>
+    m_ij^(k) = K(d_ij, θ_ij, Δt) · ψ(h_i^(k), h_j^(k))<br><br>
+    where:<br>
+    · d_ij = physical distance between node i and node j<br>
+    · θ_ij = directional angle from i to j (orientation in space)<br>
+    · Δt = time elapsed since last interaction<br>
+    · K(·) = learnable geometry-sensitive kernel (the key novelty)
+  </div>
+
+  <div class="callout c-blue no-break">
+    <div class="callout__icon">💡</div>
+    <div class="callout__body">
+      <div class="callout__label">Plain Language — What K does</div>
+      <div class="callout__text">
+        K is like a "weighting function" that asks: before node i listens to node j, how much
+        should it trust what node j says? If j is very far away, K gives it less weight. If j
+        is in the wrong direction (e.g., upstream in a water network when we care about downstream),
+        K reduces its influence. If the interaction happened a long time ago, K also reduces it.
+        This makes the model physically realistic in a way standard GNNs are not.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     CHAPTER 4 — DIGITAL TWINS
+══════════════════════════════════ -->
+<div class="page page--white pb">
+  <div class="page-rule"></div>
+  <div class="ch-num">Chapter 4</div>
+  <h1 class="ch-title">Digital Twins <em>Integration</em></h1>
+  <p class="ch-intro">
+    Why Digital Twins are a natural and powerful application context for this research —
+    and how geometry-aware graph learning becomes the intelligence layer inside a Digital Twin.
+  </p>
+
+  <h2>What is a Digital Twin?</h2>
+  <p>
+    A Digital Twin is a <strong>live, continuously updated virtual replica</strong> of a
+    physical system. It mirrors its real-world counterpart in real time, receiving sensor
+    data, updating its internal state, generating predictions, and feeding insights back
+    to operators. The concept, formalised by Grieves (2014), has grown into a major industrial
+    paradigm — used in aviation (Boeing), manufacturing (Siemens), energy (National Grid),
+    and smart cities.
+  </p>
+  <p>
+    A Digital Twin has three core layers: a <em>data layer</em> (sensor streams, IoT feeds),
+    a <em>model layer</em> (the computational intelligence that interprets data), and an
+    <em>interface layer</em> (visualisation and decision support). This research targets
+    the <strong>model layer</strong> — arguing that geometry-aware spatio-temporal GNNs
+    are the natural computational primitive for any Digital Twin whose physical counterpart
+    is a networked system.
+  </p>
+
+  <div class="dt-diagram no-break">
+    <div class="dt-col">
+      <div class="dt-col-title" style="color:var(--teal)">Physical System</div>
+      <div class="dt-item">⚡ Power grid substations &amp; lines</div>
+      <div class="dt-item">🚦 Road intersections &amp; segments</div>
+      <div class="dt-item">💧 Water nodes &amp; pipes</div>
+      <div class="dt-item">📡 IoT sensor arrays</div>
+      <div class="dt-item">🏗 Infrastructure assets</div>
+    </div>
+    <div class="dt-arrow">
+      <div style="font-size:10pt;color:var(--accent);">↔</div>
+      <div style="font-family:'Inter',sans-serif;font-size:7pt;color:var(--muted);text-align:center;writing-mode:vertical-rl;">Real-time sync</div>
+    </div>
+    <div class="dt-col dt-col--dark">
+      <div class="dt-col-title">Digital Twin (AI Layer)</div>
+      <div class="dt-item" style="color:rgba(255,255,255,.55);">🔷 Geometry-aware GNN model</div>
+      <div class="dt-item" style="color:rgba(255,255,255,.55);">🔷 Spatio-temporal state graph G_t</div>
+      <div class="dt-item" style="color:rgba(255,255,255,.55);">🔷 Continuous-time event stream</div>
+      <div class="dt-item" style="color:rgba(255,255,255,.55);">🔷 Failure propagation predictor</div>
+      <div class="dt-item" style="color:rgba(255,255,255,.55);">🔷 Anomaly &amp; risk scorer</div>
+    </div>
+  </div>
+
+  <h2>Why Geometry-Aware GNNs Are the Right Model for Digital Twins</h2>
+  <p>
+    Digital Twin intelligence systems must answer questions such as: <em>"If substation X
+    fails, which downstream areas lose power and in what order?"</em> or <em>"Given current
+    traffic sensor readings, where will congestion form in the next 20 minutes?"</em> These
+    questions are inherently spatial, directional, and temporal — precisely the dimensions
+    that geometry-aware GNNs are designed to model.
+  </p>
+
+  <table>
+    <thead><tr><th>Digital Twin Need</th><th>Geometry-Aware GNN Capability</th><th>Chapter</th></tr></thead>
+    <tbody>
+      <tr><td>Spatial influence propagation</td><td>Distance-weighted kernel K(d_ij)</td><td>Meth. Stage 1</td></tr>
+      <tr><td>Directional flow modelling</td><td>Orientation-sensitive kernel K(θ_ij)</td><td>Meth. Stage 2</td></tr>
+      <tr><td>Real-time state update</td><td>Continuous-time temporal extension</td><td>Meth. Stage 3</td></tr>
+      <tr><td>Failure cascade prediction</td><td>Structure-constrained message passing</td><td>Meth. Stage 2</td></tr>
+      <tr><td>City/grid scale operation</td><td>Spatial partitioning + sparsification</td><td>Meth. Stage 4</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Why Digital Twins Strengthen the Proposal</h2>
+  <div class="card-grid-2">
+    <div class="card card--teal no-break">
+      <div class="card__icon">🎯</div>
+      <div class="card__title">Concrete Validation Context</div>
+      <div class="card__text">Digital Twins provide real-world benchmarks that go beyond standard graph ML datasets. Testing geometry-aware GNNs inside a Digital Twin pipeline demonstrates practical value, not just academic improvement on benchmarks.</div>
+    </div>
+    <div class="card card--teal no-break">
+      <div class="card__icon">💰</div>
+      <div class="card__title">Funding &amp; Industrial Relevance</div>
+      <div class="card__text">UK Research and Innovation (UKRI), EPSRC, and Innovate UK fund Digital Twin research heavily. Framing this PhD within the Digital Twin paradigm significantly strengthens grant and industrial partnership prospects.</div>
+    </div>
+    <div class="card card--teal no-break">
+      <div class="card__icon">🔬</div>
+      <div class="card__title">Novel Research Niche</div>
+      <div class="card__text">No existing literature integrates geometry-aware graph learning as the computational intelligence layer inside Digital Twins. This positions the PhD at the frontier of two active fields simultaneously.</div>
+    </div>
+    <div class="card card--teal no-break">
+      <div class="card__icon">🌍</div>
+      <div class="card__title">Broader Impact</div>
+      <div class="card__text">Infrastructure Digital Twins have direct societal impact — smarter energy grids, safer road networks, more resilient water systems. This connects the fundamental ML research to national and global challenges.</div>
+    </div>
+  </div>
+
+  <div class="callout c-green no-break">
+    <div class="callout__icon">✅</div>
+    <div class="callout__body">
+      <div class="callout__label">Verdict: Digital Twins Strengthen This Proposal</div>
+      <div class="callout__text">
+        Integrating Digital Twins is recommended. It does not dilute the core ML research —
+        it contextualises and validates it. The geometry-aware GNN framework proposed here
+        is exactly the kind of model that infrastructure Digital Twins are missing.
+        The integration adds a clear application narrative, strengthens industrial relevance,
+        and opens additional funding avenues, while the core theoretical contributions remain
+        fully intact.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     CHAPTER 5 — OBJECTIVES
+══════════════════════════════════ -->
+<div class="page page--cream pb">
+  <div class="page-rule"></div>
+  <div class="ch-num">Chapter 5</div>
+  <h1 class="ch-title">Research Objectives &amp; <em>Questions</em></h1>
+  <p class="ch-intro">
+    Specific, measurable research objectives and the questions this PhD will answer.
+  </p>
+
+  <h2>Primary Research Aim</h2>
+  <div class="callout c-blue no-break">
+    <div class="callout__icon">🎯</div>
+    <div class="callout__body">
+      <div class="callout__label">Primary Aim</div>
+      <div class="callout__text">
+        To develop, theoretically ground, and experimentally validate a unified framework of
+        geometry- and structure-aware graph learning algorithms for large-scale spatio-temporal
+        interaction networks, and to demonstrate their deployment as the intelligence layer
+        within Digital Twin systems for physical infrastructure.
+      </div>
+    </div>
+  </div>
+
+  <h2>Specific Research Objectives</h2>
+
+  <div class="stage no-break">
+    <div class="stage__header">
+      <div class="stage__num">O1</div>
+      <div class="stage__name">Formal Geometric Representation</div>
+      <div class="stage__sub">Theory</div>
+    </div>
+    <div class="stage__body">
+      <p>Develop a rigorous mathematical framework for representing spatio-temporal interaction networks as metric-embedded graphs, defining geometry-sensitive adjacency operators and characterising the geometric information that standard GNNs discard.</p>
+      <p><strong>Research Question:</strong> What mathematical structures are required to fully represent geometric and topological constraints within a graph learning framework?</p>
+    </div>
+  </div>
+
+  <div class="stage no-break">
+    <div class="stage__header">
+      <div class="stage__num">O2</div>
+      <div class="stage__name">Geometry-Aware Message-Passing Operators</div>
+      <div class="stage__sub">Algorithmic</div>
+    </div>
+    <div class="stage__body">
+      <p>Design and implement novel message-passing operators that incorporate spatial distance, directional orientation, and structural constraints directly into the aggregation and update functions.</p>
+      <p><strong>Research Question:</strong> What is the most expressive and computationally efficient form of geometry-aware message passing for spatially embedded graphs?</p>
+    </div>
+  </div>
+
+  <div class="stage no-break">
+    <div class="stage__header">
+      <div class="stage__num">O3</div>
+      <div class="stage__name">Continuous-Time Temporal Graph Extension</div>
+      <div class="stage__sub">Algorithmic</div>
+    </div>
+    <div class="stage__body">
+      <p>Extend the geometry-aware framework to handle continuously evolving graph topology and node states, moving beyond discrete snapshot approaches to continuous-time temporal models.</p>
+      <p><strong>Research Question:</strong> How can spatial geometry and continuous-time dynamics be jointly modelled within a single, scalable graph learning framework?</p>
+    </div>
+  </div>
+
+  <div class="stage no-break">
+    <div class="stage__header">
+      <div class="stage__num">O4</div>
+      <div class="stage__name">Theoretical Expressiveness Analysis</div>
+      <div class="stage__sub">Theory</div>
+    </div>
+    <div class="stage__body">
+      <p>Formally analyse the expressive power of the proposed geometry-aware operators relative to standard GNNs and the Weisfeiler-Leman hierarchy; prove where and why geometry increases expressiveness.</p>
+      <p><strong>Research Question:</strong> Does incorporating geometry strictly increase the class of graph properties that can be distinguished, and under what conditions?</p>
+    </div>
+  </div>
+
+  <div class="stage no-break">
+    <div class="stage__header">
+      <div class="stage__num">O5</div>
+      <div class="stage__name">Scalable Implementation &amp; Digital Twin Deployment</div>
+      <div class="stage__sub">Systems</div>
+    </div>
+    <div class="stage__body">
+      <p>Design efficient algorithms for large-scale deployment — including spatial indexing, graph sparsification, and distributed training — and demonstrate integration within a Digital Twin architecture for a real infrastructure network.</p>
+      <p><strong>Research Question:</strong> How can geometry-aware graph learning be implemented at city or grid scale within a real-time Digital Twin pipeline?</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     CHAPTER 6 — METHODOLOGY
+══════════════════════════════════ -->
+<div class="page page--white pb">
+  <div class="page-rule"></div>
+  <div class="ch-num">Chapter 6</div>
+  <h1 class="ch-title">Research <em>Methodology</em></h1>
+  <p class="ch-intro">
+    A four-stage methodology — from geometric graph representation to Digital Twin deployment —
+    explained both formally and in plain language at each step.
+  </p>
+
+  <!-- STAGE 1 -->
+  <div class="stage no-break">
+    <div class="stage__header">
+      <div class="stage__num">1</div>
+      <div class="stage__name">Geometry-Aware Graph Representation</div>
+      <div class="stage__sub">Months 1–10</div>
+    </div>
+    <div class="stage__body">
+      <h4>The Core Idea</h4>
+      <p>
+        We want to move from treating the graph as an abstract network of dots and lines,
+        to treating it as a network <em>embedded in physical space</em>. The first step is
+        to build this spatial information into the edges of the graph.
+      </p>
+      <p>Each edge (i, j) is augmented with a <strong>geometry-sensitive kernel</strong>:</p>
+    </div>
+  </div>
+
+  <div class="eq no-break">
+    <div class="eq-label">Geometry-Sensitive Edge Kernel</div>
+    w_ij = K(d_ij, θ_ij) = f_dist(d_ij) · f_dir(θ_ij)<br><br>
+    where:<br>
+    · d_ij = ‖x_i − x_j‖ = Euclidean (or geodesic) distance between nodes i and j<br>
+    · θ_ij = arctan2(y_j − y_i, x_j − x_i) = bearing angle from i to j<br>
+    · f_dist(·) = learnable distance decay function (e.g., Gaussian, power law)<br>
+    · f_dir(·) = learnable directional encoding (e.g., Fourier angular features)
+  </div>
+
+  <div class="callout c-gold no-break">
+    <div class="callout__icon">💡</div>
+    <div class="callout__body">
+      <div class="callout__label">Plain Language — Stage 1</div>
+      <div class="callout__text">
+        Imagine you want to describe how strongly two towns influence each other.
+        You would naturally say: nearby towns have more influence, and the direction matters
+        (e.g., towns upstream in a river system affect downstream ones, not vice versa).
+        Stage 1 builds exactly this intuition into the graph — turning each connection into
+        a weighted, directional link whose strength reflects physical reality. The model
+        learns the exact shape of this distance-decay and direction-bias from data.
+      </div>
+    </div>
+  </div>
+
+  <p>This transforms the standard adjacency matrix <strong>A</strong> into a <strong>metric-aware operator Â</strong>, where Â_ij = A_ij · K(d_ij, θ_ij). The graph structure now encodes geometry.</p>
+
+  <!-- STAGE 2 -->
+  <div class="stage no-break" style="margin-top:20px;">
+    <div class="stage__header">
+      <div class="stage__num">2</div>
+      <div class="stage__name">Structure-Constrained Message Passing</div>
+      <div class="stage__sub">Months 6–18</div>
+    </div>
+    <div class="stage__body">
+      <h4>The Core Idea</h4>
+      <p>Using the geometry kernel from Stage 1, we redesign the message-passing equations so that the information each node receives from its neighbours is shaped by spatial distance, direction, and structural constraints.</p>
+    </div>
+  </div>
+
+  <div class="eq no-break">
+    <div class="eq-label">Geometry-Aware Message-Passing (Full Form)</div>
+    m_ij^(k) = K(d_ij, θ_ij) · ψ(h_i^(k), h_j^(k), e_ij)<br><br>
+    h_i^(k+1) = φ( h_i^(k),  Σ_{j ∈ N(i)} m_ij^(k) )<br><br>
+    Key properties of this formulation:<br>
+    1. Spatial locality preserved: distant nodes contribute less by design<br>
+    2. Anisotropy encoded: messages from different directions carry different weights<br>
+    3. Topology-constrained: structural path constraints can be enforced via K<br>
+    4. Differentiable: K is learnable end-to-end via gradient descent
+  </div>
+
+  <div class="callout c-gold no-break">
+    <div class="callout__icon">💡</div>
+    <div class="callout__body">
+      <div class="callout__label">Plain Language — Stage 2</div>
+      <div class="callout__text">
+        Think of it like a telephone network. In a standard GNN, every person speaks to
+        all their neighbours and each voice is equally loud. In our model, the volume of
+        each voice is adjusted: neighbours who are far away speak more quietly (distance
+        decay), neighbours who are "behind you" in the network flow speak more quietly than
+        those "ahead of you" (directional weighting). The model learns exactly how loud each
+        voice should be. The result is a much more realistic picture of how information,
+        influence, or failure actually spreads through a physical network.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     METHODOLOGY CONTINUED
+══════════════════════════════════ -->
+<div class="page page--cream pb">
+  <div class="page-rule"></div>
+  <div class="ch-num">Chapter 6 — continued</div>
+  <h1 class="ch-title">Methodology <em>Stages 3 &amp; 4</em></h1>
+
+  <!-- STAGE 3 -->
+  <div class="stage no-break">
+    <div class="stage__header">
+      <div class="stage__num">3</div>
+      <div class="stage__name">Continuous-Time Temporal Extension</div>
+      <div class="stage__sub">Months 14–28</div>
+    </div>
+    <div class="stage__body">
+      <h4>The Core Idea</h4>
+      <p>
+        Real networks evolve continuously — new edges appear and disappear, node states
+        change every second. Instead of treating time as discrete steps (snapshot at t=1,
+        t=2, t=3...), we model it as a continuous flow. The geometry kernel K is extended
+        with a time dimension:
+      </p>
+    </div>
+  </div>
+
+  <div class="eq no-break">
+    <div class="eq-label">Spatio-Temporal Kernel (Continuous Time)</div>
+    K(d_ij, θ_ij, Δt) = f_dist(d_ij) · f_dir(θ_ij) · f_time(Δt)<br><br>
+    where Δt = t_now − t_last_interaction(i,j)<br><br>
+    A natural parametric form (learnable):<br>
+    K(d_ij, Δt) = exp(−α · d_ij) · exp(−β · Δt)<br><br>
+    · α = spatial decay rate (how fast influence drops with distance)<br>
+    · β = temporal decay rate (how fast past interactions become less relevant)<br>
+    · Both α and β are learnable parameters, not hand-set constants
+  </div>
+
+  <div class="callout c-gold no-break">
+    <div class="callout__icon">💡</div>
+    <div class="callout__body">
+      <div class="callout__label">Plain Language — Stage 3</div>
+      <div class="callout__text">
+        Imagine you are keeping track of road congestion. An accident that happened
+        30 minutes ago matters less than one that just happened — its effects have
+        partially cleared. Stage 3 builds this "forgetting over time" directly into the
+        model. The further in the past an interaction occurred, and the further away it
+        happened in space, the less influence it has on the current prediction. The model
+        learns how fast to forget — some systems have long memory (power grid faults),
+        others have short memory (traffic jams). Instead of fixing these time windows
+        manually, our model learns them from data.
+      </div>
+    </div>
+  </div>
+
+  <p>
+    This temporal extension draws on and extends the Temporal Graph Network (TGN) architecture
+    of Rossi et al. (2020), incorporating spatial geometry as a first-class citizen in the
+    temporal attention and memory update mechanisms.
+  </p>
+
+  <!-- STAGE 4 -->
+  <div class="stage no-break" style="margin-top:18px;">
+    <div class="stage__header">
+      <div class="stage__num">4</div>
+      <div class="stage__name">Scalability, Systems Design &amp; Digital Twin Integration</div>
+      <div class="stage__sub">Months 24–42</div>
+    </div>
+    <div class="stage__body">
+      <h4>The Scalability Challenge</h4>
+      <p>
+        A real road network has millions of intersections. A national power grid has
+        hundreds of thousands of nodes. Naively applying geometry-aware message passing
+        to graphs this large would be computationally prohibitive. Stage 4 addresses
+        scalability through three strategies:
+      </p>
+      <ul>
+        <li><strong>Spatial partitioning:</strong> Divide the graph into geographically coherent subgraphs (using k-d trees or spatial indices). Process subgraphs in parallel, merging boundary information efficiently.</li>
+        <li><strong>Geometry-guided sparsification:</strong> Remove edges between nodes that are so far apart that K(d_ij, θ_ij) ≈ 0, reducing the effective graph density without information loss.</li>
+        <li><strong>Distributed mini-batch training:</strong> Adapt graph sampling methods (GraphSAINT, Cluster-GCN) to respect spatial locality when forming mini-batches, preserving geometric context.</li>
+      </ul>
+      <h4>Digital Twin Integration Architecture</h4>
+      <p>
+        The final stage deploys the trained geometry-aware GNN within a Digital Twin pipeline:
+        sensor streams are ingested as continuous event sequences, mapped onto the spatio-temporal
+        graph G_t, processed by the geometry-aware GNN, and outputs used for real-time state
+        monitoring, anomaly detection, and predictive maintenance alerts.
+      </p>
+    </div>
+  </div>
+
+  <div class="callout c-gold no-break">
+    <div class="callout__icon">💡</div>
+    <div class="callout__body">
+      <div class="callout__label">Plain Language — Stage 4</div>
+      <div class="callout__text">
+        Stages 1–3 build a very smart but potentially slow model. Stage 4 makes it fast
+        enough to run on a real city-scale network in real time. Think of it like this:
+        instead of trying to monitor the entire city at once, we divide it into
+        neighbourhoods, monitor each neighbourhood efficiently, then share just the
+        essential information between adjacent neighbourhoods. The result is a model
+        that is both accurate (because it knows the geometry) and fast (because it
+        exploits that geometry to cut unnecessary computation).
+      </div>
+    </div>
+  </div>
+
+  <h2>Evaluation Strategy</h2>
+  <table>
+    <thead><tr><th>Task</th><th>Dataset</th><th>Metric</th><th>Baseline</th></tr></thead>
+    <tbody>
+      <tr><td>Spatio-temporal forecasting</td><td>METR-LA, PEMS-BAY (traffic)</td><td>MAE, RMSE, MAPE</td><td>DCRNN, Graph WaveNet</td></tr>
+      <tr><td>Node classification</td><td>OGB-Proteins, spatial sensor graphs</td><td>ROC-AUC, F1</td><td>GCN, GAT, GraphSAGE</td></tr>
+      <tr><td>Link prediction (dynamic)</td><td>GDELT, ICEWS (event graphs)</td><td>MRR, Hits@K</td><td>TGN, JODIE</td></tr>
+      <tr><td>Anomaly detection</td><td>SWaT, WADI (industrial sensors)</td><td>Precision, Recall, F1</td><td>MTAD-GAT, GDN</td></tr>
+      <tr><td>Digital Twin validation</td><td>OpenStreetMap + simulated IoT</td><td>State estimation error</td><td>Physics-based DT baseline</td></tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ══════════════════════════════════
+     CHAPTER 7 — CONTRIBUTIONS & TIMELINE
+══════════════════════════════════ -->
+<div class="page page--white pb">
+  <div class="page-rule"></div>
+  <div class="ch-num">Chapter 7</div>
+  <h1 class="ch-title">Contributions &amp; <em>Research Timeline</em></h1>
+  <p class="ch-intro">
+    The novel contributions this PhD aims to make, and a realistic four-year research plan.
+  </p>
+
+  <h2>Expected Original Contributions</h2>
+  <div class="card-grid-2">
+    <div class="card card--blue no-break">
+      <div class="card__icon">📐</div>
+      <div class="card__title">Contribution 1 — Geometric Graph Theory</div>
+      <div class="card__text">A rigorous mathematical framework for metric-embedded spatio-temporal graphs, including geometry-sensitive adjacency operators and their algebraic properties. This is a foundational theoretical contribution.</div>
+    </div>
+    <div class="card card--blue no-break">
+      <div class="card__icon">⚙️</div>
+      <div class="card__title">Contribution 2 — Novel GNN Operators</div>
+      <div class="card__text">New distance- and direction-sensitive message-passing functions with learnable geometric kernels, demonstrated to outperform standard GNNs on spatio-temporal benchmarks.</div>
+    </div>
+    <div class="card card--blue no-break">
+      <div class="card__icon">📈</div>
+      <div class="card__title">Contribution 3 — Expressiveness Theory</div>
+      <div class="card__text">Formal proofs showing that geometric enrichment strictly increases GNN expressiveness beyond the WL bound for geometrically embedded graphs — a significant theoretical result.</div>
+    </div>
+    <div class="card card--blue no-break">
+      <div class="card__icon">⏱</div>
+      <div class="card__title">Contribution 4 — Continuous-Time Framework</div>
+      <div class="card__text">Spatio-temporal kernel extending TGN-style continuous-time models with joint spatial-geometric awareness — a novel synthesis not achieved in existing literature.</div>
+    </div>
+    <div class="card card--blue no-break">
+      <div class="card__icon">🏗</div>
+      <div class="card__title">Contribution 5 — Scalable Algorithms</div>
+      <div class="card__text">Geometry-guided graph sparsification and spatial mini-batching strategies enabling city-scale and grid-scale deployment with theoretical complexity bounds.</div>
+    </div>
+    <div class="card card--teal no-break">
+      <div class="card__icon">🔷</div>
+      <div class="card__title">Contribution 6 — Digital Twin Architecture</div>
+      <div class="card__text">An end-to-end architecture integrating geometry-aware GNNs as the AI intelligence layer within a Digital Twin for infrastructure networks — demonstrated on a real case study.</div>
+    </div>
+  </div>
+
+  <h2>Research Timeline</h2>
+  <div class="timeline">
+    <div class="tl-item no-break">
+      <div class="tl-phase">Phase 1 — Months 1–10</div>
+      <div class="tl-title">Literature Survey &amp; Theoretical Framework</div>
+      <div class="tl-text">Comprehensive review of geometry-aware GNNs, temporal graph models, and Digital Twin literature. Formalise the spatio-temporal graph definition and geometry kernel theory. First conference paper: geometric graph representation framework.</div>
+    </div>
+    <div class="tl-item no-break">
+      <div class="tl-phase">Phase 2 — Months 6–18</div>
+      <div class="tl-title">Geometry-Aware Operator Design &amp; Experiments</div>
+      <div class="tl-text">Implement and evaluate geometry-aware message-passing operators. Run experiments on traffic forecasting and node classification benchmarks. Second conference paper: geometry-aware GNN performance results.</div>
+    </div>
+    <div class="tl-item no-break">
+      <div class="tl-phase">Phase 3 — Months 14–28</div>
+      <div class="tl-title">Temporal Extension &amp; Theoretical Analysis</div>
+      <div class="tl-text">Develop continuous-time spatio-temporal kernel. Complete expressiveness analysis and complexity proofs. Journal paper: unified spatio-temporal geometry-aware framework with theory.</div>
+    </div>
+    <div class="tl-item no-break">
+      <div class="tl-phase">Phase 4 — Months 24–38</div>
+      <div class="tl-title">Scalability &amp; Digital Twin Integration</div>
+      <div class="tl-text">Develop spatial partitioning and sparsification strategies. Build and evaluate Digital Twin prototype on infrastructure dataset. Conference/journal paper: Digital Twin deployment results.</div>
+    </div>
+    <div class="tl-item no-break">
+      <div class="tl-phase">Phase 5 — Months 36–42</div>
+      <div class="tl-title">Thesis Writing &amp; Submission</div>
+      <div class="tl-text">Consolidate all contributions into a coherent thesis. Internal review, corrections, and submission. Target: 4 publications (2 conference, 2 journal) by submission.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     CHAPTER 8 — PAPERS TO REVIEW
+══════════════════════════════════ -->
+<div class="page page--cream pb">
+  <div class="page-rule"></div>
+  <div class="ch-num">Chapter 8</div>
+  <h1 class="ch-title">Suggested Papers <em>to Review</em></h1>
+  <p class="ch-intro">
+    An annotated reading list in priority order — what each paper contributes and why it matters
+    for this research. Start with Group A before moving to Groups B, C, and D.
+  </p>
+
+  <h2>Group A — Must Read First (GNN Foundations)</h2>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">A1</div>
+    <div class="paper-title">How Powerful are Graph Neural Networks?</div>
+    <div class="paper-meta">Xu, K., Hu, W., Leskovec, J., &amp; Jegelka, S. · ICLR 2019</div>
+    <div class="paper-why">This is THE theoretical foundation paper for this research. It proves that standard GNNs are at most as powerful as the Weisfeiler-Leman graph isomorphism test — setting the theoretical ceiling this work aims to raise by incorporating geometry.</div>
+    <div class="paper-tags"><span class="ptag ptag-blue">Core Theory</span><span class="ptag ptag-red">Read First</span></div>
+  </div>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">A2</div>
+    <div class="paper-title">Semi-Supervised Classification with Graph Convolutional Networks</div>
+    <div class="paper-meta">Kipf, T.N. &amp; Welling, M. · ICLR 2017</div>
+    <div class="paper-why">The paper that started the modern GNN era. Introduces the spectral convolution approximation that becomes the baseline all geometry-aware work is compared against. Understanding this is essential before reading anything else.</div>
+    <div class="paper-tags"><span class="ptag ptag-blue">Foundational</span><span class="ptag ptag-red">Essential</span></div>
+  </div>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">A3</div>
+    <div class="paper-title">Graph Attention Networks</div>
+    <div class="paper-meta">Veličković, P., Cucurull, G., Casanova, A., Romero, A., Liò, P., &amp; Bengio, Y. · ICLR 2018</div>
+    <div class="paper-why">Introduces learnable attention weights for neighbourhood aggregation — the direct precursor to the learnable geometric kernel this research proposes. Shows that not all neighbours should be treated equally, but only explores feature-space attention, not spatial attention.</div>
+    <div class="paper-tags"><span class="ptag ptag-blue">Foundational</span><span class="ptag ptag-green">Baseline Model</span></div>
+  </div>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">A4</div>
+    <div class="paper-title">Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges</div>
+    <div class="paper-meta">Bronstein, M.M., Bruna, J., Cohen, T., &amp; Veličković, P. · arXiv 2021</div>
+    <div class="paper-why">The comprehensive theoretical manifesto for geometric deep learning — the field this research sits within. Provides the symmetry group formalism for understanding what geometric invariances and equivariances mean, and why they matter for physical systems.</div>
+    <div class="paper-tags"><span class="ptag ptag-blue">Theory</span><span class="ptag ptag-red">Comprehensive</span></div>
+  </div>
+
+  <h2>Group B — Geometry-Aware &amp; Equivariant GNNs</h2>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">B1</div>
+    <div class="paper-title">E(n) Equivariant Graph Neural Networks</div>
+    <div class="paper-meta">Satorras, V.G., Hoogeboom, E., &amp; Welling, M. · ICML 2021</div>
+    <div class="paper-why">Demonstrates how to make GNNs invariant/equivariant to rotations, translations, and reflections by incorporating relative positions and distances. This is the closest existing work to the geometry kernel proposed here — understand it deeply to differentiate your contribution.</div>
+    <div class="paper-tags"><span class="ptag ptag-teal">Geometry-Aware</span><span class="ptag ptag-red">Closest Existing Work</span></div>
+  </div>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">B2</div>
+    <div class="paper-title">Directional Graph Networks</div>
+    <div class="paper-meta">Beaini, D., Azizian, W., Wolf, G., &amp; Hamilton, W. · ICML 2021</div>
+    <div class="paper-why">Introduces direction-sensitivity into GNNs using eigenvector-based flow fields. This directly addresses the "direction blindness" problem identified in the problem statement. Read alongside B1 to understand the landscape of directional approaches.</div>
+    <div class="paper-tags"><span class="ptag ptag-teal">Directional</span><span class="ptag ptag-gold">Key Related Work</span></div>
+  </div>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">B3</div>
+    <div class="paper-title">Directional Message Passing for Molecular Graphs</div>
+    <div class="paper-meta">Gasteiger, J., Groß, J., &amp; Günnemann, S. · ICLR 2020</div>
+    <div class="paper-why">Shows that encoding distance and angular (directional) information between atoms dramatically improves predictions on molecular graphs. The domain is chemistry, but the geometric principle — that direction matters as much as distance — applies directly to infrastructure networks.</div>
+    <div class="paper-tags"><span class="ptag ptag-teal">Directional</span><span class="ptag ptag-teal">Distance Kernels</span></div>
+  </div>
+
+  <h2>Group C — Temporal &amp; Dynamic Graph Models</h2>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">C1</div>
+    <div class="paper-title">Temporal Graph Networks for Deep Learning on Dynamic Graphs</div>
+    <div class="paper-meta">Rossi, E., Chamberlain, B., Frasca, F., Eynard, D., Monti, F., &amp; Bronstein, M. · ICML Workshop 2020</div>
+    <div class="paper-why">The most comprehensive continuous-time dynamic graph learning framework — the key temporal baseline this research extends with spatial geometry. Understand the memory module and temporal attention mechanism thoroughly.</div>
+    <div class="paper-tags"><span class="ptag ptag-blue">Temporal GNN</span><span class="ptag ptag-red">Key Baseline</span></div>
+  </div>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">C2</div>
+    <div class="paper-title">Inductive Representation Learning on Temporal Graphs</div>
+    <div class="paper-meta">Xu, D., Ruan, C., Körpeoglu, E., Kumar, S., &amp; Achan, K. · ICLR 2020</div>
+    <div class="paper-why">Introduces temporal attention for continuous-time graphs — a direct component this research integrates with geometric awareness. TGAT (Temporal Graph ATtention) is an important baseline for the temporal experiments.</div>
+    <div class="paper-tags"><span class="ptag ptag-blue">Temporal GNN</span><span class="ptag ptag-green">Baseline</span></div>
+  </div>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">C3</div>
+    <div class="paper-title">Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting</div>
+    <div class="paper-meta">Li, Y., Yu, R., Shahabi, C., &amp; Liu, Y. · ICLR 2018</div>
+    <div class="paper-why">Pioneered spatio-temporal GNN for traffic — models traffic flow as a diffusion process on a road graph, encoding some spatial structure via the diffusion operator. The primary real-world application baseline for this research.</div>
+    <div class="paper-tags"><span class="ptag ptag-green">Spatio-Temporal</span><span class="ptag ptag-green">Traffic</span><span class="ptag ptag-red">Key Baseline</span></div>
+  </div>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">C4</div>
+    <div class="paper-title">Graph WaveNet for Deep Spatial-Temporal Graph Modeling</div>
+    <div class="paper-meta">Wu, Z., Pan, S., Chen, F., Long, G., Zhang, C., &amp; Philip, S.Y. · IJCAI 2019</div>
+    <div class="paper-why">Introduces learnable adaptive adjacency matrices — the graph learns its own spatial dependencies from data rather than using predefined distance thresholds. A direct predecessor to the learnable geometry kernel proposed here.</div>
+    <div class="paper-tags"><span class="ptag ptag-green">Spatio-Temporal</span><span class="ptag ptag-teal">Learnable Adjacency</span></div>
+  </div>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">C5</div>
+    <div class="paper-title">Representation Learning for Dynamic Graphs: A Survey</div>
+    <div class="paper-meta">Kazemi, S.M., Goel, R., Jain, K., et al. · JMLR 2020</div>
+    <div class="paper-why">Comprehensive survey of all approaches to dynamic graph learning. Essential for understanding the taxonomy of methods, what has been tried, and what gaps remain. Maps directly to the temporal extension objective of this research.</div>
+    <div class="paper-tags"><span class="ptag ptag-blue">Survey</span><span class="ptag ptag-red">Essential Reading</span></div>
+  </div>
+
+  <h2>Group D — Digital Twins &amp; Infrastructure</h2>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">D1</div>
+    <div class="paper-title">Digital Twin: Enabling Technologies, Challenges and Open Research</div>
+    <div class="paper-meta">Fuller, A., Fan, Z., Day, C., &amp; Barlow, C. · IEEE Access, 2020</div>
+    <div class="paper-why">The most-cited comprehensive review of Digital Twin technologies. Critically, identifies machine learning as a missing intelligence layer in current DT implementations — this is the exact gap this research fills.</div>
+    <div class="paper-tags"><span class="ptag ptag-gold">Digital Twin</span><span class="ptag ptag-red">Key Framing Paper</span></div>
+  </div>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">D2</div>
+    <div class="paper-title">Digital Twin: Values, Challenges and Enablers from a Modeling Perspective</div>
+    <div class="paper-meta">Rasheed, A., San, O., &amp; Kvamsdal, T. · IEEE Access, 2020</div>
+    <div class="paper-why">Analyses what mathematical modelling approaches are needed inside Digital Twins for physical systems — specifically highlights the need for spatio-temporal models that go beyond current physics-based approaches. Directly motivates the GNN approach proposed here.</div>
+    <div class="paper-tags"><span class="ptag ptag-gold">Digital Twin</span><span class="ptag ptag-teal">Modelling</span></div>
+  </div>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">D3</div>
+    <div class="paper-title">Graph Neural Network-Based Anomaly Detection in Multivariate Time Series</div>
+    <div class="paper-meta">Deng, A. &amp; Hooi, B. · AAAI 2021</div>
+    <div class="paper-why">Demonstrates GNN-based anomaly detection on industrial sensor networks — exactly the kind of Digital Twin monitoring task (Stage 4) this research will tackle. The graph structure is learned rather than predefined, which this work improves by incorporating geometric priors.</div>
+    <div class="paper-tags"><span class="ptag ptag-gold">Digital Twin</span><span class="ptag ptag-green">Anomaly Detection</span></div>
+  </div>
+
+  <h2>Group E — Scalability</h2>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">E1</div>
+    <div class="paper-title">Cluster-GCN: An Efficient Algorithm for Training Deep and Large Graph Convolutional Networks</div>
+    <div class="paper-meta">Chiang, W., Liu, X., Si, S., Li, Y., Bengio, S., &amp; Hsieh, C.J. · KDD 2019</div>
+    <div class="paper-why">Introduces graph clustering for efficient mini-batch training — the starting point for the spatial partitioning strategy in Stage 4. The geometry-guided version proposed in this research adapts their cluster definition to respect spatial locality.</div>
+    <div class="paper-tags"><span class="ptag ptag-blue">Scalability</span><span class="ptag ptag-green">Mini-batching</span></div>
+  </div>
+
+  <div class="paper-item no-break">
+    <div class="paper-num">E2</div>
+    <div class="paper-title">GraphSAINT: Graph Sampling Based Inductive Learning Method</div>
+    <div class="paper-meta">Zeng, H., Zhou, H., Srivastava, A., Kannan, R., &amp; Prasanna, V. · ICLR 2020</div>
+    <div class="paper-why">State-of-the-art graph sampling for large-scale GNN training, with theoretical guarantees on bias. The spatial mini-batching strategy in Stage 4 builds directly on this framework, adding geometric locality constraints to the sampler.</div>
+    <div class="paper-tags"><span class="ptag ptag-blue">Scalability</span><span class="ptag ptag-green">Large-Scale</span></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     REFERENCES
+══════════════════════════════════ -->
+<div class="page page--white pb">
+  <div class="page-rule"></div>
+  <div class="ch-num">References</div>
+  <h1 class="ch-title">Bibliography</h1>
+  <p class="ch-intro">Full references for all works cited in this proposal, in APA format.</p>
+
+  <div class="ref-item no-break"><span class="ref-num">[1]</span> Beaini, D., Azizian, W., Wolf, G., &amp; Hamilton, W. (2021). Directional graph networks. <em>Proceedings of the 38th International Conference on Machine Learning (ICML 2021)</em>, PMLR 139, 748–758.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[2]</span> Bronstein, M.M., Bruna, J., Cohen, T., &amp; Veličković, P. (2021). Geometric deep learning: Grids, groups, graphs, geodesics, and gauges. <em>arXiv preprint arXiv:2104.13478</em>.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[3]</span> Chiang, W., Liu, X., Si, S., Li, Y., Bengio, S., &amp; Hsieh, C.J. (2019). Cluster-GCN: An efficient algorithm for training deep and large graph convolutional networks. <em>Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery &amp; Data Mining</em>, 257–266.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[4]</span> Cini, A., Marisca, I., &amp; Alippi, C. (2022). Filling the G_ap_s: Multivariate time series imputation by graph neural networks. <em>International Conference on Learning Representations (ICLR 2022)</em>.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[5]</span> Deng, A., &amp; Hooi, B. (2021). Graph neural network-based anomaly detection in multivariate time series. <em>Proceedings of the AAAI Conference on Artificial Intelligence</em>, 35(5), 4027–4035.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[6]</span> Fuller, A., Fan, Z., Day, C., &amp; Barlow, C. (2020). Digital twin: Enabling technologies, challenges and open research. <em>IEEE Access</em>, 8, 108952–108971.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[7]</span> Gasteiger, J., Groß, J., &amp; Günnemann, S. (2020). Directional message passing for molecular graphs. <em>International Conference on Learning Representations (ICLR 2020)</em>.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[8]</span> Gilmer, J., Schütt, A.T., Christof, P., Müller, K.R., &amp; Tkatchenko, A. (2017). Neural message passing for quantum chemistry. <em>Proceedings of the 34th International Conference on Machine Learning (ICML 2017)</em>, PMLR 70, 1263–1272.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[9]</span> Grieves, M., &amp; Vickers, J. (2017). Digital twin: Mitigating unpredictable, undesirable emergent behavior in complex systems. In F.-J. Kahlen, S. Flumerfelt, &amp; A. Alves (Eds.), <em>Transdisciplinary Perspectives on Complex Systems</em> (pp. 85–113). Springer.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[10]</span> Hamilton, W., Ying, R., &amp; Leskovec, J. (2017). Inductive representation learning on large graphs. <em>Advances in Neural Information Processing Systems (NeurIPS 2017)</em>, 30.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[11]</span> Kazemi, S.M., Goel, R., Jain, K., Kobyzev, I., Sethi, A., Forsyth, P., &amp; Poupart, P. (2020). Representation learning for dynamic graphs: A survey. <em>Journal of Machine Learning Research (JMLR)</em>, 21(70), 1–73.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[12]</span> Kipf, T.N., &amp; Welling, M. (2017). Semi-supervised classification with graph convolutional networks. <em>International Conference on Learning Representations (ICLR 2017)</em>.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[13]</span> Li, Y., Yu, R., Shahabi, C., &amp; Liu, Y. (2018). Diffusion convolutional recurrent neural network: Data-driven traffic forecasting. <em>International Conference on Learning Representations (ICLR 2018)</em>.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[14]</span> Rasheed, A., San, O., &amp; Kvamsdal, T. (2020). Digital twin: Values, challenges and enablers from a modeling perspective. <em>IEEE Access</em>, 8, 21980–22012.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[15]</span> Rossi, E., Chamberlain, B., Frasca, F., Eynard, D., Monti, F., &amp; Bronstein, M. (2020). Temporal graph networks for deep learning on dynamic graphs. <em>ICML 2020 Workshop on Graph Representation Learning and Beyond</em>. arXiv:2006.10637.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[16]</span> Satorras, V.G., Hoogeboom, E., &amp; Welling, M. (2021). E(n) equivariant graph neural networks. <em>Proceedings of the 38th International Conference on Machine Learning (ICML 2021)</em>, PMLR 139, 9323–9332.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[17]</span> Tao, F., Qi, Q., Wang, L., &amp; Nee, A.Y.C. (2019). Digital twins and cyber-physical systems toward smart manufacturing and industry 4.0: Correlation and comparison. <em>Engineering</em>, 5(4), 653–661.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[18]</span> Veličković, P., Cucurull, G., Casanova, A., Romero, A., Liò, P., &amp; Bengio, Y. (2018). Graph attention networks. <em>International Conference on Learning Representations (ICLR 2018)</em>.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[19]</span> Wu, Z., Pan, S., Chen, F., Long, G., Zhang, C., &amp; Philip, S.Y. (2019). Graph WaveNet for deep spatial-temporal graph modeling. <em>Proceedings of the 28th International Joint Conference on Artificial Intelligence (IJCAI 2019)</em>, 1907–1913.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[20]</span> Xu, D., Ruan, C., Körpeoglu, E., Kumar, S., &amp; Achan, K. (2020). Inductive representation learning on temporal graphs. <em>International Conference on Learning Representations (ICLR 2020)</em>.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[21]</span> Xu, K., Hu, W., Leskovec, J., &amp; Jegelka, S. (2019). How powerful are graph neural networks? <em>International Conference on Learning Representations (ICLR 2019)</em>.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[22]</span> Zeng, H., Zhou, H., Srivastava, A., Kannan, R., &amp; Prasanna, V. (2020). GraphSAINT: Graph sampling based inductive learning method. <em>International Conference on Learning Representations (ICLR 2020)</em>.</div>
+
+  <div class="ref-item no-break"><span class="ref-num">[23]</span> Zheng, C., Fan, X., Wang, C., &amp; Qi, J. (2020). GMAN: A graph multi-attention network for traffic prediction. <em>Proceedings of the AAAI Conference on Artificial Intelligence</em>, 34(1), 1234–1241.</div>
+
+  <hr style="margin-top:36px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;font-family:'Inter',sans-serif;font-size:8.5pt;color:var(--muted);">
+    <div>PhD Research Proposal · Geometry- and Structure-Aware Graph Learning · Version 2.0 · June 2026</div>
+    <div style="color:var(--accent);font-weight:700;">23 references · 15 annotated papers · 6 contribution areas</div>
+  </div>
+</div>
+
+</body>
+</html>

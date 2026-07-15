@@ -36,7 +36,7 @@ export default function Contact() {
               <div className="contact__info-icon"><MapPin size={20} /></div>
               <div>
                 <strong>Head Office</strong>
-                <p>L-PRES Secretariat, Ministry of Agriculture Complex,<br />Ilorin, Kwara State, Nigeria</p>
+                <p>State Coordination Office,<br />No. 11, Achimugu Road,<br />G.R.A, Ilorin, Kwara State</p>
               </div>
             </div>
 
@@ -44,7 +44,7 @@ export default function Contact() {
               <div className="contact__info-icon"><Phone size={20} /></div>
               <div>
                 <strong>Phone</strong>
-                <p>+234 (0) 800 LPRES KWA</p>
+                <p>+2348035068906<br />+2348036014717</p>
               </div>
             </div>
 

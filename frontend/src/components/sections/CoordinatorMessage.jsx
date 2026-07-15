@@ -6,7 +6,7 @@ const HIGHLIGHTS = [
   {
     icon: MapPin,
     label: 'State-wide Coverage',
-    text: 'All 16 LGAs across Kwara Central, North & South — cattle, sheep and goats.',
+    text: 'All 16 LGAs across Kwara Central, North & South: cattle, sheep and goats.',
     color: '#c49a3e',
   },
   {
@@ -69,7 +69,7 @@ export default function CoordinatorMessage() {
 
             <p className="spc__body">
               We are committed to building a more productive, resilient, and prosperous
-              livestock sector for Kwara State — through innovation, inclusive partnerships,
+              livestock sector for Kwara State, through innovation, inclusive partnerships,
               and strategic investment in people, herds and pastures.
             </p>
 

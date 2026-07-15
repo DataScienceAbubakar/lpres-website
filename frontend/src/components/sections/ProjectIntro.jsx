@@ -22,7 +22,7 @@ export default function ProjectIntro() {
             <p className="proj-intro__body">
               The L-PRES Project is a strategic initiative aimed at transforming the livestock
               sector through investments that improve productivity, strengthen resilience, and
-              promote commercialisation across key livestock value chains — implemented across
+              promote commercialisation across key livestock value chains, implemented across
               all sixteen LGAs of Kwara State.
             </p>
 

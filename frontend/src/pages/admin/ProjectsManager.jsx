@@ -189,7 +189,7 @@ function ProjectForm({ project, onClose, onSaved }) {
               <div className="admin-upload-zone" onClick={() => coverRef.current.click()}>
                 <Upload size={20} />
                 <span>Click to choose cover image</span>
-                <span className="admin-upload-hint">JPEG, PNG — max 15 MB</span>
+                <span className="admin-upload-hint">JPEG, PNG, max 15 MB</span>
               </div>
             )}
           </div>

@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LPRES Website — User Guide</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold:       #c49a3e;
+  --green:      #1a5c26;
+  --green-mid:  #2e9e50;
+  --dark:       #0a0f0d;
+  --ink:        #111827;
+  --muted:      #6b7280;
+  --border:     #e5e7eb;
+  --cream:      #fafaf7;
+  --blue:       #0891b2;
+  --red:        #dc2626;
+  --note-bg:    #fffbeb;
+  --note-brd:   #f59e0b;
+  --tip-bg:     #f0fdf4;
+  --tip-brd:    #22c55e;
+  --warn-bg:    #fef2f2;
+  --warn-brd:   #ef4444;
+  --info-bg:    #eff6ff;
+  --info-brd:   #3b82f6;
+}
+
+html { font-size: 10.5pt; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #fff;
+  color: var(--ink);
+  line-height: 1.7;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ── PAGE BREAKS ─────── */
+.pb { page-break-before: always; break-before: page; }
+.no-break { page-break-inside: avoid; break-inside: avoid; }
+
+@page { margin: 18mm 16mm 20mm; }
+
+/* ════════════════════════════════════════════
+   COVER
+   ════════════════════════════════════════════ */
+.cover {
+  min-height: 100vh;
+  background: var(--dark);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+}
+.cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 80% 40%, rgba(196,154,62,0.13) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 10% 90%, rgba(46,158,80,0.09) 0%, transparent 55%);
+}
+.cover__dots {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(196,154,62,0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.cover__header {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 28px 48px;
+  border-bottom: 1px solid rgba(196,154,62,0.12);
+}
+.cover__logo {
+  display: flex; align-items: center; gap: 12px;
+}
+.cover__logo-box {
+  width: 38px; height: 38px; border-radius: 9px;
+  background: linear-gradient(135deg, var(--gold), #d4b04e);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 17px; color: #000;
+}
+.cover__logo-name { font-size: 11pt; font-weight: 700; color: #fff; }
+.cover__logo-sub  { font-size: 8pt;  color: rgba(255,255,255,0.4); }
+.cover__tag {
+  font-size: 8pt; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--gold);
+  border: 1px solid rgba(196,154,62,0.3); border-radius: 20px;
+  padding: 4px 14px;
+}
+
+.cover__body {
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+  padding: 52px 48px 36px; position: relative; z-index: 2;
+}
+.cover__eyebrow {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 8.5pt; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 18px;
+}
+.cover__eyebrow::before {
+  content: ''; width: 30px; height: 2px; background: var(--gold);
+}
+.cover__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 42pt; font-weight: 700; color: #fff;
+  line-height: 1.08; margin-bottom: 10px;
+}
+.cover__title em { color: var(--gold); font-style: italic; }
+.cover__subtitle {
+  font-size: 13pt; color: rgba(255,255,255,0.5);
+  font-weight: 300; max-width: 480px; line-height: 1.6; margin-bottom: 52px;
+}
+
+.cover__audience-label {
+  font-size: 8pt; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 12px;
+}
+.cover__audience-chips { display: flex; gap: 10px; flex-wrap: wrap; }
+.cover__chip {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 5px 16px;
+  font-size: 9pt; color: rgba(255,255,255,0.7); font-weight: 500;
+}
+
+.cover__footer {
+  position: relative; z-index: 2;
+  padding: 0 48px 36px;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 20px; margin-top: 0;
+}
+.cover__footer-text { font-size: 8.5pt; color: rgba(255,255,255,0.3); }
+.cover__footer-text strong { color: var(--gold); }
+.cover__version {
+  background: rgba(196,154,62,0.1);
+  border: 1px solid rgba(196,154,62,0.25);
+  border-radius: 6px; padding: 5px 14px;
+  font-size: 8.5pt; color: var(--gold); font-weight: 600;
+}
+
+/* ════════════════════════════════════════════
+   TABLE OF CONTENTS
+   ════════════════════════════════════════════ */
+.toc-page {
+  padding: 52px 52px 40px;
+  background: var(--cream);
+  min-height: 100vh;
+  page-break-after: always;
+}
+.toc-page__label {
+  font-size: 8pt; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
+}
+.toc-page__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26pt; font-weight: 700; color: var(--green);
+  margin-bottom: 8px;
+}
+.toc-page__desc {
+  font-size: 10pt; color: var(--muted); margin-bottom: 36px;
+  max-width: 500px; line-height: 1.6;
+}
+
+.toc-section { margin-bottom: 6px; }
+.toc-chapter {
+  display: flex; align-items: center;
+  padding: 10px 0 10px;
+  border-bottom: 1px solid var(--border);
+  gap: 14px;
+}
+.toc-chapter:last-child { border-bottom: none; }
+.toc-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--green); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9pt; font-weight: 800; flex-shrink: 0;
+}
+.toc-chapter-name {
+  font-size: 10.5pt; font-weight: 700; color: var(--ink); flex: 1;
+}
+.toc-chapter-desc { font-size: 9pt; color: var(--muted); }
+.toc-dots {
+  flex: 1; border-bottom: 1px dotted #ccc; margin: 0 8px; min-width: 20px;
+}
+.toc-page-num {
+  font-size: 9pt; font-weight: 700; color: var(--muted); min-width: 12px; text-align: right;
+}
+
+/* ════════════════════════════════════════════
+   BODY LAYOUT
+   ════════════════════════════════════════════ */
+.page {
+  padding: 44px 52px;
+  min-height: 100vh;
+}
+.page--white  { background: #fff; }
+.page--cream  { background: var(--cream); }
+.page--dark   { background: var(--dark); color: #fff; }
+.page--green  { background: #0d2410; color: #fff; }
+
+/* chapter header */
+.ch-label {
+  font-size: 7.5pt; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 5px;
+  display: flex; align-items: center; gap: 8px;
+}
+.ch-label::before { content: ''; width: 18px; height: 2px; background: var(--gold); }
+h1.ch-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24pt; font-weight: 700; color: var(--green);
+  line-height: 1.12; margin-bottom: 8px;
+}
+h1.ch-title em { color: var(--gold); font-style: italic; }
+.page--dark h1.ch-title, .page--green h1.ch-title { color: #fff; }
+.ch-intro {
+  font-size: 10.5pt; color: var(--muted);
+  max-width: 560px; line-height: 1.7; margin-bottom: 32px;
+  padding-bottom: 20px; border-bottom: 2px solid var(--border);
+}
+.page--dark .ch-intro, .page--green .ch-intro { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.08); }
+
+h2 {
+  font-size: 14pt; font-weight: 800; color: var(--green);
+  margin: 28px 0 10px;
+}
+.page--dark h2, .page--green h2 { color: rgba(255,255,255,0.9); }
+h3 {
+  font-size: 11pt; font-weight: 700; color: var(--ink);
+  margin: 20px 0 8px;
+}
+.page--dark h3, .page--green h3 { color: rgba(255,255,255,0.75); }
+p { margin-bottom: 10px; }
+ul, ol { padding-left: 20px; margin-bottom: 12px; }
+li { margin-bottom: 5px; }
+
+/* ── Step boxes ──────────────────────────── */
+.steps { display: flex; flex-direction: column; gap: 0; margin: 16px 0 24px; }
+.step {
+  display: flex; gap: 16px;
+  padding: 12px 0 12px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.page--dark .step, .page--green .step { border-color: rgba(255,255,255,0.07); }
+.step:last-child { border-bottom: none; }
+.step__num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--gold); color: #000;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9pt; font-weight: 900; flex-shrink: 0; margin-top: 2px;
+}
+.step__body {}
+.step__title {
+  font-size: 10.5pt; font-weight: 700; color: var(--ink); margin-bottom: 3px;
+}
+.page--dark .step__title, .page--green .step__title { color: rgba(255,255,255,0.9); }
+.step__desc {
+  font-size: 9.5pt; color: var(--muted); line-height: 1.6;
+}
+.page--dark .step__desc, .page--green .step__desc { color: rgba(255,255,255,0.5); }
+.step__code {
+  display: inline-block; background: #f3f4f6;
+  border: 1px solid #e5e7eb; border-radius: 5px;
+  padding: 2px 8px; font-family: monospace; font-size: 9pt;
+  color: #c0392b; margin-top: 4px;
+}
+.page--dark .step__code, .page--green .step__code {
+  background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1);
+  color: var(--gold);
+}
+
+/* ── Callout boxes ───────────────────────── */
+.callout {
+  border-radius: 10px; padding: 13px 16px;
+  margin: 14px 0; page-break-inside: avoid;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.callout__icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.callout__body {}
+.callout__label {
+  font-size: 8pt; font-weight: 800; letter-spacing: 1px;
+  text-transform: uppercase; margin-bottom: 4px;
+}
+.callout__text { font-size: 9.5pt; line-height: 1.6; }
+.callout--note  { background: var(--note-bg); border-left: 4px solid var(--note-brd); }
+.callout--note .callout__label { color: #92400e; }
+.callout--note .callout__text  { color: #78350f; }
+.callout--tip   { background: var(--tip-bg);  border-left: 4px solid var(--tip-brd); }
+.callout--tip .callout__label  { color: #14532d; }
+.callout--tip .callout__text   { color: #166534; }
+.callout--warn  { background: var(--warn-bg); border-left: 4px solid var(--warn-brd); }
+.callout--warn .callout__label { color: #7f1d1d; }
+.callout--warn .callout__text  { color: #991b1b; }
+.callout--info  { background: var(--info-bg); border-left: 4px solid var(--info-brd); }
+.callout--info .callout__label { color: #1e3a5f; }
+.callout--info .callout__text  { color: #1e40af; }
+
+/* ── Screen mockup ───────────────────────── */
+.screen {
+  border: 1px solid var(--border); border-radius: 12px;
+  overflow: hidden; margin: 16px 0;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  page-break-inside: avoid;
+}
+.screen--dark { border-color: rgba(255,255,255,0.1); }
+.screen__bar {
+  background: #f3f4f6; padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 6px;
+}
+.screen__bar--dark { background: #0d1410; border-color: rgba(255,255,255,0.07); }
+.screen__dot { width: 9px; height: 9px; border-radius: 50%; }
+.screen__url {
+  flex: 1; background: #fff; border: 1px solid #ddd;
+  border-radius: 5px; padding: 2px 10px;
+  font-size: 8pt; color: var(--muted); font-family: monospace;
+  margin: 0 8px;
+}
+.screen__url--dark { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); }
+.screen__body { padding: 20px; background: #fff; }
+.screen__body--dark { background: #111714; }
+.screen__body--cream { background: var(--cream); }
+
+/* ── Field block ─────────────────────────── */
+.field-block {
+  border: 1px solid var(--border); border-radius: 10px;
+  overflow: hidden; margin: 14px 0; page-break-inside: avoid;
+}
+.field-block__header {
+  background: var(--green); color: #fff;
+  padding: 8px 16px; font-size: 9pt; font-weight: 700;
+}
+.field-block__body { padding: 14px 16px; }
+.field-row {
+  display: grid; grid-template-columns: 160px 1fr;
+  gap: 10px; padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: start;
+}
+.field-row:last-child { border-bottom: none; }
+.field-name {
+  font-size: 9pt; font-weight: 700; color: var(--ink);
+  display: flex; align-items: center; gap: 5px;
+}
+.field-required { color: var(--red); font-weight: 900; font-size: 10pt; }
+.field-desc { font-size: 9pt; color: var(--muted); line-height: 1.55; }
+.field-example {
+  font-size: 8.5pt; color: var(--green); font-style: italic;
+  margin-top: 3px;
+}
+
+/* ── Two-column grid ─────────────────────── */
+.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0; }
+.cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 12px 0; }
+
+/* ── Info card ───────────────────────────── */
+.info-card {
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 15px 17px; page-break-inside: avoid;
+}
+.info-card--green { border-color: rgba(46,158,80,0.3); background: var(--tip-bg); }
+.info-card--gold  { border-color: rgba(196,154,62,0.3); background: #fffbeb; }
+.info-card--dark  { border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); }
+.info-card__icon  { font-size: 22px; margin-bottom: 8px; }
+.info-card__title { font-size: 10pt; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+.info-card--dark .info-card__title { color: rgba(255,255,255,0.9); }
+.info-card__text  { font-size: 9pt; color: var(--muted); line-height: 1.6; }
+.info-card--dark .info-card__text { color: rgba(255,255,255,0.5); }
+
+/* ── FAQ ─────────────────────────────────── */
+.faq-item {
+  border: 1px solid var(--border); border-radius: 10px;
+  margin-bottom: 12px; overflow: hidden; page-break-inside: avoid;
+}
+.faq-q {
+  background: #f9fafb; padding: 12px 16px;
+  font-size: 10pt; font-weight: 700; color: var(--ink);
+  border-bottom: 1px solid var(--border);
+  display: flex; gap: 10px;
+}
+.faq-q-icon { color: var(--gold); flex-shrink: 0; }
+.faq-a {
+  padding: 12px 16px; font-size: 9.5pt; color: var(--muted);
+  line-height: 1.65;
+}
+.faq-a code {
+  background: #f3f4f6; padding: 1px 6px; border-radius: 4px;
+  font-family: monospace; font-size: 9pt; color: #c0392b;
+}
+
+/* ── Inline badge ────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 9px; border-radius: 20px;
+  font-size: 8pt; font-weight: 700;
+}
+.badge--green { background: rgba(34,197,94,0.12); color: #15803d; border: 1px solid rgba(34,197,94,0.3); }
+.badge--red   { background: rgba(220,38,38,0.1);  color: #b91c1c; border: 1px solid rgba(220,38,38,0.25); }
+.badge--gold  { background: rgba(196,154,62,0.12);color: #92400e; border: 1px solid rgba(196,154,62,0.3); }
+.badge--blue  { background: rgba(8,145,178,0.12); color: #0e7490; border: 1px solid rgba(8,145,178,0.25); }
+.badge--grey  { background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
+
+.badge--green::before { content: '●'; font-size: 6pt; }
+.badge--red::before   { content: '●'; font-size: 6pt; }
+
+/* ── Admin nav mockup ────────────────────── */
+.admin-mock {
+  display: grid; grid-template-columns: 170px 1fr;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; overflow: hidden;
+  page-break-inside: avoid;
+}
+.admin-mock__side {
+  background: #0d1410; padding: 14px 0;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.admin-mock__brand {
+  padding: 0 14px 12px;
+  font-size: 9.5pt; font-weight: 800; color: rgba(255,255,255,0.9);
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 8px;
+}
+.admin-mock__brand-icon {
+  width: 22px; height: 22px; background: var(--gold);
+  border-radius: 5px; display: flex; align-items: center;
+  justify-content: center; font-size: 9px; font-weight: 900; color: #000;
+}
+.admin-mock__nav-item {
+  padding: 8px 14px; font-size: 8.5pt; color: rgba(255,255,255,0.4);
+  display: flex; align-items: center; gap: 8px;
+}
+.admin-mock__nav-item--active {
+  color: var(--gold); background: rgba(196,154,62,0.08);
+  border-left: 2px solid var(--gold);
+}
+.admin-mock__nav-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor; opacity: 0.5; flex-shrink: 0;
+}
+.admin-mock__nav-item--active .admin-mock__nav-dot { opacity: 1; }
+.admin-mock__main {
+  background: #111714; padding: 16px;
+}
+
+/* ── Inline key ──────────────────────────── */
+.key {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 22px; height: 22px; padding: 0 6px;
+  background: #fff; border: 1.5px solid #ccc;
+  border-bottom-width: 3px; border-radius: 5px;
+  font-size: 8pt; font-weight: 700; color: var(--ink);
+  font-family: monospace; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* ── Divider ─────────────────────────────── */
+hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.page--dark hr, .page--green hr { border-color: rgba(255,255,255,0.08); }
+
+/* ── Summary checklist ───────────────────── */
+.checklist { list-style: none; padding: 0; margin: 12px 0; }
+.checklist li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 9.5pt;
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist__icon { color: var(--green-mid); flex-shrink: 0; font-size: 12pt; margin-top: 1px; }
+
+/* ── Quick reference table ───────────────── */
+table {
+  width: 100%; border-collapse: collapse;
+  margin: 14px 0 20px; font-size: 9.5pt;
+  page-break-inside: avoid;
+}
+th {
+  background: var(--green); color: #fff;
+  padding: 8px 12px; text-align: left;
+  font-size: 8.5pt; font-weight: 700;
+}
+td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:nth-child(even) td { background: #f9fafb; }
+
+/* ── Page decorative header line ─────────── */
+.page-rule {
+  height: 4px;
+  background: linear-gradient(to right, var(--gold), var(--green-mid), transparent);
+  margin-bottom: 40px;
+  border-radius: 2px;
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     COVER PAGE
+     ════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover__dots"></div>
+
+  <div class="cover__header">
+    <div class="cover__logo">
+      <div class="cover__logo-box">L</div>
+      <div>
+        <div class="cover__logo-name">Kwara L-PRES Project</div>
+        <div class="cover__logo-sub">Official Website</div>
+      </div>
+    </div>
+    <div class="cover__tag">User Guide &amp; Documentation</div>
+  </div>
+
+  <div class="cover__body">
+    <div class="cover__eyebrow">Complete Step-by-Step Guide</div>
+    <h1 class="cover__title">
+      How to Use<br>
+      <em>Your Website.</em>
+    </h1>
+    <p class="cover__subtitle">
+      A plain-language guide for content editors and administrators of the
+      Kwara L-PRES official website — covering every task from logging in
+      to publishing news and managing the project portfolio.
+    </p>
+
+    <div class="cover__audience-label">This guide is for</div>
+    <div class="cover__audience-chips">
+      <div class="cover__chip">📝 Content Editors</div>
+      <div class="cover__chip">🔒 Site Administrators</div>
+      <div class="cover__chip">📢 Communications Officers</div>
+      <div class="cover__chip">📸 Media Managers</div>
+    </div>
+  </div>
+
+  <div class="cover__footer">
+    <div class="cover__footer-text">
+      Kwara State Government · L-PRES Project ·
+      Live site: <strong>https://kwara-lpres.netlify.app</strong>
+    </div>
+    <div class="cover__version">Version 1.0 · June 2026</div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     TABLE OF CONTENTS
+     ════════════════════════════════════════ -->
+<div class="toc-page">
+  <div class="toc-page__label">Contents</div>
+  <h1 class="toc-page__title">What's in This Guide</h1>
+  <p class="toc-page__desc">
+    Follow the chapters in order when getting started for the first time.
+    After that, jump directly to the section you need using the chapter list below.
+  </p>
+
+  <div class="toc-section">
+    <div class="toc-chapter no-break">
+      <div class="toc-num">1</div>
+      <div style="flex:1">
+        <div class="toc-chapter-name">Getting Started</div>
+        <div class="toc-chapter-desc">What the website does, who can access what, and how to open it</div>
+      </div>
+    </div>
+    <div class="toc-chapter no-break">
+      <div class="toc-num">2</div>
+      <div style="flex:1">
+        <div class="toc-chapter-name">Logging In &amp; Out</div>
+        <div class="toc-chapter-desc">How to access the admin panel, sign in, and sign out securely</div>
+      </div>
+    </div>
+    <div class="toc-chapter no-break">
+      <div class="toc-num">3</div>
+      <div style="flex:1">
+        <div class="toc-chapter-name">The Admin Dashboard</div>
+        <div class="toc-chapter-desc">Understanding the dashboard layout, navigation, and quick-access buttons</div>
+      </div>
+    </div>
+    <div class="toc-chapter no-break">
+      <div class="toc-num">4</div>
+      <div style="flex:1">
+        <div class="toc-chapter-name">Managing News Articles</div>
+        <div class="toc-chapter-desc">Write, edit, publish, unpublish, and delete news stories and announcements</div>
+      </div>
+    </div>
+    <div class="toc-chapter no-break">
+      <div class="toc-num">5</div>
+      <div style="flex:1">
+        <div class="toc-chapter-name">Managing the Media Gallery</div>
+        <div class="toc-chapter-desc">Upload photos and videos, organise by category, and remove old media</div>
+      </div>
+    </div>
+    <div class="toc-chapter no-break">
+      <div class="toc-num">6</div>
+      <div style="flex:1">
+        <div class="toc-chapter-name">Managing the Project Portfolio</div>
+        <div class="toc-chapter-desc">Add, update, and showcase field projects with images and highlights</div>
+      </div>
+    </div>
+    <div class="toc-chapter no-break">
+      <div class="toc-num">7</div>
+      <div style="flex:1">
+        <div class="toc-chapter-name">Navigating the Public Website</div>
+        <div class="toc-chapter-desc">A tour of every public-facing page and what visitors see</div>
+      </div>
+    </div>
+    <div class="toc-chapter no-break">
+      <div class="toc-num">8</div>
+      <div style="flex:1">
+        <div class="toc-chapter-name">Content Best Practices</div>
+        <div class="toc-chapter-desc">Writing tips, image guidelines, and how to maintain a professional site</div>
+      </div>
+    </div>
+    <div class="toc-chapter no-break">
+      <div class="toc-num">9</div>
+      <div style="flex:1">
+        <div class="toc-chapter-name">Troubleshooting &amp; FAQs</div>
+        <div class="toc-chapter-desc">Answers to common questions and fixes for common problems</div>
+      </div>
+    </div>
+    <div class="toc-chapter no-break">
+      <div class="toc-num">10</div>
+      <div style="flex:1">
+        <div class="toc-chapter-name">Quick Reference Card</div>
+        <div class="toc-chapter-desc">All important URLs, credentials, and keyboard shortcuts on one page</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout--info" style="margin-top:32px;">
+    <div class="callout__icon">ℹ️</div>
+    <div class="callout__body">
+      <div class="callout__label">No Technical Knowledge Required</div>
+      <div class="callout__text">
+        This guide assumes no coding experience. Every step is written in plain English
+        with numbered instructions. If you can use email and a web browser, you can manage this website.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     CHAPTER 1 — GETTING STARTED
+     ════════════════════════════════════════ -->
+<div class="page page--white pb">
+  <div class="page-rule"></div>
+  <div class="ch-label">Chapter 01</div>
+  <h1 class="ch-title">Getting <em>Started</em></h1>
+  <p class="ch-intro">
+    This chapter gives you a quick overview of the website — what it does, who uses it, and what you need before you begin.
+  </p>
+
+  <h2>What is the L-PRES Website?</h2>
+  <p>
+    The Kwara L-PRES website is the official online presence of the Kwara State Livestock Productivity
+    and Resilience Support Project. It serves two purposes:
+  </p>
+
+  <div class="cols-2" style="margin-bottom:24px;">
+    <div class="info-card info-card--green no-break">
+      <div class="info-card__icon">🌐</div>
+      <div class="info-card__title">Public Website</div>
+      <div class="info-card__text">
+        Anyone on the internet can visit this. It shows news, project updates, the media gallery,
+        programme information, and contact details. Visitors cannot change anything — they can only read.
+      </div>
+    </div>
+    <div class="info-card info-card--gold no-break">
+      <div class="info-card__icon">🔒</div>
+      <div class="info-card__title">Admin Panel (Private)</div>
+      <div class="info-card__text">
+        Only authorised staff with a username and password can access this. This is where you create
+        news articles, upload gallery media, and manage project information.
+      </div>
+    </div>
+  </div>
+
+  <h2>What You Can Do as an Admin</h2>
+  <div class="cols-3" style="margin-bottom:24px;">
+    <div class="info-card no-break">
+      <div class="info-card__icon">📰</div>
+      <div class="info-card__title">Publish News</div>
+      <div class="info-card__text">Write and publish news articles, events, and announcements with photos.</div>
+    </div>
+    <div class="info-card no-break">
+      <div class="info-card__icon">🖼</div>
+      <div class="info-card__title">Manage Gallery</div>
+      <div class="info-card__text">Upload photos and videos, organise them by category, and remove outdated media.</div>
+    </div>
+    <div class="info-card no-break">
+      <div class="info-card__icon">📌</div>
+      <div class="info-card__title">Update Projects</div>
+      <div class="info-card__text">Add new field projects, update their status, and upload multiple photos per project.</div>
+    </div>
+  </div>
+
+  <h2>What You Need to Get Started</h2>
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step__num">1</div>
+      <div class="step__body">
+        <div class="step__title">A modern web browser</div>
+        <div class="step__desc">
+          Google Chrome, Microsoft Edge, Mozilla Firefox, or Safari. Any of these will work.
+          Make sure your browser is up to date for the best experience.
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">2</div>
+      <div class="step__body">
+        <div class="step__title">An internet connection</div>
+        <div class="step__desc">
+          The website is hosted online, so you need internet access both to view it and to manage content through the admin panel.
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">3</div>
+      <div class="step__body">
+        <div class="step__title">Your admin username and password</div>
+        <div class="step__desc">
+          You need these to log in to the admin panel. The default credentials are provided
+          in Chapter 10 (Quick Reference Card). Change the password as soon as possible after your first login.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Two Important URLs</h2>
+  <table>
+    <thead><tr><th>What it is</th><th>Web address (URL)</th><th>Who can access it</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Public Website</strong></td>
+        <td><code style="font-family:monospace;font-size:9pt;">https://kwara-lpres.netlify.app</code></td>
+        <td>Everyone — no password needed</td>
+      </tr>
+      <tr>
+        <td><strong>Admin Panel</strong></td>
+        <td><code style="font-family:monospace;font-size:9pt;">https://kwara-lpres.netlify.app/admin</code></td>
+        <td>Authorised staff only — requires login</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout--tip no-break">
+    <div class="callout__icon">💡</div>
+    <div class="callout__body">
+      <div class="callout__label">Bookmark these URLs</div>
+      <div class="callout__text">
+        Open the admin panel URL in your browser and save it as a bookmark for quick access.
+        In Chrome, press <span class="key">Ctrl</span> + <span class="key">D</span>
+        (or <span class="key">⌘</span> + <span class="key">D</span> on Mac) to bookmark the current page.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     CHAPTER 2 — LOGGING IN & OUT
+     ════════════════════════════════════════ -->
+<div class="page page--cream pb">
+  <div class="page-rule"></div>
+  <div class="ch-label">Chapter 02</div>
+  <h1 class="ch-title">Logging In <em>&amp; Out</em></h1>
+  <p class="ch-intro">
+    The admin panel is protected by a username and password. Your session stays active for 24 hours.
+    After that, you will need to log in again.
+  </p>
+
+  <h2>How to Log In</h2>
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step__num">1</div>
+      <div class="step__body">
+        <div class="step__title">Open your browser and go to the admin login page</div>
+        <div class="step__desc">Type this address in your browser's address bar and press Enter:</div>
+        <div class="step__code">https://kwara-lpres.netlify.app/admin/login</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">2</div>
+      <div class="step__body">
+        <div class="step__title">Enter your username</div>
+        <div class="step__desc">
+          Click on the <strong>Username</strong> field and type your admin username.
+          The default username is <strong>admin</strong>.
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">3</div>
+      <div class="step__body">
+        <div class="step__title">Enter your password</div>
+        <div class="step__desc">
+          Click on the <strong>Password</strong> field and type your password.
+          The characters will appear as dots for security — this is normal.
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">4</div>
+      <div class="step__body">
+        <div class="step__title">Click "Sign In"</div>
+        <div class="step__desc">
+          Click the green <strong>Sign In</strong> button. If your credentials are correct,
+          you will be taken to the Admin Dashboard automatically.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login screen mockup -->
+  <div class="screen no-break">
+    <div class="screen__bar">
+      <div class="screen__dot" style="background:#ff5f57;"></div>
+      <div class="screen__dot" style="background:#ffbd2e;"></div>
+      <div class="screen__dot" style="background:#28c840;"></div>
+      <div class="screen__url">kwara-lpres.netlify.app/admin/login</div>
+    </div>
+    <div class="screen__body" style="display:flex;justify-content:center;padding:32px 20px;">
+      <div style="width:280px;text-align:center;">
+        <div style="width:40px;height:40px;background:#c49a3e;border-radius:10px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#000;">L</div>
+        <div style="font-size:13pt;font-weight:800;color:#111;margin-bottom:4px;">Admin Login</div>
+        <div style="font-size:8.5pt;color:#6b7280;margin-bottom:20px;">Kwara L-PRES Project</div>
+        <div style="text-align:left;margin-bottom:12px;">
+          <div style="font-size:8.5pt;font-weight:700;color:#111;margin-bottom:4px;">Username</div>
+          <div style="border:1.5px solid #1a5c26;border-radius:7px;padding:8px 12px;font-size:9pt;color:#111;background:#fff;box-shadow:0 0 0 3px rgba(26,92,38,0.1);">admin</div>
+        </div>
+        <div style="text-align:left;margin-bottom:20px;">
+          <div style="font-size:8.5pt;font-weight:700;color:#111;margin-bottom:4px;">Password</div>
+          <div style="border:1.5px solid #e5e7eb;border-radius:7px;padding:8px 12px;font-size:9pt;color:#999;background:#fff;">••••••••••••••</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#1a5c26,#2e9e50);color:#fff;padding:10px;border-radius:8px;font-size:9.5pt;font-weight:700;cursor:pointer;">Sign In</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout--warn no-break">
+    <div class="callout__icon">⚠️</div>
+    <div class="callout__body">
+      <div class="callout__label">If login fails</div>
+      <div class="callout__text">
+        Check that <strong>Caps Lock is not on</strong> — passwords are case-sensitive.
+        Make sure you are typing the username in lowercase (e.g., <strong>admin</strong>, not <strong>Admin</strong>).
+        If you still cannot log in, contact your IT administrator to reset your password.
+      </div>
+    </div>
+  </div>
+
+  <h2>How to Log Out</h2>
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step__num">1</div>
+      <div class="step__body">
+        <div class="step__title">Find the "Sign Out" button</div>
+        <div class="step__desc">
+          In the admin panel, look at the left sidebar. Scroll to the bottom of the menu.
+          You will see a <strong>Sign Out</strong> option.
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">2</div>
+      <div class="step__body">
+        <div class="step__title">Click "Sign Out"</div>
+        <div class="step__desc">
+          Click it. You will be immediately logged out and taken back to the login page.
+          Your session is cleared from the browser.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout--note no-break">
+    <div class="callout__icon">🔐</div>
+    <div class="callout__body">
+      <div class="callout__label">Always log out on shared computers</div>
+      <div class="callout__text">
+        If you are using a shared computer (e.g., an office desktop), always sign out when you
+        finish working. Your session lasts 24 hours, so if you do not sign out, the next person
+        who opens the browser may have access to the admin panel.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     CHAPTER 3 — THE ADMIN DASHBOARD
+     ════════════════════════════════════════ -->
+<div class="page page--white pb">
+  <div class="page-rule"></div>
+  <div class="ch-label">Chapter 03</div>
+  <h1 class="ch-title">The Admin <em>Dashboard</em></h1>
+  <p class="ch-intro">
+    After logging in, you land on the Dashboard. This is your home base for managing all website content.
+  </p>
+
+  <h2>Understanding the Layout</h2>
+
+  <!-- Admin layout mockup -->
+  <div class="admin-mock no-break" style="margin-bottom:24px;">
+    <div class="admin-mock__side">
+      <div class="admin-mock__brand">
+        <div class="admin-mock__brand-icon">L</div>
+        L-PRES Admin
+      </div>
+      <div class="admin-mock__nav-item admin-mock__nav-item--active">
+        <div class="admin-mock__nav-dot"></div>
+        Dashboard
+      </div>
+      <div class="admin-mock__nav-item">
+        <div class="admin-mock__nav-dot"></div>
+        News Articles
+      </div>
+      <div class="admin-mock__nav-item">
+        <div class="admin-mock__nav-dot"></div>
+        Gallery
+      </div>
+      <div class="admin-mock__nav-item">
+        <div class="admin-mock__nav-dot"></div>
+        Projects
+      </div>
+      <div class="admin-mock__nav-item" style="margin-top:20px;color:rgba(220,80,80,0.7);">
+        <div class="admin-mock__nav-dot"></div>
+        Sign Out
+      </div>
+    </div>
+    <div class="admin-mock__main">
+      <div style="font-size:11pt;font-weight:800;color:rgba(255,255,255,0.9);margin-bottom:14px;">Dashboard</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;">
+        <div style="background:rgba(196,154,62,0.1);border:1px solid rgba(196,154,62,0.2);border-radius:8px;padding:12px;">
+          <div style="font-size:16pt;font-weight:800;color:#c49a3e;">12</div>
+          <div style="font-size:8pt;color:rgba(255,255,255,0.4);">News Articles</div>
+        </div>
+        <div style="background:rgba(46,158,80,0.1);border:1px solid rgba(46,158,80,0.2);border-radius:8px;padding:12px;">
+          <div style="font-size:16pt;font-weight:800;color:#2e9e50;">38</div>
+          <div style="font-size:8pt;color:rgba(255,255,255,0.4);">Gallery Items</div>
+        </div>
+        <div style="background:rgba(8,145,178,0.1);border:1px solid rgba(8,145,178,0.2);border-radius:8px;padding:12px;">
+          <div style="font-size:16pt;font-weight:800;color:#0891b2;">5</div>
+          <div style="font-size:8pt;color:rgba(255,255,255,0.4);">Projects</div>
+        </div>
+        <div style="background:rgba(107,114,128,0.1);border:1px solid rgba(107,114,128,0.2);border-radius:8px;padding:12px;">
+          <div style="font-size:16pt;font-weight:800;color:#9ca3af;">3</div>
+          <div style="font-size:8pt;color:rgba(255,255,255,0.4);">Drafts</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px;">
+        <div style="font-size:8.5pt;font-weight:700;color:rgba(255,255,255,0.6);margin-bottom:8px;">Recent Activity</div>
+        <div style="font-size:8pt;color:rgba(255,255,255,0.35);padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);">📰 Article published: L-PRES Vaccination Drive</div>
+        <div style="font-size:8pt;color:rgba(255,255,255,0.35);padding:5px 0;">🖼 Gallery item added: Field Survey Photo</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>The Navigation Sidebar</h2>
+  <p>The left sidebar is your main navigation. It has four sections:</p>
+
+  <table>
+    <thead><tr><th>Sidebar Item</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Dashboard</strong></td>
+        <td>Shows a summary of all your content — how many articles, gallery items, and projects exist</td>
+      </tr>
+      <tr>
+        <td><strong>News Articles</strong></td>
+        <td>Create and manage news stories, events, and announcements that appear on the public website</td>
+      </tr>
+      <tr>
+        <td><strong>Gallery</strong></td>
+        <td>Upload and manage photos and videos shown in the public gallery page</td>
+      </tr>
+      <tr>
+        <td><strong>Projects</strong></td>
+        <td>Add and update the field project entries shown in the Project Portfolio section</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout--tip no-break">
+    <div class="callout__icon">💡</div>
+    <div class="callout__body">
+      <div class="callout__label">Tip — View the public site while editing</div>
+      <div class="callout__text">
+        Open the public website (<strong>kwara-lpres.netlify.app</strong>) in a separate browser tab
+        while you work in the admin panel. After saving changes, refresh the public tab to see how your
+        content looks to visitors.
+      </div>
+    </div>
+  </div>
+
+  <h2>The Content Counters</h2>
+  <p>
+    At the top of the Dashboard you will see four numbered boxes:
+  </p>
+  <ul>
+    <li><strong>News Articles</strong> — total number of articles (including drafts)</li>
+    <li><strong>Gallery Items</strong> — total photos and videos uploaded</li>
+    <li><strong>Projects</strong> — number of projects in the portfolio</li>
+    <li><strong>Drafts</strong> — articles saved but not yet published to the public</li>
+  </ul>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     CHAPTER 4 — MANAGING NEWS ARTICLES
+     ════════════════════════════════════════ -->
+<div class="page page--cream pb">
+  <div class="page-rule"></div>
+  <div class="ch-label">Chapter 04</div>
+  <h1 class="ch-title">Managing <em>News Articles</em></h1>
+  <p class="ch-intro">
+    The News section is how you communicate with the public — field updates, events, achievements,
+    and partnership news. You can write articles, attach photos, and choose when to publish them.
+  </p>
+
+  <h2>Creating a New Article</h2>
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step__num">1</div>
+      <div class="step__body">
+        <div class="step__title">Click "News Articles" in the sidebar</div>
+        <div class="step__desc">This shows a list of all existing articles. Published ones are marked in green. Drafts are marked grey.</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">2</div>
+      <div class="step__body">
+        <div class="step__title">Click the "+ New Article" button</div>
+        <div class="step__desc">You will find this button in the top-right corner of the News Articles page. Click it to open the article creation form.</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">3</div>
+      <div class="step__body">
+        <div class="step__title">Fill in the article details</div>
+        <div class="step__desc">Complete the fields in the form. See the field guide below for what each field means.</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">4</div>
+      <div class="step__body">
+        <div class="step__title">Write the article body</div>
+        <div class="step__desc">
+          The large text area in the middle is the rich text editor. Type your article here.
+          Use the toolbar above it to format text — make headings, add bold/italic, create lists.
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">5</div>
+      <div class="step__body">
+        <div class="step__title">Upload a featured image (optional but recommended)</div>
+        <div class="step__desc">
+          Click the "Featured Image" upload button and choose a photo from your computer.
+          This image appears as the article's thumbnail in the news list and at the top of the article page.
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">6</div>
+      <div class="step__body">
+        <div class="step__title">Choose whether to publish now or save as draft</div>
+        <div class="step__desc">
+          — Tick <strong>"Publish immediately"</strong> to make the article live on the website right away.<br>
+          — Leave it unticked to save as a <strong>Draft</strong> — only you can see it, visitors cannot.
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">7</div>
+      <div class="step__body">
+        <div class="step__title">Click "Save Article"</div>
+        <div class="step__desc">A green confirmation message will appear at the top of the screen when the article is saved successfully.</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Article Fields — What to Fill In</h2>
+  <div class="field-block no-break">
+    <div class="field-block__header">Article Form Fields</div>
+    <div class="field-block__body">
+      <div class="field-row">
+        <div class="field-name">Title <span class="field-required">*</span></div>
+        <div>
+          <div class="field-desc">The headline of your article. Keep it clear and under 100 characters.</div>
+          <div class="field-example">e.g. "L-PRES Teams Complete First Phase of Vaccination Drive"</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-name">Article Body <span class="field-required">*</span></div>
+        <div>
+          <div class="field-desc">The full text of your article. Write as much as needed. You can format text using the toolbar.</div>
+          <div class="field-example">Use Heading 2 for subheadings, bullet lists for key points.</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-name">Category <span class="field-required">*</span></div>
+        <div>
+          <div class="field-desc">Choose the type of content from the dropdown menu.</div>
+          <div class="field-example">Options: News, Events, Field Work, Partnership, Training, Publication</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-name">Published By <span class="field-required">*</span></div>
+        <div>
+          <div class="field-desc">The author or office publishing this article.</div>
+          <div class="field-example">e.g. "State Project Coordinator" or "L-PRES Communications Unit"</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-name">Event Date</div>
+        <div>
+          <div class="field-desc">Only for Events. Enter the date the event happened or will happen.</div>
+          <div class="field-example">e.g. "June 20, 2026"</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-name">Excerpt</div>
+        <div>
+          <div class="field-desc">A short summary (1–2 sentences) shown in the news list preview. If you leave this blank, the system will automatically use the first 200 characters of your article body.</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-name">Featured Image</div>
+        <div>
+          <div class="field-desc">The main photo for this article. Accepted: JPG, PNG. Maximum size: 10 MB.</div>
+          <div class="field-example">Recommended: landscape photo, at least 800px wide.</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-name">Article Template</div>
+        <div>
+          <div class="field-desc">Choose the layout design for this article page. Template 1 is the default and works for all articles.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Publishing, Unpublishing &amp; Deleting</h2>
+  <div class="cols-3" style="margin-bottom:20px;">
+    <div class="info-card no-break">
+      <div class="info-card__icon">✅</div>
+      <div class="info-card__title">Publish an Article</div>
+      <div class="info-card__text">
+        In the articles list, click the <strong>eye icon</strong> (👁) next to a draft article to toggle it from Draft to Published. It will immediately appear on the public website.
+      </div>
+    </div>
+    <div class="info-card no-break">
+      <div class="info-card__icon">🙈</div>
+      <div class="info-card__title">Unpublish an Article</div>
+      <div class="info-card__text">
+        Click the same <strong>eye icon</strong> again on a published article to hide it from the public. The article is not deleted — it becomes a draft and only you can see it.
+      </div>
+    </div>
+    <div class="info-card no-break">
+      <div class="info-card__icon">🗑</div>
+      <div class="info-card__title">Delete an Article</div>
+      <div class="info-card__text">
+        Click the <strong>bin icon</strong> (🗑) and confirm when prompted. <strong>This cannot be undone.</strong> Consider unpublishing instead if you may need the article again.
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout--warn no-break">
+    <div class="callout__icon">⚠️</div>
+    <div class="callout__body">
+      <div class="callout__label">Deletion is permanent</div>
+      <div class="callout__text">
+        When you delete an article, it is permanently removed from the database and cannot be recovered.
+        If you are unsure, <strong>unpublish</strong> the article instead — it will be hidden from visitors
+        but remain available for you to edit or re-publish later.
+      </div>
+    </div>
+  </div>
+
+  <h2>Using the Text Editor Toolbar</h2>
+  <p>The article body editor has a toolbar with formatting buttons:</p>
+  <table>
+    <thead><tr><th>Button</th><th>What it does</th><th>When to use it</th></tr></thead>
+    <tbody>
+      <tr><td><strong>B</strong> Bold</td><td>Makes selected text <strong>bold</strong></td><td>Key facts, names, important terms</td></tr>
+      <tr><td><em>I</em> Italic</td><td>Makes selected text <em>italic</em></td><td>Quotes, titles, emphasis</td></tr>
+      <tr><td>H1 / H2</td><td>Creates a large heading or subheading</td><td>Section titles within a long article</td></tr>
+      <tr><td>≡ List</td><td>Creates a bullet-point list</td><td>Key outcomes, programme items</td></tr>
+      <tr><td>1. Numbered</td><td>Creates a numbered list</td><td>Step-by-step processes</td></tr>
+      <tr><td>↩ Undo</td><td>Reverses the last action</td><td>If you made a mistake</td></tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     CHAPTER 5 — MANAGING THE GALLERY
+     ════════════════════════════════════════ -->
+<div class="page page--white pb">
+  <div class="page-rule"></div>
+  <div class="ch-label">Chapter 05</div>
+  <h1 class="ch-title">Managing the <em>Media Gallery</em></h1>
+  <p class="ch-intro">
+    The Gallery is a public-facing collection of photos and videos that showcases L-PRES field activities.
+    Visitors can filter by category and view full-size images or play videos.
+  </p>
+
+  <h2>Uploading a New Photo or Video</h2>
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step__num">1</div>
+      <div class="step__body">
+        <div class="step__title">Click "Gallery" in the sidebar</div>
+        <div class="step__desc">You will see a grid of all existing gallery items, with their thumbnails, titles, and category labels.</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">2</div>
+      <div class="step__body">
+        <div class="step__title">Click "+ Upload Media"</div>
+        <div class="step__desc">This opens the upload form. You will fill in details and attach your file.</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">3</div>
+      <div class="step__body">
+        <div class="step__title">Enter the title</div>
+        <div class="step__desc">Give the photo or video a descriptive title so it can be found easily later.</div>
+        <div class="step__code">e.g. "Animal Health Campaign — Baruten LGA, June 2026"</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">4</div>
+      <div class="step__body">
+        <div class="step__title">Choose the media type</div>
+        <div class="step__desc">
+          Select <strong>Photo</strong> for images, or <strong>Video</strong> for video files.
+          Choosing the wrong type affects how the item is displayed on the gallery page.
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">5</div>
+      <div class="step__body">
+        <div class="step__title">Choose a category</div>
+        <div class="step__desc">
+          Select the most appropriate category from the dropdown. This allows visitors to filter the gallery.
+        </div>
+        <div class="step__code">Field Work · Outreach · Infrastructure · Events · Training · General</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">6</div>
+      <div class="step__body">
+        <div class="step__title">Click "Choose File" and select your file</div>
+        <div class="step__desc">Browse your computer and select the photo or video file. See the limits below for accepted file types and sizes.</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">7</div>
+      <div class="step__body">
+        <div class="step__title">For videos — also upload a thumbnail image</div>
+        <div class="step__desc">
+          Videos need a separate thumbnail (a still image shown before the video plays).
+          Click "Choose Thumbnail" and upload a JPG or PNG photo related to the video.
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">8</div>
+      <div class="step__body">
+        <div class="step__title">Optionally add a description</div>
+        <div class="step__desc">A brief caption explaining what the photo shows — location, date, people involved. This appears when visitors hover or click on the image.</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">9</div>
+      <div class="step__body">
+        <div class="step__title">Click "Upload"</div>
+        <div class="step__desc">The file will upload and appear in the gallery immediately. Large files (especially videos) may take a minute to upload depending on your internet speed.</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Accepted File Types &amp; Size Limits</h2>
+  <table>
+    <thead><tr><th>Media Type</th><th>Accepted Formats</th><th>Maximum File Size</th></tr></thead>
+    <tbody>
+      <tr><td>Photos</td><td>JPG, JPEG, PNG, WEBP</td><td>15 MB per image</td></tr>
+      <tr><td>Videos</td><td>MP4, WEBM, MOV, AVI</td><td>300 MB per video</td></tr>
+      <tr><td>Thumbnails</td><td>JPG, PNG</td><td>15 MB</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout--tip no-break">
+    <div class="callout__icon">💡</div>
+    <div class="callout__body">
+      <div class="callout__label">Photo quality tip</div>
+      <div class="callout__text">
+        Use photos that are <strong>landscape orientation</strong> (wider than tall) and at least
+        <strong>1000px wide</strong> for the best appearance on the website. Avoid blurry or
+        very dark photos — they make the website look unprofessional. Use photos taken in natural
+        daylight where possible.
+      </div>
+    </div>
+  </div>
+
+  <h2>Editing a Gallery Item</h2>
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step__num">1</div>
+      <div class="step__body">
+        <div class="step__title">Find the item in the gallery list</div>
+        <div class="step__desc">Scroll through the gallery manager or use the search/filter at the top of the page.</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">2</div>
+      <div class="step__body">
+        <div class="step__title">Click the pencil icon (✏) next to the item</div>
+        <div class="step__desc">This opens the edit form pre-filled with the current details.</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">3</div>
+      <div class="step__body">
+        <div class="step__title">Make your changes and click "Save"</div>
+        <div class="step__desc">You can update the title, description, category, or replace the file. Changes are immediate.</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Hiding and Removing Gallery Items</h2>
+  <div class="cols-2">
+    <div class="info-card no-break">
+      <div class="info-card__icon">👁</div>
+      <div class="info-card__title">Hide from Gallery</div>
+      <div class="info-card__text">
+        Click the <strong>eye icon</strong> to unpublish the item. It is hidden from visitors but
+        remains in the system. You can re-publish it anytime. Good for temporarily removing seasonal content.
+      </div>
+    </div>
+    <div class="info-card no-break">
+      <div class="info-card__icon">🗑</div>
+      <div class="info-card__title">Permanently Delete</div>
+      <div class="info-card__text">
+        Click the <strong>bin icon</strong> and confirm. The file is permanently deleted from the server.
+        <strong>This cannot be undone</strong> — only delete items you are certain are no longer needed.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     CHAPTER 6 — PROJECT PORTFOLIO
+     ════════════════════════════════════════ -->
+<div class="page page--cream pb">
+  <div class="page-rule"></div>
+  <div class="ch-label">Chapter 06</div>
+  <h1 class="ch-title">Managing the <em>Project Portfolio</em></h1>
+  <p class="ch-intro">
+    The Project Portfolio section of the website showcases field projects across Kwara State.
+    Each project can have a cover photo, a gallery of additional photos, highlights, and status information.
+  </p>
+
+  <h2>Adding a New Project</h2>
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step__num">1</div>
+      <div class="step__body">
+        <div class="step__title">Click "Projects" in the sidebar</div>
+        <div class="step__desc">This shows a list of all current projects. Each row shows the project name, location, status, and action buttons.</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">2</div>
+      <div class="step__body">
+        <div class="step__title">Click "+ New Project"</div>
+        <div class="step__desc">The project creation form will open. Fill in all the required fields.</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">3</div>
+      <div class="step__body">
+        <div class="step__title">Fill in the project details</div>
+        <div class="step__desc">Enter the name, LGA, cluster, description, and current status. See the field guide below.</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">4</div>
+      <div class="step__body">
+        <div class="step__title">Add project highlights</div>
+        <div class="step__desc">
+          Highlights are short bullet points shown on the project card (e.g., "2,400+ farmers registered").
+          Type each highlight and press <strong>Enter</strong> or click <strong>"Add"</strong> to add it.
+          You can add up to 6 highlights per project.
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">5</div>
+      <div class="step__body">
+        <div class="step__title">Upload a cover image</div>
+        <div class="step__desc">
+          This is the main photo shown first on the project card. Click "Choose Cover Image" and select a photo.
+          Recommended: landscape, at least 800px wide.
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">6</div>
+      <div class="step__body">
+        <div class="step__title">Upload additional gallery photos (optional)</div>
+        <div class="step__desc">
+          In the "Photo Gallery" section of the form, click <strong>"Add Photos"</strong> and select
+          multiple images. These appear in the image carousel when visitors browse the project.
+          You can add as many photos as you like.
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step__num">7</div>
+      <div class="step__body">
+        <div class="step__title">Click "Save Project"</div>
+        <div class="step__desc">The project is saved and will appear on the public Project Portfolio section of the homepage.</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Project Fields — What to Fill In</h2>
+  <div class="field-block no-break">
+    <div class="field-block__header">Project Form Fields</div>
+    <div class="field-block__body">
+      <div class="field-row">
+        <div class="field-name">Project Name <span class="field-required">*</span></div>
+        <div>
+          <div class="field-desc">The full name of the project or site.</div>
+          <div class="field-example">e.g. "Kwara Cattle Development Centre"</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-name">LGA <span class="field-required">*</span></div>
+        <div>
+          <div class="field-desc">The Local Government Area where the project is located.</div>
+          <div class="field-example">e.g. "Ilorin East", "Baruten", "Offa"</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-name">Cluster</div>
+        <div>
+          <div class="field-desc">The regional cluster this LGA belongs to.</div>
+          <div class="field-example">Options: Kwara Central, Kwara North, Kwara South</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-name">Status <span class="field-required">*</span></div>
+        <div>
+          <div class="field-desc">The current implementation status of the project.</div>
+          <div class="field-example">
+            <span class="badge badge--green">Active</span> — ongoing
+            &nbsp;<span class="badge badge--gold">Planned</span> — not yet started
+            &nbsp;<span class="badge badge--blue">Completed</span> — finished
+          </div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-name">Description</div>
+        <div>
+          <div class="field-desc">A paragraph describing the project — what it does, who it serves, and its impact. Aim for 2–4 sentences.</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-name">Highlights</div>
+        <div>
+          <div class="field-desc">Short bullet-point facts about the project. Each one should be a concrete, specific figure or achievement.</div>
+          <div class="field-example">e.g. "2,400+ farmers registered", "24/7 veterinary support", "N250M investment"</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-name">Sort Order</div>
+        <div>
+          <div class="field-desc">A number that controls the order projects appear on the website. Lower numbers appear first (e.g., 1 appears before 2).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Editing Project Gallery Photos</h2>
+  <p>When editing an existing project, you can manage the gallery photos:</p>
+
+  <div class="cols-2">
+    <div class="info-card no-break">
+      <div class="info-card__icon">❌</div>
+      <div class="info-card__title">Remove an Existing Photo</div>
+      <div class="info-card__text">
+        Existing gallery photos appear as small thumbnails with an <strong>× button</strong>.
+        Click the × on any photo to mark it for removal. It will only be deleted when you click
+        <strong>"Save Project"</strong>.
+      </div>
+    </div>
+    <div class="info-card no-break">
+      <div class="info-card__icon">➕</div>
+      <div class="info-card__title">Add More Photos</div>
+      <div class="info-card__text">
+        Click <strong>"Add Photos"</strong> to select new images from your computer.
+        New photos appear with a green <strong>"New"</strong> badge. They are uploaded
+        when you save the project.
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout--note no-break">
+    <div class="callout__icon">📌</div>
+    <div class="callout__body">
+      <div class="callout__label">Gallery changes are not saved until you click "Save Project"</div>
+      <div class="callout__text">
+        Adding or removing photos only takes effect when you click the <strong>Save Project</strong> button.
+        If you close the form without saving, your photo changes will be lost.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     CHAPTER 7 — THE PUBLIC WEBSITE
+     ════════════════════════════════════════ -->
+<div class="page page--white pb">
+  <div class="page-rule"></div>
+  <div class="ch-label">Chapter 07</div>
+  <h1 class="ch-title">Navigating the <em>Public Website</em></h1>
+  <p class="ch-intro">
+    This chapter is a tour of every page on the public website — what visitors see and which admin section
+    controls each part.
+  </p>
+
+  <h2>The Homepage</h2>
+  <p>
+    The homepage (<strong>kwara-lpres.netlify.app</strong>) is divided into 12 sections that scroll
+    vertically. Here is what each section contains:
+  </p>
+
+  <table>
+    <thead><tr><th>#</th><th>Section Name</th><th>What Visitors See</th><th>Controlled by Admin?</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>Hero</strong></td><td>Full-screen backdrop with the L-PRES slogan, a YouTube documentary embed, photo carousel, and interactive field map</td><td>No — static content</td></tr>
+      <tr><td>2</td><td><strong>Quick Links</strong></td><td>A horizontal row of clickable pills jumping to different sections of the page</td><td>No — static</td></tr>
+      <tr><td>3</td><td><strong>Coordinator's Message</strong></td><td>Portrait photo, a welcoming quote, and key programme highlights</td><td>No — static content</td></tr>
+      <tr><td>4</td><td><strong>Programme Impact</strong></td><td>Key statistics: farmers reached, animals vaccinated, water points built, LGAs covered</td><td>No — static</td></tr>
+      <tr><td>5</td><td><strong>Project Components</strong></td><td>Five component cards explaining the programme's focus areas</td><td>No — static</td></tr>
+      <tr><td>6</td><td><strong>Value Chains</strong></td><td>Cattle, sheep, goat, and dairy value chain descriptions</td><td>No — static</td></tr>
+      <tr><td>7</td><td><strong>Project Portfolio</strong></td><td>An interactive slider showing field projects with photos and details</td><td><strong>Yes — Projects section</strong></td></tr>
+      <tr><td>8</td><td><strong>Core Values</strong></td><td>Seven programme values displayed as icon cards</td><td>No — static</td></tr>
+      <tr><td>9</td><td><strong>Latest News</strong></td><td>Three most recent published news articles</td><td><strong>Yes — News Articles</strong></td></tr>
+      <tr><td>10</td><td><strong>Partners</strong></td><td>Development partner logos and names</td><td>No — static</td></tr>
+      <tr><td>11</td><td><strong>Publications</strong></td><td>Links to project documents and reports</td><td>No — static</td></tr>
+      <tr><td>12</td><td><strong>Contact</strong></td><td>Office address, phone, email, and a contact form</td><td>No — static</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Other Public Pages</h2>
+  <div class="cols-2">
+    <div class="info-card no-break">
+      <div class="info-card__icon">📰</div>
+      <div class="info-card__title">News Page</div>
+      <div class="info-card__text">
+        URL: <code style="font-size:8pt;font-family:monospace;">/news</code><br><br>
+        Shows all published news articles in a grid. Visitors click any card to read the full article.
+        Updated automatically when you publish a new article.
+      </div>
+    </div>
+    <div class="info-card no-break">
+      <div class="info-card__icon">🖼</div>
+      <div class="info-card__title">Gallery Page</div>
+      <div class="info-card__text">
+        URL: <code style="font-size:8pt;font-family:monospace;">/gallery</code><br><br>
+        Shows all published gallery items. Visitors can filter by category (Field Work, Events, etc.) and by type (Photos/Videos).
+      </div>
+    </div>
+    <div class="info-card no-break">
+      <div class="info-card__icon">ℹ️</div>
+      <div class="info-card__title">About Page</div>
+      <div class="info-card__text">
+        URL: <code style="font-size:8pt;font-family:monospace;">/about</code><br><br>
+        Background information about the L-PRES Project — objectives, coverage, and the State Project Coordinator's full message.
+      </div>
+    </div>
+    <div class="info-card no-break">
+      <div class="info-card__icon">📞</div>
+      <div class="info-card__title">Contact Page</div>
+      <div class="info-card__text">
+        URL: <code style="font-size:8pt;font-family:monospace;">/contact</code><br><br>
+        Office address, telephone, email, and a contact form for visitors to send enquiries.
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout--info no-break">
+    <div class="callout__icon">ℹ️</div>
+    <div class="callout__body">
+      <div class="callout__label">The Hero Documentary &amp; Map</div>
+      <div class="callout__text">
+        The hero section has three tabs: <strong>Documentary</strong> (YouTube video embed),
+        <strong>Photo Gallery</strong> (rotating photos), and <strong>Map Gallery</strong> (interactive
+        field survey map). Visitors can click these tabs to switch between views. These are built-in
+        features and do not require admin management.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     CHAPTER 8 — CONTENT BEST PRACTICES
+     ════════════════════════════════════════ -->
+<div class="page page--cream pb">
+  <div class="page-rule"></div>
+  <div class="ch-label">Chapter 08</div>
+  <h1 class="ch-title">Content <em>Best Practices</em></h1>
+  <p class="ch-intro">
+    Following these guidelines will keep the website looking professional, consistent, and trustworthy to visitors,
+    partners, and government officials.
+  </p>
+
+  <h2>Writing Good News Articles</h2>
+
+  <div class="callout callout--tip no-break">
+    <div class="callout__icon">✍️</div>
+    <div class="callout__body">
+      <div class="callout__label">Write for your readers — not for insiders</div>
+      <div class="callout__text">
+        Imagine a journalist or World Bank official reading your article for the first time.
+        Avoid acronyms without explanation. Write dates in full (e.g., "June 20, 2026" not "20/6/26").
+        Mention the location, the number of people involved, and the outcome of every event you write about.
+      </div>
+    </div>
+  </div>
+
+  <div class="cols-2" style="margin-bottom:24px;">
+    <div class="info-card info-card--green no-break">
+      <div class="info-card__icon">✅</div>
+      <div class="info-card__title">Good Article Title</div>
+      <div class="info-card__text" style="font-size:9pt;">
+        "L-PRES Vaccinates Over 12,000 Livestock Across Baruten LGA in June Drive"
+        <br><br>
+        <em>— Specific number, location, timeframe, and action all in one line.</em>
+      </div>
+    </div>
+    <div class="info-card no-break" style="border-color:rgba(220,38,38,0.3);background:#fef2f2;">
+      <div class="info-card__icon">❌</div>
+      <div class="info-card__title">Weak Article Title</div>
+      <div class="info-card__text" style="font-size:9pt;">
+        "Programme Activities Update"
+        <br><br>
+        <em>— No specific information. Visitors will not click this.</em>
+      </div>
+    </div>
+  </div>
+
+  <h3>Article Length Guidelines</h3>
+  <table>
+    <thead><tr><th>Article Type</th><th>Recommended Length</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>News / Field Update</td><td>200–500 words</td><td>Lead with the key fact, then give context</td></tr>
+      <tr><td>Event Report</td><td>300–600 words</td><td>Include date, location, attendees, outcomes</td></tr>
+      <tr><td>Partnership Story</td><td>400–700 words</td><td>Include quotes if available</td></tr>
+      <tr><td>Training Report</td><td>200–400 words</td><td>Include number of participants and topics covered</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Photo Guidelines</h2>
+  <div class="cols-3" style="margin-bottom:20px;">
+    <div class="info-card no-break">
+      <div class="info-card__icon">📐</div>
+      <div class="info-card__title">Use Landscape Photos</div>
+      <div class="info-card__text">
+        Horizontal photos (wider than tall) look best on the website. Portrait photos (taller than wide) may
+        be cropped or appear awkward. Aim for a 16:9 or 3:2 ratio.
+      </div>
+    </div>
+    <div class="info-card no-break">
+      <div class="info-card__icon">☀️</div>
+      <div class="info-card__title">Use Well-Lit Photos</div>
+      <div class="info-card__text">
+        Avoid dark, blurry, or low-resolution images. Photos taken outdoors in natural light are ideal.
+        If indoors, ensure the subject is lit from the front.
+      </div>
+    </div>
+    <div class="info-card no-break">
+      <div class="info-card__icon">📏</div>
+      <div class="info-card__title">Minimum 800px Width</div>
+      <div class="info-card__text">
+        Photos should be at least 800 pixels wide for good quality on desktop screens.
+        Avoid screenshots or photos taken from WhatsApp (these are usually compressed and low-quality).
+      </div>
+    </div>
+  </div>
+
+  <h2>Naming Your Files</h2>
+  <div class="callout callout--note no-break">
+    <div class="callout__icon">📁</div>
+    <div class="callout__body">
+      <div class="callout__label">Use descriptive filenames before uploading</div>
+      <div class="callout__text">
+        Before uploading a photo, rename it to something meaningful on your computer.
+        For example: <strong>vaccination-drive-baruten-june2026.jpg</strong> instead of
+        <strong>IMG_20260615_001.jpg</strong>. While the website handles files automatically,
+        good filenames help you stay organised when managing many uploads.
+      </div>
+    </div>
+  </div>
+
+  <h2>Consistency Checklist</h2>
+  <ul class="checklist">
+    <li><span class="checklist__icon">✓</span>Always add a featured image to every news article</li>
+    <li><span class="checklist__icon">✓</span>Use the correct category for every article and gallery item</li>
+    <li><span class="checklist__icon">✓</span>Write a short excerpt (summary) for every article</li>
+    <li><span class="checklist__icon">✓</span>Include the LGA and date in field update articles</li>
+    <li><span class="checklist__icon">✓</span>Update project status when work progresses (Active → Completed)</li>
+    <li><span class="checklist__icon">✓</span>Review articles for spelling before publishing</li>
+    <li><span class="checklist__icon">✓</span>Upload a thumbnail for every video gallery item</li>
+    <li><span class="checklist__icon">✓</span>Unpublish outdated articles rather than deleting them</li>
+  </ul>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     CHAPTER 9 — TROUBLESHOOTING & FAQs
+     ════════════════════════════════════════ -->
+<div class="page page--white pb">
+  <div class="page-rule"></div>
+  <div class="ch-label">Chapter 09</div>
+  <h1 class="ch-title">Troubleshooting <em>&amp; FAQs</em></h1>
+  <p class="ch-intro">
+    Answers to the most common questions and issues that admins encounter when managing the website.
+  </p>
+
+  <h2>Login Problems</h2>
+
+  <div class="faq-item no-break">
+    <div class="faq-q"><span class="faq-q-icon">Q</span>I entered my username and password but it says "Incorrect username or password". What do I do?</div>
+    <div class="faq-a">
+      <strong>1.</strong> Check that Caps Lock is not on — passwords are case-sensitive.<br>
+      <strong>2.</strong> Make sure you are typing the username in lowercase: <code>admin</code> (not <code>Admin</code> or <code>ADMIN</code>).<br>
+      <strong>3.</strong> Try copying and pasting the password instead of typing it.<br>
+      <strong>4.</strong> If you still cannot log in, contact your IT administrator — the password may need to be reset in the system.
+    </div>
+  </div>
+
+  <div class="faq-item no-break">
+    <div class="faq-q"><span class="faq-q-icon">Q</span>I was logged in but the system suddenly asked me to log in again. Why?</div>
+    <div class="faq-a">
+      Admin sessions last <strong>24 hours</strong>. After that, the system automatically logs you out for security. Simply log in again with your credentials. Any unsaved work would have been lost — always save your work regularly.
+    </div>
+  </div>
+
+  <h2>Content Issues</h2>
+
+  <div class="faq-item no-break">
+    <div class="faq-q"><span class="faq-q-icon">Q</span>I published an article but it is not showing on the public website. What happened?</div>
+    <div class="faq-a">
+      <strong>1.</strong> Make sure the "Publish immediately" checkbox was ticked when you saved the article.<br>
+      <strong>2.</strong> Hard-refresh the public website by pressing <span class="key">Ctrl</span>+<span class="key">Shift</span>+<span class="key">R</span> (Windows) or <span class="key">⌘</span>+<span class="key">Shift</span>+<span class="key">R</span> (Mac).<br>
+      <strong>3.</strong> In the admin panel, go to News Articles and confirm the article shows a <span class="badge badge--green">Published</span> badge (not <span class="badge badge--grey">Draft</span>).
+    </div>
+  </div>
+
+  <div class="faq-item no-break">
+    <div class="faq-q"><span class="faq-q-icon">Q</span>My uploaded photo is showing but it looks blurry or distorted. How do I fix it?</div>
+    <div class="faq-a">
+      The original photo may have been low-resolution. Delete the gallery item and re-upload a higher-quality version. Use photos that are at least <strong>800px wide</strong>. Avoid screenshots or photos downloaded from WhatsApp — these are heavily compressed.
+    </div>
+  </div>
+
+  <div class="faq-item no-break">
+    <div class="faq-q"><span class="faq-q-icon">Q</span>I uploaded a photo but nothing happened and no confirmation appeared. Did it upload?</div>
+    <div class="faq-a">
+      Large files can take time. Wait at least 30 seconds before trying again. Check:<br>
+      <strong>1.</strong> Your internet connection is active.<br>
+      <strong>2.</strong> The file is not larger than the limit (15 MB for photos, 300 MB for videos).<br>
+      <strong>3.</strong> The file type is accepted (JPG, PNG for photos; MP4, MOV for videos).<br>
+      If the upload keeps failing, try compressing the photo using a tool like <code>squoosh.app</code> before uploading.
+    </div>
+  </div>
+
+  <div class="faq-item no-break">
+    <div class="faq-q"><span class="faq-q-icon">Q</span>I accidentally deleted an article or gallery item. Can I get it back?</div>
+    <div class="faq-a">
+      Unfortunately, <strong>no</strong>. Deleted content cannot be recovered. This is why we recommend <strong>unpublishing</strong> instead of deleting when you are unsure. For important articles, consider keeping a copy in a Word document on your computer as a backup.
+    </div>
+  </div>
+
+  <div class="faq-item no-break">
+    <div class="faq-q"><span class="faq-q-icon">Q</span>The project portfolio on the homepage is not updating when I add a new project. Why?</div>
+    <div class="faq-a">
+      <strong>1.</strong> Make sure the new project has "Published" set to Yes (the toggle should be on).<br>
+      <strong>2.</strong> Hard-refresh the homepage: <span class="key">Ctrl</span>+<span class="key">Shift</span>+<span class="key">R</span>.<br>
+      <strong>3.</strong> Check the project's Sort Order number — if it is very high (e.g., 99), it may appear at the end of the list and not be immediately visible in the slider.
+    </div>
+  </div>
+
+  <h2>General Website Questions</h2>
+
+  <div class="faq-item no-break">
+    <div class="faq-q"><span class="faq-q-icon">Q</span>The website looks different on my phone compared to my computer. Is that normal?</div>
+    <div class="faq-a">
+      Yes, this is completely normal and intentional. The website is <strong>responsive</strong> — it automatically adjusts its layout depending on the screen size. Some sections stack vertically on mobile instead of side-by-side. The content is the same on all devices.
+    </div>
+  </div>
+
+  <div class="faq-item no-break">
+    <div class="faq-q"><span class="faq-q-icon">Q</span>Can I change the website's colours, logo, or layout?</div>
+    <div class="faq-a">
+      The colours, logo, and layout are part of the website's design and require a developer to change. The admin panel only controls <strong>content</strong> (news articles, gallery media, and project information). For design changes, contact the website development team.
+    </div>
+  </div>
+
+  <div class="faq-item no-break">
+    <div class="faq-q"><span class="faq-q-icon">Q</span>Can multiple people use the admin panel at the same time?</div>
+    <div class="faq-a">
+      Yes — multiple admins can be logged in simultaneously. However, if two people edit the <strong>same article or project</strong> at the same time, the last person to save will overwrite the other's changes. Coordinate with your team to avoid editing the same item simultaneously.
+    </div>
+  </div>
+
+  <div class="faq-item no-break">
+    <div class="faq-q"><span class="faq-q-icon">Q</span>The website is not loading at all. What do I do?</div>
+    <div class="faq-a">
+      <strong>1.</strong> Check your internet connection — try opening another website like google.com.<br>
+      <strong>2.</strong> Try a different browser (e.g., if using Chrome, try Edge or Firefox).<br>
+      <strong>3.</strong> Clear your browser cache: <span class="key">Ctrl</span>+<span class="key">Shift</span>+<span class="key">Delete</span> → Clear cached images and files.<br>
+      <strong>4.</strong> If the public site is down for everyone, contact the website development team — the hosting provider may be experiencing an outage.
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     CHAPTER 10 — QUICK REFERENCE CARD
+     ════════════════════════════════════════ -->
+<div class="page page--dark pb">
+  <div class="page-rule" style="background:linear-gradient(to right,var(--gold),rgba(255,255,255,0.2),transparent);"></div>
+  <div class="ch-label" style="color:var(--gold)">Chapter 10</div>
+  <h1 class="ch-title">Quick <em>Reference Card</em></h1>
+  <p class="ch-intro" style="color:rgba(255,255,255,0.5);">
+    Everything you need at a glance — cut this page out or take a screenshot for your desk.
+  </p>
+
+  <!-- URLs -->
+  <div style="background:rgba(196,154,62,0.08);border:1px solid rgba(196,154,62,0.25);border-radius:12px;padding:20px;margin-bottom:22px;" class="no-break">
+    <div style="font-size:8pt;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">Important URLs</div>
+    <div style="display:grid;grid-template-columns:140px 1fr;gap:10px;align-items:center;margin-bottom:8px;">
+      <div style="font-size:9pt;color:rgba(255,255,255,0.5);font-weight:600;">Public Website</div>
+      <div style="font-family:monospace;font-size:9.5pt;color:#fff;background:rgba(255,255,255,0.05);padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);">https://kwara-lpres.netlify.app</div>
+    </div>
+    <div style="display:grid;grid-template-columns:140px 1fr;gap:10px;align-items:center;margin-bottom:8px;">
+      <div style="font-size:9pt;color:rgba(255,255,255,0.5);font-weight:600;">Admin Login</div>
+      <div style="font-family:monospace;font-size:9.5pt;color:#fff;background:rgba(255,255,255,0.05);padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);">https://kwara-lpres.netlify.app/admin/login</div>
+    </div>
+    <div style="display:grid;grid-template-columns:140px 1fr;gap:10px;align-items:center;margin-bottom:8px;">
+      <div style="font-size:9pt;color:rgba(255,255,255,0.5);font-weight:600;">News Page</div>
+      <div style="font-family:monospace;font-size:9.5pt;color:#fff;background:rgba(255,255,255,0.05);padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);">https://kwara-lpres.netlify.app/news</div>
+    </div>
+    <div style="display:grid;grid-template-columns:140px 1fr;gap:10px;align-items:center;">
+      <div style="font-size:9pt;color:rgba(255,255,255,0.5);font-weight:600;">Gallery Page</div>
+      <div style="font-family:monospace;font-size:9.5pt;color:#fff;background:rgba(255,255,255,0.05);padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);">https://kwara-lpres.netlify.app/gallery</div>
+    </div>
+  </div>
+
+  <!-- Default credentials -->
+  <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;margin-bottom:22px;" class="no-break">
+    <div style="font-size:8pt;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:14px;">Default Admin Credentials</div>
+    <div style="display:grid;grid-template-columns:140px 1fr;gap:10px;align-items:center;margin-bottom:10px;">
+      <div style="font-size:9pt;color:rgba(255,255,255,0.5);font-weight:600;">Username</div>
+      <div style="font-family:monospace;font-size:11pt;color:var(--gold);font-weight:700;">admin</div>
+    </div>
+    <div style="display:grid;grid-template-columns:140px 1fr;gap:10px;align-items:center;">
+      <div style="font-size:9pt;color:rgba(255,255,255,0.5);font-weight:600;">Password</div>
+      <div style="font-family:monospace;font-size:11pt;color:var(--gold);font-weight:700;">lpres@admin2024</div>
+    </div>
+    <div style="margin-top:12px;padding:10px 14px;background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.25);border-radius:8px;font-size:8.5pt;color:rgba(255,150,150,0.9);">
+      ⚠️ Change this password as soon as possible. Contact your IT administrator to update it.
+    </div>
+  </div>
+
+  <!-- File limits -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px;">
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:16px;" class="no-break">
+      <div style="font-size:8pt;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:12px;">File Upload Limits</div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:9pt;">
+        <span style="color:rgba(255,255,255,0.6);">Photos (JPG, PNG)</span>
+        <span style="color:var(--gold);font-weight:700;">15 MB max</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:9pt;">
+        <span style="color:rgba(255,255,255,0.6);">Videos (MP4, MOV)</span>
+        <span style="color:var(--gold);font-weight:700;">300 MB max</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:9pt;">
+        <span style="color:rgba(255,255,255,0.6);">Thumbnails (JPG, PNG)</span>
+        <span style="color:var(--gold);font-weight:700;">15 MB max</span>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:16px;" class="no-break">
+      <div style="font-size:8pt;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:12px;">Session Info</div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:9pt;">
+        <span style="color:rgba(255,255,255,0.6);">Session duration</span>
+        <span style="color:var(--gold);font-weight:700;">24 hours</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:9pt;">
+        <span style="color:rgba(255,255,255,0.6);">Auto-logout</span>
+        <span style="color:var(--gold);font-weight:700;">After 24 hours</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:9pt;">
+        <span style="color:rgba(255,255,255,0.6);">Multiple admins</span>
+        <span style="color:var(--gold);font-weight:700;">Supported</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick task reference -->
+  <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:16px;" class="no-break">
+    <div style="font-size:8pt;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:12px;">Quick Task Reference</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">
+      <div style="padding:7px 10px 7px 0;border-bottom:1px solid rgba(255,255,255,0.05);border-right:1px solid rgba(255,255,255,0.05);font-size:9pt;"><span style="color:rgba(255,255,255,0.4);">Publish a news article →</span> <span style="color:rgba(255,255,255,0.7);">News Articles → eye icon</span></div>
+      <div style="padding:7px 0 7px 10px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:9pt;"><span style="color:rgba(255,255,255,0.4);">Upload a photo →</span> <span style="color:rgba(255,255,255,0.7);">Gallery → Upload Media</span></div>
+      <div style="padding:7px 10px 7px 0;border-bottom:1px solid rgba(255,255,255,0.05);border-right:1px solid rgba(255,255,255,0.05);font-size:9pt;"><span style="color:rgba(255,255,255,0.4);">Add a project →</span> <span style="color:rgba(255,255,255,0.7);">Projects → New Project</span></div>
+      <div style="padding:7px 0 7px 10px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:9pt;"><span style="color:rgba(255,255,255,0.4);">Hide an article →</span> <span style="color:rgba(255,255,255,0.7);">News Articles → eye icon</span></div>
+      <div style="padding:7px 10px 7px 0;border-right:1px solid rgba(255,255,255,0.05);font-size:9pt;"><span style="color:rgba(255,255,255,0.4);">Edit a project →</span> <span style="color:rgba(255,255,255,0.7);">Projects → pencil icon</span></div>
+      <div style="padding:7px 0 7px 10px;font-size:9pt;"><span style="color:rgba(255,255,255,0.4);">Sign out safely →</span> <span style="color:rgba(255,255,255,0.7);">Sidebar → Sign Out</span></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;">
+    <div>
+      <div style="font-size:10pt;font-weight:700;color:rgba(255,255,255,0.7);">Kwara State L-PRES Project</div>
+      <div style="font-size:8.5pt;color:rgba(255,255,255,0.3);">Website User Guide · Version 1.0 · June 2026</div>
+      <div style="font-size:8.5pt;color:rgba(255,255,255,0.3);">For technical support, contact the website development team.</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:8.5pt;color:rgba(255,255,255,0.3);">Delivered by</div>
+      <div style="font-size:10pt;font-weight:700;color:var(--gold);">Seamless ICT</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

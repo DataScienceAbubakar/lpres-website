@@ -13,7 +13,7 @@ const COMPONENTS = [
   {
     num: '02', icon: TrendingUp, color: '#2e5e35',
     title: 'Livestock Value Chain Enhancement',
-    desc: 'Supporting activities that improve livestock productivity, increase value addition, strengthen market access, and enhance commercialisation within priority livestock value chains — covering cattle (beef and dairy), sheep, and goats across all 16 LGAs.',
+    desc: 'Supporting activities that improve livestock productivity, increase value addition, strengthen market access, and enhance commercialisation within priority livestock value chains, covering cattle (beef and dairy), sheep, and goats across all 16 LGAs.',
     highlights: ['Productivity Improvement', 'Market Linkages', 'Value Addition', 'Commercialisation'],
   },
   {

@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>L-PRES Website — UI/UX Design Deliverable</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold:        #c49a3e;
+  --gold-light:  #e8c86a;
+  --gold-pale:   #f9f0da;
+  --green-deep:  #0d2410;
+  --green-mid:   #1a5c26;
+  --green-bright:#2e9e50;
+  --green-pale:  #e8f5e9;
+  --dark:        #0a0f0d;
+  --dark-2:      #111714;
+  --dark-card:   #161e18;
+  --ink:         #111827;
+  --muted:       #6b7280;
+  --border:      #e5e7eb;
+  --white:       #ffffff;
+  --cream:       #fafaf7;
+  --blue-accent: #0891b2;
+  --red-accent:  #dc2626;
+  --purple:      #7c3aed;
+}
+
+html { font-size: 10pt; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #fff;
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ── PAGE BREAKS ─────────────────────────────────────────── */
+.break-before { page-break-before: always; break-before: page; }
+.no-break     { page-break-inside: avoid; break-inside: avoid; }
+
+/* ═══════════════════════════════════════════════════════════
+   COVER
+   ═══════════════════════════════════════════════════════════ */
+.cover {
+  height: 100vh;
+  min-height: 700px;
+  background: var(--dark);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  page-break-after: always;
+}
+
+/* geometric background pattern */
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(196,154,62,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(46,158,80,0.10) 0%, transparent 50%);
+}
+
+.cover__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(196,154,62,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196,154,62,0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.cover__top-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 48px;
+  border-bottom: 1px solid rgba(196,154,62,0.15);
+  z-index: 2;
+}
+.cover__logo-mark {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cover__logo-icon {
+  width: 36px; height: 36px;
+  background: var(--gold);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 16px; color: #000;
+  letter-spacing: -1px;
+}
+.cover__logo-text {
+  font-size: 11pt; font-weight: 700; color: rgba(255,255,255,0.9);
+  line-height: 1.2;
+}
+.cover__logo-sub {
+  font-size: 8pt; color: rgba(255,255,255,0.4); font-weight: 400;
+}
+.cover__doc-type {
+  font-size: 8pt; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); font-weight: 600;
+  border: 1px solid rgba(196,154,62,0.3);
+  padding: 4px 14px; border-radius: 20px;
+}
+
+.cover__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 48px 32px;
+  position: relative;
+  z-index: 2;
+}
+
+.cover__eyebrow {
+  font-size: 8.5pt; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); font-weight: 600; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.cover__eyebrow::before {
+  content: ''; display: block;
+  width: 32px; height: 2px; background: var(--gold);
+}
+
+.cover__headline {
+  font-family: 'Playfair Display', serif;
+  font-size: 44pt;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.08;
+  margin-bottom: 8px;
+}
+.cover__headline em {
+  font-style: italic;
+  color: var(--gold);
+}
+.cover__subhead {
+  font-size: 14pt;
+  color: rgba(255,255,255,0.55);
+  font-weight: 300;
+  margin-bottom: 48px;
+  max-width: 480px;
+  line-height: 1.5;
+}
+
+.cover__meta {
+  display: flex; gap: 40px; flex-wrap: wrap;
+}
+.cover__meta-item {}
+.cover__meta-label {
+  font-size: 7.5pt; letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); font-weight: 600; margin-bottom: 3px;
+}
+.cover__meta-value {
+  font-size: 10.5pt; color: rgba(255,255,255,0.85); font-weight: 600;
+}
+
+.cover__bottom {
+  position: relative; z-index: 2;
+  padding: 0 48px 36px;
+  display: flex; align-items: flex-end; justify-content: space-between;
+}
+.cover__url {
+  font-size: 9pt; color: rgba(255,255,255,0.35); font-weight: 400;
+}
+.cover__url strong { color: var(--gold); font-weight: 600; }
+
+/* decorative vertical bars */
+.cover__bars {
+  display: flex; gap: 4px; align-items: flex-end; height: 48px;
+}
+.cover__bar {
+  width: 4px; border-radius: 2px;
+  background: linear-gradient(to top, var(--gold), transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION CHROME
+   ═══════════════════════════════════════════════════════════ */
+.page {
+  padding: 52px 48px;
+  min-height: 100vh;
+}
+.page--dark {
+  background: var(--dark);
+  color: #fff;
+}
+.page--cream { background: var(--cream); }
+.page--white { background: #fff; }
+.page--green {
+  background: var(--green-deep);
+  color: #fff;
+}
+
+.section-label {
+  font-size: 7.5pt; letter-spacing: 2.5px; text-transform: uppercase;
+  font-weight: 700; color: var(--gold); margin-bottom: 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-label::before {
+  content: ''; display: block; width: 20px; height: 2px; background: var(--gold);
+}
+
+h1.page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28pt; font-weight: 800;
+  color: var(--ink); line-height: 1.1; margin-bottom: 8px;
+}
+.page--dark h1.page-title { color: #fff; }
+.page--green h1.page-title { color: #fff; }
+h1.page-title em { color: var(--gold); font-style: italic; }
+
+.page-desc {
+  font-size: 10.5pt; color: var(--muted); max-width: 500px;
+  line-height: 1.65; margin-bottom: 40px;
+}
+.page--dark .page-desc { color: rgba(255,255,255,0.5); }
+.page--green .page-desc { color: rgba(255,255,255,0.55); }
+
+hr.divider {
+  border: none; border-top: 1px solid var(--border);
+  margin: 32px 0;
+}
+.page--dark hr.divider { border-color: rgba(255,255,255,0.08); }
+
+/* ═══════════════════════════════════════════════════════════
+   BRAND IDENTITY — COLORS
+   ═══════════════════════════════════════════════════════════ */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.color-swatch {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.color-swatch__block {
+  height: 100px;
+  position: relative;
+}
+.color-swatch__label {
+  position: absolute; bottom: 10px; left: 12px;
+  font-size: 7pt; font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase;
+  mix-blend-mode: difference;
+  color: rgba(255,255,255,0.9);
+}
+.color-swatch__info {
+  background: #fff;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+}
+.color-swatch__name {
+  font-size: 8.5pt; font-weight: 700; color: var(--ink); margin-bottom: 2px;
+}
+.color-swatch__hex {
+  font-size: 8pt; color: var(--muted);
+  font-family: 'Courier New', monospace;
+}
+.color-swatch__use {
+  font-size: 7.5pt; color: var(--muted); margin-top: 4px;
+}
+
+/* secondary color chips */
+.color-chips {
+  display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px;
+}
+.chip {
+  display: flex; align-items: center; gap: 8px;
+  background: #f9fafb;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+}
+.chip__dot {
+  width: 14px; height: 14px; border-radius: 50%;
+}
+.chip__text { font-size: 8.5pt; color: var(--ink); font-weight: 500; }
+.chip__hex { font-size: 7.5pt; color: var(--muted); font-family: monospace; }
+
+/* ═══════════════════════════════════════════════════════════
+   TYPOGRAPHY
+   ═══════════════════════════════════════════════════════════ */
+.type-showcase {
+  display: flex; flex-direction: column; gap: 28px;
+}
+.type-row {
+  display: grid; grid-template-columns: 140px 1fr;
+  gap: 24px; align-items: baseline;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.type-row:last-child { border-bottom: none; }
+.type-meta { }
+.type-meta__label {
+  font-size: 7.5pt; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); font-weight: 600;
+}
+.type-meta__spec {
+  font-size: 8pt; color: var(--muted); margin-top: 4px;
+  line-height: 1.5;
+}
+.type-sample { }
+
+.t-display {
+  font-family: 'Playfair Display', serif;
+  font-size: 34pt; font-weight: 800; line-height: 1.05; color: var(--ink);
+}
+.t-h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 24pt; font-weight: 800; line-height: 1.15; color: var(--ink);
+}
+.t-h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 18pt; font-weight: 700; line-height: 1.2; color: var(--ink);
+}
+.t-h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 13pt; font-weight: 700; color: var(--ink);
+}
+.t-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 11pt; line-height: 1.7; color: var(--ink);
+}
+.t-small {
+  font-family: 'Inter', sans-serif;
+  font-size: 9pt; line-height: 1.6; color: var(--muted);
+}
+.t-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 8pt; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--gold);
+}
+.t-code {
+  font-family: 'Courier New', monospace;
+  font-size: 9pt; background: #f3f4f6; padding: 2px 6px;
+  border-radius: 4px; color: #c0392b;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UI COMPONENTS
+   ═══════════════════════════════════════════════════════════ */
+
+/* Buttons */
+.btn-row {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+  margin-bottom: 28px;
+}
+.ui-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 22px; border-radius: 8px;
+  font-size: 9.5pt; font-weight: 700; cursor: default;
+  border: 2px solid transparent;
+  letter-spacing: 0.2px;
+}
+.ui-btn--primary {
+  background: linear-gradient(135deg, #c49a3e, #d4b04e);
+  color: #000;
+  box-shadow: 0 4px 16px rgba(196,154,62,0.35);
+}
+.ui-btn--secondary {
+  background: transparent;
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.ui-btn--ghost {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.8);
+}
+.ui-btn--green {
+  background: var(--green-mid);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(26,92,38,0.4);
+}
+.ui-btn--danger {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+.ui-btn--sm {
+  padding: 6px 14px; font-size: 8.5pt; border-radius: 6px;
+}
+.ui-btn--lg {
+  padding: 13px 28px; font-size: 11pt; border-radius: 10px;
+}
+
+/* Badges & Tags */
+.badge-row {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px;
+}
+.ui-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 11px; border-radius: 20px;
+  font-size: 8pt; font-weight: 700;
+}
+.ui-badge--live {
+  background: rgba(34,197,94,0.12);
+  color: #16a34a;
+  border: 1px solid rgba(34,197,94,0.3);
+}
+.ui-badge--live::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: #16a34a; flex-shrink: 0;
+}
+.ui-badge--gold {
+  background: rgba(196,154,62,0.15);
+  color: #8a6a1f;
+  border: 1px solid rgba(196,154,62,0.35);
+}
+.ui-badge--blue {
+  background: rgba(8,145,178,0.12);
+  color: #0e7490;
+  border: 1px solid rgba(8,145,178,0.25);
+}
+.ui-badge--planned {
+  background: rgba(99,102,241,0.12);
+  color: #4338ca;
+  border: 1px solid rgba(99,102,241,0.25);
+}
+.ui-badge--completed {
+  background: rgba(217,119,6,0.12);
+  color: #92400e;
+  border: 1px solid rgba(217,119,6,0.3);
+}
+
+/* Cards */
+.card-grid { display: grid; gap: 20px; }
+.card-grid--2 { grid-template-columns: 1fr 1fr; }
+.card-grid--3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.ui-card {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+}
+.ui-card--light {
+  background: #fff;
+  border: 1px solid var(--border);
+}
+.ui-card--dark {
+  background: var(--dark-card);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.ui-card__img {
+  height: 110px;
+  background: linear-gradient(135deg, #0d2612 0%, #2e5e35 60%, #3d7a45 100%);
+  position: relative;
+  overflow: hidden;
+}
+.ui-card__img-2 { background: linear-gradient(135deg, #1a0505 0%, #7f1d1d 60%, #991b1b 100%); }
+.ui-card__img-3 { background: linear-gradient(135deg, #0c2a3f 0%, #0e7490 60%, #06b6d4 100%); }
+.ui-card__img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%);
+}
+.ui-card__img-label {
+  position: absolute; bottom: 10px; left: 12px;
+  font-size: 7.5pt; color: rgba(255,255,255,0.8); font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.ui-card__body { padding: 16px; }
+.ui-card__tag {
+  display: inline-block; padding: 2px 9px; border-radius: 4px;
+  font-size: 7.5pt; font-weight: 700; margin-bottom: 8px;
+  background: rgba(196,154,62,0.12); color: #8a6a1f;
+  border: 1px solid rgba(196,154,62,0.25);
+}
+.ui-card__title {
+  font-size: 10.5pt; font-weight: 700; color: var(--ink);
+  margin-bottom: 6px; line-height: 1.3;
+}
+.ui-card--dark .ui-card__title { color: rgba(255,255,255,0.9); }
+.ui-card__desc {
+  font-size: 8.5pt; color: var(--muted); line-height: 1.55;
+}
+.ui-card--dark .ui-card__desc { color: rgba(255,255,255,0.45); }
+.ui-card__footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.ui-card--dark .ui-card__footer { border-color: rgba(255,255,255,0.06); }
+.ui-card__loc {
+  font-size: 8pt; color: var(--muted);
+  display: flex; align-items: center; gap: 4px;
+}
+.ui-card--dark .ui-card__loc { color: rgba(255,255,255,0.35); }
+.ui-card__link {
+  font-size: 8pt; color: var(--gold); font-weight: 700;
+}
+
+/* Form inputs */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-label {
+  font-size: 8.5pt; font-weight: 600; color: var(--ink);
+}
+.form-input {
+  padding: 9px 13px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 9.5pt; color: var(--ink);
+  background: #fff;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+}
+.form-input--focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(196,154,62,0.12);
+}
+.form-input--error { border-color: #ef4444; }
+.form-hint { font-size: 7.5pt; color: var(--muted); }
+.form-error { font-size: 7.5pt; color: #ef4444; font-weight: 600; }
+.form-select {
+  padding: 9px 13px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 9.5pt; color: var(--ink);
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;
+  appearance: none; font-family: 'Inter', sans-serif;
+}
+
+/* Stat cards */
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 32px; }
+.stat-card {
+  background: var(--dark-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 18px 16px;
+  position: relative; overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+}
+.stat-card--gold::before { background: var(--gold); }
+.stat-card--green::before { background: var(--green-bright); }
+.stat-card--blue::before { background: var(--blue-accent); }
+.stat-card--purple::before { background: var(--purple); }
+.stat-card__icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; margin-bottom: 12px;
+}
+.stat-card--gold .stat-card__icon { background: rgba(196,154,62,0.15); }
+.stat-card--green .stat-card__icon { background: rgba(46,158,80,0.15); }
+.stat-card--blue .stat-card__icon { background: rgba(8,145,178,0.15); }
+.stat-card--purple .stat-card__icon { background: rgba(124,58,237,0.15); }
+.stat-card__value {
+  font-size: 20pt; font-weight: 800; color: #fff;
+  line-height: 1; margin-bottom: 4px;
+}
+.stat-card__label {
+  font-size: 8pt; color: rgba(255,255,255,0.4); font-weight: 500;
+}
+
+/* Navigation preview */
+.nav-preview {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo__mark {
+  width: 28px; height: 28px; background: var(--gold);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 900; color: #000;
+}
+.nav-logo__text { font-size: 10pt; font-weight: 700; color: rgba(255,255,255,0.9); }
+.nav-links {
+  display: flex; gap: 24px; list-style: none;
+}
+.nav-links a {
+  font-size: 8.5pt; font-weight: 500; color: rgba(255,255,255,0.6);
+  text-decoration: none;
+}
+.nav-links .active { color: var(--gold); }
+.nav-cta {
+  background: var(--gold); color: #000;
+  padding: 6px 16px; border-radius: 6px;
+  font-size: 8.5pt; font-weight: 700;
+}
+
+/* Hero wireframe */
+.hero-mockup {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 20px;
+}
+.hero-mockup__bg {
+  background: linear-gradient(135deg, #0a1f0d 0%, #1a3d1f 50%, #0d2412 100%);
+  padding: 36px 32px 32px;
+  position: relative;
+  min-height: 220px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: center;
+}
+.hero-mockup__left {}
+.hero-mockup__badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(196,154,62,0.12);
+  border: 1px solid rgba(196,154,62,0.25);
+  border-radius: 20px; padding: 4px 12px;
+  font-size: 7.5pt; color: var(--gold); font-weight: 600;
+  margin-bottom: 14px;
+}
+.hero-mockup__badge::before {
+  content: ''; width: 6px; height: 6px; background: var(--green-bright);
+  border-radius: 50%; flex-shrink: 0;
+}
+.hero-mockup__h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22pt; font-weight: 800; color: #fff;
+  line-height: 1.1; margin-bottom: 10px;
+}
+.hero-mockup__h1 em { color: var(--gold); font-style: italic; }
+.hero-mockup__p {
+  font-size: 8.5pt; color: rgba(255,255,255,0.55);
+  line-height: 1.65; margin-bottom: 18px; max-width: 280px;
+}
+.hero-mockup__btns { display: flex; gap: 10px; }
+.hero-mockup__btn1 {
+  background: linear-gradient(135deg, var(--gold), #d4b04e);
+  color: #000; padding: 8px 18px; border-radius: 8px;
+  font-size: 8.5pt; font-weight: 700;
+}
+.hero-mockup__btn2 {
+  background: transparent; border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.7); padding: 8px 18px; border-radius: 8px;
+  font-size: 8.5pt; font-weight: 600;
+}
+.hero-mockup__right {}
+.hero-mockup__card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; overflow: hidden;
+}
+.hero-mockup__card-header {
+  padding: 10px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.hero-mockup__card-title {
+  font-size: 8pt; font-weight: 700; color: rgba(255,255,255,0.8);
+}
+.hero-mockup__card-live {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 7.5pt; color: rgba(255,255,255,0.4);
+}
+.hero-mockup__card-live::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--green-bright); flex-shrink: 0;
+}
+.hero-mockup__video {
+  height: 100px;
+  background: linear-gradient(135deg, #0c0c1a 0%, #1a1a3a 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.hero-mockup__play {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 12px;
+}
+.hero-mockup__yt-label {
+  position: absolute; bottom: 8px; left: 10px;
+  font-size: 7pt; color: rgba(255,255,255,0.4);
+}
+.hero-mockup__tabs {
+  display: flex; gap: 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.hero-mockup__tab {
+  flex: 1; padding: 8px 4px; text-align: center;
+  font-size: 7.5pt; color: rgba(255,255,255,0.4); font-weight: 600;
+}
+.hero-mockup__tab--active {
+  color: var(--gold); background: rgba(196,154,62,0.08);
+  border-top: 2px solid var(--gold); margin-top: -1px;
+}
+
+/* Social float */
+.hero-mockup__social {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.hero-mockup__social-icon {
+  width: 22px; height: 22px; border-radius: 6px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.5); font-size: 9px;
+}
+
+/* Quick links bar */
+.quicklinks-preview {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px; padding: 10px 16px;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.ql-pill {
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px; padding: 4px 12px;
+  font-size: 7.5pt; color: rgba(255,255,255,0.6);
+}
+.ql-dot { width: 5px; height: 5px; border-radius: 50%; }
+
+/* News card */
+.news-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+.news-card {
+  border-radius: 12px; overflow: hidden;
+  background: var(--dark-card);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.news-card__img {
+  height: 80px;
+  position: relative; overflow: hidden;
+}
+.news-card__img-inner {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #1a2a1f 0%, #2d5a3a 100%);
+}
+.news-card__img-2 .news-card__img-inner { background: linear-gradient(135deg, #1a1a2a 0%, #2d3a5a 100%); }
+.news-card__img-3 .news-card__img-inner { background: linear-gradient(135deg, #2a1a10 0%, #5a3a20 100%); }
+.news-card__cat {
+  position: absolute; top: 8px; left: 8px;
+  background: var(--gold); color: #000;
+  font-size: 6.5pt; font-weight: 800; padding: 2px 8px; border-radius: 4px;
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+.news-card__body { padding: 12px; }
+.news-card__date { font-size: 7.5pt; color: rgba(255,255,255,0.3); margin-bottom: 5px; }
+.news-card__title { font-size: 8.5pt; font-weight: 700; color: rgba(255,255,255,0.85); line-height: 1.35; }
+
+/* Gallery preview */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 100px 100px;
+  gap: 8px; margin-bottom: 20px;
+}
+.gallery-cell {
+  border-radius: 8px; overflow: hidden; position: relative;
+}
+.gallery-cell--span { grid-row: 1 / 3; }
+.gallery-cell__bg {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.2); font-size: 20px;
+}
+.gallery-cell__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
+  opacity: 0;
+}
+.gallery-cell__label {
+  position: absolute; bottom: 8px; left: 10px;
+  font-size: 7.5pt; color: rgba(255,255,255,0.7); font-weight: 600;
+}
+.gallery-cell--video::after {
+  content: '▶';
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: rgba(255,255,255,0.6);
+}
+
+/* Admin sidebar */
+.admin-layout {
+  display: grid; grid-template-columns: 180px 1fr;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px; overflow: hidden;
+  height: 300px; margin-bottom: 20px;
+}
+.admin-sidebar {
+  background: #0d1410;
+  padding: 16px 0;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.admin-sidebar__brand {
+  padding: 0 14px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 10px;
+  font-size: 9pt; font-weight: 800; color: rgba(255,255,255,0.9);
+  display: flex; align-items: center; gap: 8px;
+}
+.admin-sidebar__brand-mark {
+  width: 22px; height: 22px; background: var(--gold);
+  border-radius: 5px; display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 900; color: #000;
+}
+.admin-nav-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 14px; font-size: 8.5pt; color: rgba(255,255,255,0.4);
+  font-weight: 500;
+}
+.admin-nav-item--active {
+  background: rgba(196,154,62,0.08);
+  color: var(--gold);
+  border-left: 2px solid var(--gold);
+}
+.admin-nav-icon {
+  width: 14px; height: 14px;
+  background: currentColor;
+  border-radius: 3px;
+  opacity: 0.5;
+}
+.admin-nav-item--active .admin-nav-icon { opacity: 1; }
+
+.admin-main {
+  background: #111714; padding: 20px;
+  overflow: hidden;
+}
+.admin-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.admin-topbar__title { font-size: 12pt; font-weight: 800; color: rgba(255,255,255,0.9); }
+.admin-topbar__btn {
+  background: var(--gold); color: #000;
+  padding: 6px 14px; border-radius: 6px;
+  font-size: 8pt; font-weight: 700;
+}
+.admin-stat-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+  margin-bottom: 16px;
+}
+.admin-mini-stat {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px; padding: 12px;
+}
+.admin-mini-stat__num {
+  font-size: 16pt; font-weight: 800; color: var(--gold); line-height: 1;
+  margin-bottom: 2px;
+}
+.admin-mini-stat__label { font-size: 7.5pt; color: rgba(255,255,255,0.35); }
+.admin-table-header {
+  display: grid; grid-template-columns: 1fr 80px 70px 60px;
+  gap: 8px; padding: 6px 10px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 6px; margin-bottom: 6px;
+}
+.admin-table-th { font-size: 7.5pt; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 1px; text-transform: uppercase; }
+.admin-table-row {
+  display: grid; grid-template-columns: 1fr 80px 70px 60px;
+  gap: 8px; padding: 7px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  align-items: center;
+}
+.admin-table-td { font-size: 8pt; color: rgba(255,255,255,0.7); }
+.admin-table-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 7pt; font-weight: 700;
+}
+.badge-active { background: rgba(34,197,94,0.12); color: #16a34a; }
+.badge-draft { background: rgba(107,114,128,0.15); color: #6b7280; }
+.badge-planned { background: rgba(99,102,241,0.12); color: #4338ca; }
+.admin-action-btns { display: flex; gap: 4px; }
+.admin-action-btn {
+  width: 22px; height: 22px; border-radius: 4px;
+  background: rgba(255,255,255,0.06);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: rgba(255,255,255,0.5);
+}
+
+/* Spacing scale */
+.spacing-row {
+  display: flex; align-items: flex-end; gap: 16px; margin-bottom: 28px;
+}
+.spacing-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.spacing-block { background: rgba(196,154,62,0.5); border-radius: 3px; width: 20px; }
+.spacing-label { font-size: 7pt; color: var(--muted); text-align: center; font-family: monospace; }
+
+/* Border radius scale */
+.radius-row {
+  display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 28px;
+}
+.radius-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.radius-block {
+  width: 56px; height: 56px;
+  background: rgba(196,154,62,0.15);
+  border: 2px solid rgba(196,154,62,0.4);
+}
+.radius-label { font-size: 7.5pt; color: var(--muted); font-family: monospace; text-align: center; }
+
+/* Shadow scale */
+.shadow-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 32px; align-items: flex-start; }
+.shadow-item { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.shadow-block {
+  width: 64px; height: 64px; border-radius: 10px; background: #fff;
+}
+.s1 { box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.s2 { box-shadow: 0 4px 12px rgba(0,0,0,0.10); }
+.s3 { box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+.s4 { box-shadow: 0 16px 48px rgba(0,0,0,0.15); }
+.s5 { box-shadow: 0 24px 64px rgba(0,0,0,0.18); }
+.shadow-label { font-size: 7.5pt; color: var(--muted); text-align: center; font-family: monospace; }
+
+/* Motion legend */
+.motion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+.motion-card {
+  border: 1px solid var(--border); border-radius: 10px; padding: 16px;
+}
+.motion-card__name { font-size: 9pt; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.motion-card__curve {
+  height: 3px; border-radius: 2px; margin: 10px 0;
+  background: linear-gradient(to right, var(--gold), var(--green-bright));
+}
+.motion-card__spec { font-size: 8pt; color: var(--muted); font-family: monospace; }
+.motion-card__use { font-size: 8pt; color: var(--muted); margin-top: 6px; }
+
+/* Iconography */
+.icon-grid {
+  display: grid; grid-template-columns: repeat(8, 1fr); gap: 12px; margin-bottom: 32px;
+}
+.icon-item {
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  padding: 12px 6px; border-radius: 8px;
+  border: 1px solid var(--border); background: #fafafa;
+}
+.icon-item svg { color: var(--green-mid); }
+.icon-label { font-size: 7pt; color: var(--muted); text-align: center; }
+
+/* Grid overlay for layout section */
+.layout-diagram {
+  border: 1px solid var(--border); border-radius: 12px;
+  overflow: hidden; margin-bottom: 20px;
+}
+.layout-diagram__header {
+  background: #f3f4f6; padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 8pt; color: var(--muted); display: flex; gap: 6px; align-items: center;
+}
+.layout-diagram__dot { width: 8px; height: 8px; border-radius: 50%; }
+.layout-diagram__body { padding: 16px; }
+.layout-row {
+  display: flex; gap: 12px; margin-bottom: 10px;
+}
+.layout-col {
+  border-radius: 6px; padding: 10px 12px;
+  font-size: 7.5pt; font-weight: 600; color: rgba(255,255,255,0.7);
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; min-height: 36px;
+}
+
+/* Responsive breakpoints */
+.breakpoints { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 32px; }
+.bp-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.bp-device {
+  border: 2px solid var(--border); border-radius: 6px;
+  background: #f9fafb; display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: 10px;
+}
+.bp-label { font-size: 7.5pt; color: var(--muted); text-align: center; font-weight: 600; }
+.bp-px { font-size: 7pt; color: var(--muted); font-family: monospace; }
+
+/* ── page numbers ─── */
+@page {
+  margin: 14mm 12mm 16mm;
+}
+
+/* print fixes */
+@media print {
+  .cover { height: 100vh; }
+}
+</style>
+</head>
+<body>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     01 · COVER
+     ═══════════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover__grid"></div>
+
+  <div class="cover__top-bar">
+    <div class="cover__logo-mark">
+      <div class="cover__logo-icon">L</div>
+      <div>
+        <div class="cover__logo-text">Kwara L-PRES Project</div>
+        <div class="cover__logo-sub">Kwara State Government</div>
+      </div>
+    </div>
+    <div class="cover__doc-type">UI/UX Design Deliverable</div>
+  </div>
+
+  <div class="cover__body">
+    <div class="cover__eyebrow">Official Website · Design System</div>
+    <h1 class="cover__headline">
+      Design<br>
+      <em>Language</em><br>
+      &amp; Components.
+    </h1>
+    <p class="cover__subhead">
+      A complete visual reference covering brand identity, component library,
+      interaction patterns, and layout system for the Kwara L-PRES official website.
+    </p>
+    <div class="cover__meta">
+      <div class="cover__meta-item">
+        <div class="cover__meta-label">Client</div>
+        <div class="cover__meta-value">Kwara State Government</div>
+      </div>
+      <div class="cover__meta-item">
+        <div class="cover__meta-label">Project</div>
+        <div class="cover__meta-value">L-PRES Official Website</div>
+      </div>
+      <div class="cover__meta-item">
+        <div class="cover__meta-label">Version</div>
+        <div class="cover__meta-value">1.0 · June 2026</div>
+      </div>
+      <div class="cover__meta-item">
+        <div class="cover__meta-label">Live URL</div>
+        <div class="cover__meta-value">kwara-lpres.netlify.app</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover__bottom">
+    <div class="cover__url">
+      Delivered by <strong>Seamless ICT</strong> · <strong>kwara-lpres.netlify.app</strong>
+    </div>
+    <div class="cover__bars">
+      <div class="cover__bar" style="height:16px;opacity:0.3"></div>
+      <div class="cover__bar" style="height:24px;opacity:0.5"></div>
+      <div class="cover__bar" style="height:32px;opacity:0.7"></div>
+      <div class="cover__bar" style="height:48px;opacity:1"></div>
+      <div class="cover__bar" style="height:36px;opacity:0.8"></div>
+      <div class="cover__bar" style="height:22px;opacity:0.4"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     02 · BRAND IDENTITY — COLOURS
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page page--white break-before">
+  <div class="section-label">01 · Brand Identity</div>
+  <h1 class="page-title">Colour <em>System</em></h1>
+  <p class="page-desc">
+    The palette is grounded in the agricultural heritage of Kwara State — deep forest greens representing
+    land and livestock, harvest gold representing productivity and prosperity.
+  </p>
+
+  <!-- Primary palette -->
+  <div class="color-grid">
+    <div class="color-swatch no-break">
+      <div class="color-swatch__block" style="background:#0a0f0d;">
+        <div class="color-swatch__label">Background</div>
+      </div>
+      <div class="color-swatch__info">
+        <div class="color-swatch__name">Deep Savanna</div>
+        <div class="color-swatch__hex">#0a0f0d</div>
+        <div class="color-swatch__use">Primary background</div>
+      </div>
+    </div>
+    <div class="color-swatch no-break">
+      <div class="color-swatch__block" style="background:#c49a3e;">
+        <div class="color-swatch__label">Primary Gold</div>
+      </div>
+      <div class="color-swatch__info">
+        <div class="color-swatch__name">Harvest Gold</div>
+        <div class="color-swatch__hex">#c49a3e</div>
+        <div class="color-swatch__use">Brand accent · CTAs · Highlights</div>
+      </div>
+    </div>
+    <div class="color-swatch no-break">
+      <div class="color-swatch__block" style="background:#1a5c26;">
+        <div class="color-swatch__label">Green Deep</div>
+      </div>
+      <div class="color-swatch__info">
+        <div class="color-swatch__name">Forest Green</div>
+        <div class="color-swatch__hex">#1a5c26</div>
+        <div class="color-swatch__use">Headings · Section accents</div>
+      </div>
+    </div>
+    <div class="color-swatch no-break">
+      <div class="color-swatch__block" style="background:#2e9e50;">
+        <div class="color-swatch__label">Green Bright</div>
+      </div>
+      <div class="color-swatch__info">
+        <div class="color-swatch__name">Meadow Green</div>
+        <div class="color-swatch__hex">#2e9e50</div>
+        <div class="color-swatch__use">Success states · Active badges</div>
+      </div>
+    </div>
+    <div class="color-swatch no-break">
+      <div class="color-swatch__block" style="background:#161e18;">
+        <div class="color-swatch__label">Card BG</div>
+      </div>
+      <div class="color-swatch__info">
+        <div class="color-swatch__name">Dark Card</div>
+        <div class="color-swatch__hex">#161e18</div>
+        <div class="color-swatch__use">Card surfaces · Admin panels</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supporting colours -->
+  <h3 style="font-size:11pt;font-weight:700;color:var(--ink);margin-bottom:14px;">Supporting Colours</h3>
+  <div class="color-chips">
+    <div class="chip"><div class="chip__dot" style="background:#0891b2"></div><div><div class="chip__text">Sky Blue</div><div class="chip__hex">#0891b2</div></div></div>
+    <div class="chip"><div class="chip__dot" style="background:#7c3aed"></div><div><div class="chip__text">Violet</div><div class="chip__hex">#7c3aed</div></div></div>
+    <div class="chip"><div class="chip__dot" style="background:#dc2626"></div><div><div class="chip__text">Alert Red</div><div class="chip__hex">#dc2626</div></div></div>
+    <div class="chip"><div class="chip__dot" style="background:#d97706"></div><div><div class="chip__text">Amber</div><div class="chip__hex">#d97706</div></div></div>
+    <div class="chip"><div class="chip__dot" style="background:#ec4899"></div><div><div class="chip__text">Rose</div><div class="chip__hex">#ec4899</div></div></div>
+    <div class="chip"><div class="chip__dot" style="background:#f9fafb"></div><div><div class="chip__text">Surface Light</div><div class="chip__hex">#f9fafb</div></div></div>
+    <div class="chip"><div class="chip__dot" style="background:#6b7280"></div><div><div class="chip__text">Text Muted</div><div class="chip__hex">#6b7280</div></div></div>
+    <div class="chip"><div class="chip__dot" style="background:#111827"></div><div><div class="chip__text">Text Primary</div><div class="chip__hex">#111827</div></div></div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Text-on-background contrast -->
+  <h3 style="font-size:11pt;font-weight:700;color:var(--ink);margin-bottom:14px;">Contrast &amp; Opacity Levels</h3>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:8px;">
+    <div style="background:#0a0f0d;border-radius:8px;padding:14px;">
+      <div style="color:rgba(255,255,255,0.92);font-size:9pt;font-weight:700;margin-bottom:4px;">92% White</div>
+      <div style="color:rgba(255,255,255,0.55);font-size:8pt;">Body text</div>
+    </div>
+    <div style="background:#0a0f0d;border-radius:8px;padding:14px;">
+      <div style="color:rgba(255,255,255,0.55);font-size:9pt;font-weight:700;margin-bottom:4px;">55% White</div>
+      <div style="color:rgba(255,255,255,0.55);font-size:8pt;">Descriptions</div>
+    </div>
+    <div style="background:#0a0f0d;border-radius:8px;padding:14px;">
+      <div style="color:rgba(255,255,255,0.35);font-size:9pt;font-weight:700;margin-bottom:4px;">35% White</div>
+      <div style="color:rgba(255,255,255,0.35);font-size:8pt;">Metadata</div>
+    </div>
+    <div style="background:#0a0f0d;border-radius:8px;padding:14px;">
+      <div style="color:#c49a3e;font-size:9pt;font-weight:700;margin-bottom:4px;">Gold</div>
+      <div style="color:rgba(255,255,255,0.35);font-size:8pt;">Labels &amp; CTAs</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     03 · TYPOGRAPHY
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page page--white break-before">
+  <div class="section-label">02 · Typography</div>
+  <h1 class="page-title">Type <em>Scale</em></h1>
+  <p class="page-desc">
+    Two typefaces: <strong>Playfair Display</strong> (serif) for editorial headlines — adding authority and
+    elegance — and <strong>Inter</strong> (sans-serif) for all functional text — clean, highly legible, and optimised for screens.
+  </p>
+
+  <div class="type-showcase">
+    <div class="type-row no-break">
+      <div class="type-meta">
+        <div class="type-meta__label">Display</div>
+        <div class="type-meta__spec">Playfair Display<br>800 · 44pt<br>Line-height 1.05</div>
+      </div>
+      <div class="type-sample">
+        <div class="t-display">Livestock<br><em style="color:var(--gold)">in motion.</em></div>
+      </div>
+    </div>
+    <div class="type-row no-break">
+      <div class="type-meta">
+        <div class="type-meta__label">Heading 1</div>
+        <div class="type-meta__spec">Inter<br>800 · 24pt<br>Line-height 1.15</div>
+      </div>
+      <div class="type-sample">
+        <div class="t-h1">Project Portfolio</div>
+      </div>
+    </div>
+    <div class="type-row no-break">
+      <div class="type-meta">
+        <div class="type-meta__label">Heading 2</div>
+        <div class="type-meta__spec">Inter<br>700 · 18pt<br>Line-height 1.2</div>
+      </div>
+      <div class="type-sample">
+        <div class="t-h2">Key Results at a Glance</div>
+      </div>
+    </div>
+    <div class="type-row no-break">
+      <div class="type-meta">
+        <div class="type-meta__label">Heading 3</div>
+        <div class="type-meta__spec">Inter<br>700 · 13pt</div>
+      </div>
+      <div class="type-sample">
+        <div class="t-h3">Kwara Cattle Development Centre</div>
+      </div>
+    </div>
+    <div class="type-row no-break">
+      <div class="type-meta">
+        <div class="type-meta__label">Body</div>
+        <div class="type-meta__spec">Inter<br>400 · 11pt<br>Line-height 1.7</div>
+      </div>
+      <div class="type-sample">
+        <div class="t-body">A statewide programme transforming livestock productivity, resilience, and commercialisation — built with the farmers, herders, and communities of Kwara.</div>
+      </div>
+    </div>
+    <div class="type-row no-break">
+      <div class="type-meta">
+        <div class="type-meta__label">Small / Meta</div>
+        <div class="type-meta__spec">Inter<br>400 · 9pt<br>Line-height 1.6</div>
+      </div>
+      <div class="type-sample">
+        <div class="t-small">Published by the State Project Coordinator · Kwara State · June 2026</div>
+      </div>
+    </div>
+    <div class="type-row no-break">
+      <div class="type-meta">
+        <div class="type-meta__label">Section Label</div>
+        <div class="type-meta__spec">Inter<br>700 · 8pt<br>Letter-spacing 2.5px<br>All caps</div>
+      </div>
+      <div class="type-sample">
+        <div class="t-label">On The Ground</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     04 · BUTTONS, BADGES, TAGS
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page page--cream break-before">
+  <div class="section-label">03 · Components</div>
+  <h1 class="page-title">Buttons, Badges <em>&amp; Tags</em></h1>
+  <p class="page-desc">
+    Every interactive element follows the same design principles: clear affordance, consistent height,
+    and accessible focus states with a 3px gold ring.
+  </p>
+
+  <h3 style="font-size:10pt;font-weight:700;color:var(--ink);margin-bottom:12px;">Primary Actions</h3>
+  <div class="btn-row">
+    <div class="ui-btn ui-btn--primary">Explore the Project</div>
+    <div class="ui-btn ui-btn--green">Save Changes</div>
+    <div class="ui-btn ui-btn--danger">Delete Article</div>
+  </div>
+
+  <h3 style="font-size:10pt;font-weight:700;color:var(--ink);margin:16px 0 12px;">Secondary &amp; Outline</h3>
+  <div class="btn-row">
+    <div class="ui-btn ui-btn--secondary">Read Full Message</div>
+    <div class="ui-btn" style="background:#fff;border:2px solid var(--border);color:var(--ink);">View Gallery</div>
+    <div class="ui-btn" style="background:transparent;border:2px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);background:#1a1a1a;">Upload Media</div>
+  </div>
+
+  <h3 style="font-size:10pt;font-weight:700;color:var(--ink);margin:16px 0 12px;">Sizes</h3>
+  <div class="btn-row">
+    <div class="ui-btn ui-btn--primary ui-btn--sm">Small</div>
+    <div class="ui-btn ui-btn--primary">Default</div>
+    <div class="ui-btn ui-btn--primary ui-btn--lg">Large</div>
+  </div>
+
+  <hr class="divider">
+
+  <h3 style="font-size:10pt;font-weight:700;color:var(--ink);margin-bottom:12px;">Status Badges</h3>
+  <div class="badge-row">
+    <div class="ui-badge ui-badge--live">Active</div>
+    <div class="ui-badge ui-badge--completed">Completed</div>
+    <div class="ui-badge ui-badge--planned">Planned</div>
+    <div class="ui-badge ui-badge--gold">L-PRES</div>
+    <div class="ui-badge ui-badge--blue">Field Work</div>
+    <div class="ui-badge" style="background:rgba(236,72,153,0.12);color:#9d174d;border:1px solid rgba(236,72,153,0.25);">Publications</div>
+    <div class="ui-badge" style="background:rgba(245,158,11,0.12);color:#92400e;border:1px solid rgba(245,158,11,0.25);">Draft</div>
+    <div class="ui-badge" style="background:rgba(107,114,128,0.12);color:#374151;border:1px solid rgba(107,114,128,0.2);">Archived</div>
+  </div>
+
+  <hr class="divider">
+
+  <h3 style="font-size:10pt;font-weight:700;color:var(--ink);margin-bottom:12px;">Form Inputs</h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label class="form-label">Article Title</label>
+      <input class="form-input form-input--focus" type="text" value="L-PRES Farmers Receive Training" readonly />
+      <span class="form-hint">Max 300 characters</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select class="form-select"><option>News</option><option>Events</option></select>
+      <span class="form-hint">Choose the content category</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Published By</label>
+      <input class="form-input" type="text" value="State Project Coordinator" readonly />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Event Date</label>
+      <input class="form-input form-input--error" type="text" value="" placeholder="Select date…" readonly />
+      <span class="form-error">Date is required for events</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     05 · CARDS
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page page--dark break-before">
+  <div class="section-label" style="color:var(--gold)">04 · Components</div>
+  <h1 class="page-title">Card <em>Components</em></h1>
+  <p class="page-desc">Cards are the primary content container. They share a consistent anatomy: image zone, metadata, title, description, and action footer.</p>
+
+  <h3 style="font-size:10pt;font-weight:700;color:rgba(255,255,255,0.7);margin-bottom:14px;">Project Portfolio Cards</h3>
+  <div class="card-grid card-grid--3" style="margin-bottom:28px;">
+    <div class="ui-card ui-card--dark no-break">
+      <div class="ui-card__img">
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#0d2612 0%,#2e5e35 60%,#3d7a45 100%)"></div>
+        <div class="ui-card__img-overlay"></div>
+        <div class="ui-card__img-label">Kwara Central</div>
+      </div>
+      <div class="ui-card__body">
+        <div class="ui-card__tag">Cattle Breeding</div>
+        <div class="ui-card__title">Kwara Cattle Development Centre</div>
+        <div class="ui-card__desc">Modern facility for 2,400+ farmers providing quality breeds and veterinary support.</div>
+      </div>
+      <div class="ui-card__footer">
+        <div class="ui-card__loc">📍 Ilorin East</div>
+        <div class="ui-card__link">Read More →</div>
+      </div>
+    </div>
+    <div class="ui-card ui-card--dark no-break">
+      <div class="ui-card__img ui-card__img-2">
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a0505 0%,#7f1d1d 60%,#991b1b 100%)"></div>
+        <div class="ui-card__img-overlay"></div>
+        <div class="ui-card__img-label">Kwara Central</div>
+      </div>
+      <div class="ui-card__body">
+        <div class="ui-card__tag" style="background:rgba(220,38,38,0.12);color:#7f1d1d;border-color:rgba(220,38,38,0.25);">Beef Processing</div>
+        <div class="ui-card__title">Modern Abattoir &amp; Processing Plant</div>
+        <div class="ui-card__desc">N250M facility connecting 600+ farmers to formal Nigerian markets.</div>
+      </div>
+      <div class="ui-card__footer">
+        <div class="ui-card__loc">📍 Ilorin West</div>
+        <div class="ui-card__link">Read More →</div>
+      </div>
+    </div>
+    <div class="ui-card ui-card--dark no-break">
+      <div class="ui-card__img ui-card__img-3">
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#0c2a3f 0%,#0e7490 60%,#06b6d4 100%)"></div>
+        <div class="ui-card__img-overlay"></div>
+        <div class="ui-card__img-label">Kwara South</div>
+      </div>
+      <div class="ui-card__body">
+        <div class="ui-card__tag" style="background:rgba(8,145,178,0.12);color:#0e7490;border-color:rgba(8,145,178,0.25);">Dairy / Cold Chain</div>
+        <div class="ui-card__title">Dairy Cold Chain Hub</div>
+        <div class="ui-card__desc">Empowering 400 dairy families with 3,000L daily processing capacity.</div>
+      </div>
+      <div class="ui-card__footer">
+        <div class="ui-card__loc">📍 Offa</div>
+        <div class="ui-card__link">Read More →</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size:10pt;font-weight:700;color:rgba(255,255,255,0.7);margin-bottom:14px;">KPI / Statistics Cards</h3>
+  <div class="stat-grid">
+    <div class="stat-card stat-card--gold no-break">
+      <div class="stat-card__icon">🐄</div>
+      <div class="stat-card__value">238k</div>
+      <div class="stat-card__label">Animals Vaccinated</div>
+    </div>
+    <div class="stat-card stat-card--green no-break">
+      <div class="stat-card__icon">👥</div>
+      <div class="stat-card__value">12,400</div>
+      <div class="stat-card__label">Farmers Reached</div>
+    </div>
+    <div class="stat-card stat-card--blue no-break">
+      <div class="stat-card__icon">💧</div>
+      <div class="stat-card__value">67</div>
+      <div class="stat-card__label">Water Points Built</div>
+    </div>
+    <div class="stat-card stat-card--purple no-break">
+      <div class="stat-card__icon">🏘️</div>
+      <div class="stat-card__value">16</div>
+      <div class="stat-card__label">LGAs Covered</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     06 · HERO & NAVIGATION
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page page--dark break-before">
+  <div class="section-label" style="color:var(--gold)">05 · Page Layouts</div>
+  <h1 class="page-title">Hero Section <em>&amp; Navigation</em></h1>
+  <p class="page-desc">The hero occupies 100vh and delivers the brand statement immediately with a documentary embed, animated text entrance, and real-time field map.</p>
+
+  <!-- Nav -->
+  <div class="nav-preview no-break">
+    <div class="nav-logo">
+      <div class="nav-logo__mark">L</div>
+      <div class="nav-logo__text">Kwara L-PRES</div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Programmes</a></li>
+      <li><a href="#">Gallery</a></li>
+      <li><a href="#">News</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="nav-cta">Admin Login</div>
+  </div>
+
+  <!-- Hero mockup -->
+  <div class="hero-mockup no-break">
+    <div class="hero-mockup__bg">
+      <!-- social float -->
+      <div class="hero-mockup__social">
+        <div class="hero-mockup__social-icon">f</div>
+        <div class="hero-mockup__social-icon">𝕏</div>
+        <div class="hero-mockup__social-icon">in</div>
+        <div class="hero-mockup__social-icon">▶</div>
+      </div>
+
+      <!-- left text -->
+      <div class="hero-mockup__left" style="padding-left:28px;">
+        <div class="hero-mockup__badge">Kwara State · L-PRES Project</div>
+        <div class="hero-mockup__h1">
+          Livestock<br><em>in motion.</em><br>
+          Communities<br><em>in bloom.</em>
+        </div>
+        <p class="hero-mockup__p">
+          A statewide programme transforming livestock productivity, resilience, and
+          commercialisation across all 16 LGAs of Kwara.
+        </p>
+        <div class="hero-mockup__btns">
+          <div class="hero-mockup__btn1">Explore the project</div>
+          <div class="hero-mockup__btn2">▶ Watch our story</div>
+        </div>
+      </div>
+
+      <!-- right card -->
+      <div class="hero-mockup__right">
+        <div class="hero-mockup__card">
+          <div class="hero-mockup__card-header">
+            <div class="hero-mockup__card-title">Kwara L-PRES TV</div>
+            <div class="hero-mockup__card-live">Live · 16 LGAs</div>
+          </div>
+          <div class="hero-mockup__video">
+            <div class="hero-mockup__play">▶</div>
+            <div class="hero-mockup__yt-label">youtube.com · L-PRES Documentary</div>
+          </div>
+          <div class="hero-mockup__tabs">
+            <div class="hero-mockup__tab hero-mockup__tab--active">🎬 Documentary</div>
+            <div class="hero-mockup__tab">📷 Photos</div>
+            <div class="hero-mockup__tab">🗺 Map</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick links bar -->
+  <div class="quicklinks-preview no-break">
+    <span style="font-size:7.5pt;color:rgba(255,255,255,0.3);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-right:4px;">Quick Access</span>
+    <div style="width:1px;height:16px;background:rgba(255,255,255,0.1);margin-right:4px;"></div>
+    <div class="ql-pill"><div class="ql-dot" style="background:#c49a3e"></div>Coordinator's Message</div>
+    <div class="ql-pill"><div class="ql-dot" style="background:#2e9e50"></div>Programme Impact</div>
+    <div class="ql-pill"><div class="ql-dot" style="background:#0891b2"></div>Project Components</div>
+    <div class="ql-pill"><div class="ql-dot" style="background:#f59e0b"></div>Project Portfolio</div>
+    <div class="ql-pill"><div class="ql-dot" style="background:#6366f1"></div>Our Partners</div>
+    <div class="ql-pill"><div class="ql-dot" style="background:#16a34a"></div>Contact Us</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     07 · NEWS & GALLERY
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page page--dark break-before">
+  <div class="section-label" style="color:var(--gold)">06 · Content Sections</div>
+  <h1 class="page-title">News <em>&amp; Gallery</em></h1>
+  <p class="page-desc">Content feeds are dynamically populated from the CMS. News supports three distinct article templates. Gallery supports both photos and videos with category filtering.</p>
+
+  <h3 style="font-size:10pt;font-weight:700;color:rgba(255,255,255,0.7);margin-bottom:14px;">Latest News — Card Grid</h3>
+  <div class="news-cards">
+    <div class="news-card no-break">
+      <div class="news-card__img">
+        <div class="news-card__img-inner"></div>
+        <div class="news-card__cat">Field Work</div>
+      </div>
+      <div class="news-card__body">
+        <div class="news-card__date">June 15, 2026</div>
+        <div class="news-card__title">L-PRES Teams Complete First Phase of Animal Vaccination Drive</div>
+      </div>
+    </div>
+    <div class="news-card news-card__img-2 no-break">
+      <div class="news-card__img">
+        <div class="news-card__img-inner" style="background:linear-gradient(135deg,#1a1a2a 0%,#2d3a5a 100%)"></div>
+        <div class="news-card__cat">Partnership</div>
+      </div>
+      <div class="news-card__body">
+        <div class="news-card__date">June 8, 2026</div>
+        <div class="news-card__title">World Bank Mission Team Visits Kwara L-PRES Project Sites</div>
+      </div>
+    </div>
+    <div class="news-card news-card__img-3 no-break">
+      <div class="news-card__img">
+        <div class="news-card__img-inner" style="background:linear-gradient(135deg,#2a1a10 0%,#5a3a20 100%)"></div>
+        <div class="news-card__cat">Training</div>
+      </div>
+      <div class="news-card__body">
+        <div class="news-card__date">May 30, 2026</div>
+        <div class="news-card__title">Dairy Farmers Graduate from Value Chain Development Programme</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size:10pt;font-weight:700;color:rgba(255,255,255,0.7);margin-bottom:14px;">Gallery — Masonry Grid Layout</h3>
+  <div class="gallery-grid no-break">
+    <div class="gallery-cell gallery-cell--span">
+      <div class="gallery-cell__bg" style="background:linear-gradient(135deg,#0d2612,#2e5e35);height:100%;">🌿</div>
+      <div class="gallery-cell__overlay"></div>
+      <div class="gallery-cell__label">L-PRES Field Survey · Kwara North</div>
+    </div>
+    <div class="gallery-cell">
+      <div class="gallery-cell__bg" style="background:linear-gradient(135deg,#0c2a3f,#0e7490);height:100%;">💧</div>
+      <div class="gallery-cell__label">Water Point — Baruten</div>
+    </div>
+    <div class="gallery-cell gallery-cell--video">
+      <div class="gallery-cell__bg" style="background:linear-gradient(135deg,#1a0a1a,#4a1a4a);height:100%;"></div>
+      <div class="gallery-cell__label">Project Overview Video</div>
+    </div>
+    <div class="gallery-cell">
+      <div class="gallery-cell__bg" style="background:linear-gradient(135deg,#2a1a04,#7a4a10);height:100%;">🐄</div>
+      <div class="gallery-cell__label">Cattle — Ilorin East</div>
+    </div>
+    <div class="gallery-cell">
+      <div class="gallery-cell__bg" style="background:linear-gradient(135deg,#0a1a2a,#1a3a5a);height:100%;">👥</div>
+      <div class="gallery-cell__label">Coordination Meeting</div>
+    </div>
+  </div>
+
+  <!-- Category filter chips -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+    <div style="background:var(--gold);color:#000;padding:5px 14px;border-radius:20px;font-size:8pt;font-weight:700;">All</div>
+    <div style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:5px 14px;border-radius:20px;font-size:8pt;font-weight:600;border:1px solid rgba(255,255,255,0.1);">Field Work</div>
+    <div style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:5px 14px;border-radius:20px;font-size:8pt;font-weight:600;border:1px solid rgba(255,255,255,0.1);">Outreach</div>
+    <div style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:5px 14px;border-radius:20px;font-size:8pt;font-weight:600;border:1px solid rgba(255,255,255,0.1);">Infrastructure</div>
+    <div style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:5px 14px;border-radius:20px;font-size:8pt;font-weight:600;border:1px solid rgba(255,255,255,0.1);">Events</div>
+    <div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:5px 14px;border-radius:20px;font-size:8pt;font-weight:600;border:1px solid rgba(255,255,255,0.1);">
+      <span style="width:6px;height:6px;background:#c49a3e;border-radius:50%;display:inline-block;"></span>Videos only
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     08 · ADMIN PANEL
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page page--dark break-before">
+  <div class="section-label" style="color:var(--gold)">07 · Admin Interface</div>
+  <h1 class="page-title">Content Management <em>Panel</em></h1>
+  <p class="page-desc">A private, JWT-secured admin interface for publishing news, managing the gallery, and editing the project portfolio. Accessible at <strong style="color:var(--gold)">/admin</strong>.</p>
+
+  <div class="admin-layout no-break">
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+      <div class="admin-sidebar__brand">
+        <div class="admin-sidebar__brand-mark">L</div>
+        L-PRES Admin
+      </div>
+      <div class="admin-nav-item admin-nav-item--active">
+        <div class="admin-nav-icon"></div>
+        Dashboard
+      </div>
+      <div class="admin-nav-item">
+        <div class="admin-nav-icon"></div>
+        News Articles
+      </div>
+      <div class="admin-nav-item">
+        <div class="admin-nav-icon"></div>
+        Gallery
+      </div>
+      <div class="admin-nav-item">
+        <div class="admin-nav-icon"></div>
+        Projects
+      </div>
+      <div style="margin-top:auto;padding:14px 14px 0;">
+        <div class="admin-nav-item" style="color:rgba(255,100,100,0.7);">
+          <div class="admin-nav-icon" style="background:rgba(255,100,100,0.7)"></div>
+          Sign Out
+        </div>
+      </div>
+    </div>
+    <!-- Main area -->
+    <div class="admin-main">
+      <div class="admin-topbar">
+        <div class="admin-topbar__title">Dashboard</div>
+        <div class="admin-topbar__btn">+ New Article</div>
+      </div>
+      <div class="admin-stat-row">
+        <div class="admin-mini-stat">
+          <div class="admin-mini-stat__num">12</div>
+          <div class="admin-mini-stat__label">News Articles</div>
+        </div>
+        <div class="admin-mini-stat">
+          <div class="admin-mini-stat__num">38</div>
+          <div class="admin-mini-stat__label">Gallery Items</div>
+        </div>
+        <div class="admin-mini-stat">
+          <div class="admin-mini-stat__num">5</div>
+          <div class="admin-mini-stat__label">Projects</div>
+        </div>
+        <div class="admin-mini-stat">
+          <div class="admin-mini-stat__num">3</div>
+          <div class="admin-mini-stat__label">Drafts</div>
+        </div>
+      </div>
+      <div class="admin-table-header">
+        <div class="admin-table-th">Title</div>
+        <div class="admin-table-th">Category</div>
+        <div class="admin-table-th">Status</div>
+        <div class="admin-table-th">Actions</div>
+      </div>
+      <div class="admin-table-row">
+        <div class="admin-table-td">L-PRES Vaccination Drive Phase 1</div>
+        <div class="admin-table-td">Field Work</div>
+        <div class="admin-table-td"><span class="admin-table-badge badge-active">Published</span></div>
+        <div class="admin-table-td"><div class="admin-action-btns"><div class="admin-action-btn">✏</div><div class="admin-action-btn">👁</div><div class="admin-action-btn">🗑</div></div></div>
+      </div>
+      <div class="admin-table-row">
+        <div class="admin-table-td">World Bank Mission Visit Report</div>
+        <div class="admin-table-td">Partnership</div>
+        <div class="admin-table-td"><span class="admin-table-badge badge-draft">Draft</span></div>
+        <div class="admin-table-td"><div class="admin-action-btns"><div class="admin-action-btn">✏</div><div class="admin-action-btn">👁</div><div class="admin-action-btn">🗑</div></div></div>
+      </div>
+      <div class="admin-table-row">
+        <div class="admin-table-td">Regional Livestock Market — Opening</div>
+        <div class="admin-table-td">Events</div>
+        <div class="admin-table-td"><span class="admin-table-badge badge-planned">Scheduled</span></div>
+        <div class="admin-table-td"><div class="admin-action-btns"><div class="admin-action-btn">✏</div><div class="admin-action-btn">👁</div><div class="admin-action-btn">🗑</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key admin features -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:4px;">
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:14px;" class="no-break">
+      <div style="color:var(--gold);font-size:9pt;font-weight:700;margin-bottom:6px;">📝 Rich Text Editor</div>
+      <div style="color:rgba(255,255,255,0.45);font-size:8.5pt;line-height:1.55;">TipTap WYSIWYG editor for news articles. Supports bold, italic, lists, headings, and image embeds.</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:14px;" class="no-break">
+      <div style="color:var(--gold);font-size:9pt;font-weight:700;margin-bottom:6px;">🖼 Multi-Image Gallery</div>
+      <div style="color:rgba(255,255,255,0.45);font-size:8.5pt;line-height:1.55;">Upload multiple photos per project. Remove individual images from the gallery without affecting others.</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:14px;" class="no-break">
+      <div style="color:var(--gold);font-size:9pt;font-weight:700;margin-bottom:6px;">🔐 JWT Authentication</div>
+      <div style="color:rgba(255,255,255,0.45);font-size:8.5pt;line-height:1.55;">Secure 24-hour sessions. Auto-logout on token expiry. Password hashed with bcrypt.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     09 · SPACING, RADIUS, SHADOW
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page page--white break-before">
+  <div class="section-label">08 · Design Tokens</div>
+  <h1 class="page-title">Spacing, Radius <em>&amp; Shadows</em></h1>
+  <p class="page-desc">Consistent spatial rhythm and depth create visual hierarchy. All spacing follows a 4px base unit. Border radii are consistent across component families.</p>
+
+  <h3 style="font-size:10pt;font-weight:700;margin-bottom:16px;color:var(--ink)">Spacing Scale (4px base)</h3>
+  <div class="spacing-row no-break">
+    <div class="spacing-item"><div class="spacing-block" style="height:4px;"></div><div class="spacing-label">4px<br>xs</div></div>
+    <div class="spacing-item"><div class="spacing-block" style="height:8px;"></div><div class="spacing-label">8px<br>sm</div></div>
+    <div class="spacing-item"><div class="spacing-block" style="height:12px;"></div><div class="spacing-label">12px<br>md</div></div>
+    <div class="spacing-item"><div class="spacing-block" style="height:16px;"></div><div class="spacing-label">16px<br>lg</div></div>
+    <div class="spacing-item"><div class="spacing-block" style="height:24px;"></div><div class="spacing-label">24px<br>xl</div></div>
+    <div class="spacing-item"><div class="spacing-block" style="height:32px;"></div><div class="spacing-label">32px<br>2xl</div></div>
+    <div class="spacing-item"><div class="spacing-block" style="height:48px;"></div><div class="spacing-label">48px<br>3xl</div></div>
+    <div class="spacing-item"><div class="spacing-block" style="height:64px;"></div><div class="spacing-label">64px<br>4xl</div></div>
+    <div class="spacing-item"><div class="spacing-block" style="height:96px;"></div><div class="spacing-label">96px<br>5xl</div></div>
+  </div>
+
+  <hr class="divider">
+
+  <h3 style="font-size:10pt;font-weight:700;margin-bottom:16px;color:var(--ink)">Border Radius Scale</h3>
+  <div class="radius-row no-break">
+    <div class="radius-item"><div class="radius-block" style="border-radius:4px;"></div><div class="radius-label">4px<br>Chips</div></div>
+    <div class="radius-item"><div class="radius-block" style="border-radius:6px;"></div><div class="radius-label">6px<br>Buttons sm</div></div>
+    <div class="radius-item"><div class="radius-block" style="border-radius:8px;"></div><div class="radius-label">8px<br>Buttons · Inputs</div></div>
+    <div class="radius-item"><div class="radius-block" style="border-radius:10px;"></div><div class="radius-label">10px<br>Small cards</div></div>
+    <div class="radius-item"><div class="radius-block" style="border-radius:12px;"></div><div class="radius-label">12px<br>Cards</div></div>
+    <div class="radius-item"><div class="radius-block" style="border-radius:14px;"></div><div class="radius-label">14px<br>Large cards</div></div>
+    <div class="radius-item"><div class="radius-block" style="border-radius:20px;"></div><div class="radius-label">20px<br>Pills · Badges</div></div>
+    <div class="radius-item"><div class="radius-block" style="border-radius:50%;"></div><div class="radius-label">50%<br>Avatars · Icons</div></div>
+  </div>
+
+  <hr class="divider">
+
+  <h3 style="font-size:10pt;font-weight:700;margin-bottom:16px;color:var(--ink)">Elevation / Shadow Scale</h3>
+  <div class="shadow-row no-break">
+    <div class="shadow-item"><div class="shadow-block s1"></div><div class="shadow-label">sm<br>Subtle lift</div></div>
+    <div class="shadow-item"><div class="shadow-block s2"></div><div class="shadow-label">md<br>Cards</div></div>
+    <div class="shadow-item"><div class="shadow-block s3"></div><div class="shadow-label">lg<br>Dropdowns</div></div>
+    <div class="shadow-item"><div class="shadow-block s4"></div><div class="shadow-label">xl<br>Modals</div></div>
+    <div class="shadow-item"><div class="shadow-block s5"></div><div class="shadow-label">2xl<br>Hero card</div></div>
+    <div class="shadow-item">
+      <div class="shadow-block" style="box-shadow:0 8px 24px rgba(196,154,62,0.35);border-radius:10px;background:#fff;width:64px;height:64px;"></div>
+      <div class="shadow-label">Gold glow<br>CTAs</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     10 · MOTION & ANIMATION
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page page--cream break-before">
+  <div class="section-label">09 · Motion</div>
+  <h1 class="page-title">Animation <em>Principles</em></h1>
+  <p class="page-desc">
+    Motion is purposeful and minimal. All animations serve to guide attention, confirm interactions, or
+    reveal content progressively. No decorative animation exists solely for aesthetics.
+  </p>
+
+  <div class="motion-grid no-break">
+    <div class="motion-card">
+      <div class="motion-card__name">Scroll Reveal — Slide Up</div>
+      <div class="motion-card__curve"></div>
+      <div class="motion-card__spec">cubic-bezier(0.22, 1, 0.36, 1) · 0.6s</div>
+      <div class="motion-card__use">Used on: section headers, cards, content blocks. Triggered once when element enters viewport.</div>
+    </div>
+    <div class="motion-card">
+      <div class="motion-card__name">Hero Entrance — Fade Up</div>
+      <div class="motion-card__curve"></div>
+      <div class="motion-card__spec">cubic-bezier(0.22, 1, 0.36, 1) · 0.55–0.65s</div>
+      <div class="motion-card__use">Used on: badge → title → subtitle → CTAs. Staggered by 0.12s each using animation-delay.</div>
+    </div>
+    <div class="motion-card">
+      <div class="motion-card__name">Stagger Delay System</div>
+      <div class="motion-card__curve"></div>
+      <div class="motion-card__spec">data-delay="1" → +0.08s per step</div>
+      <div class="motion-card__use">Apply data-delay="1" through "6" to sibling elements for cascading reveals without JavaScript delay logic.</div>
+    </div>
+    <div class="motion-card">
+      <div class="motion-card__name">Background Slowzoom</div>
+      <div class="motion-card__curve"></div>
+      <div class="motion-card__spec">ease-in-out alternate · 22s infinite</div>
+      <div class="motion-card__use">Hero background image gently scales 100% → 108% over 22 seconds. Creates depth without distraction.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <h3 style="font-size:10pt;font-weight:700;color:var(--ink);margin-bottom:12px;">Interaction Transitions</h3>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;" class="no-break">
+      <div style="font-size:9pt;font-weight:700;color:var(--ink);margin-bottom:5px;">Hover: Cards</div>
+      <div style="font-size:8pt;color:var(--muted);font-family:monospace;margin-bottom:5px;">transform: translateY(-2px)<br>transition: 0.2s ease</div>
+      <div style="font-size:8pt;color:var(--muted);">Subtle lift + border highlight on card hover</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;" class="no-break">
+      <div style="font-size:9pt;font-weight:700;color:var(--ink);margin-bottom:5px;">Hover: Buttons</div>
+      <div style="font-size:8pt;color:var(--muted);font-family:monospace;margin-bottom:5px;">opacity: 0.88<br>transition: 0.15s ease</div>
+      <div style="font-size:8pt;color:var(--muted);">Slight opacity dim. No scale or colour shift.</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;" class="no-break">
+      <div style="font-size:9pt;font-weight:700;color:var(--ink);margin-bottom:5px;">Reduced Motion</div>
+      <div style="font-size:8pt;color:var(--muted);font-family:monospace;margin-bottom:5px;">prefers-reduced-motion:<br>  animation: none</div>
+      <div style="font-size:8pt;color:var(--muted);">All animations and transitions disabled for users who request it via OS settings.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     11 · RESPONSIVE GRID SYSTEM
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page page--white break-before">
+  <div class="section-label">10 · Layout System</div>
+  <h1 class="page-title">Grid <em>&amp; Breakpoints</em></h1>
+  <p class="page-desc">
+    CSS Grid with <code style="font-family:monospace;font-size:9pt;background:#f3f4f6;padding:1px 5px;border-radius:3px;">auto-fill</code> and
+    <code style="font-family:monospace;font-size:9pt;background:#f3f4f6;padding:1px 5px;border-radius:3px;">minmax()</code>
+    provides fully automatic responsiveness — no manual breakpoint overrides needed for most grids.
+    The layout uses a fluid container with 24px gutters on mobile scaling to 48px on desktop.
+  </p>
+
+  <h3 style="font-size:10pt;font-weight:700;color:var(--ink);margin-bottom:14px;">Layout Anatomy</h3>
+  <div class="layout-diagram no-break">
+    <div class="layout-diagram__header">
+      <div class="layout-diagram__dot" style="background:#ff5f57;"></div>
+      <div class="layout-diagram__dot" style="background:#ffbd2e;"></div>
+      <div class="layout-diagram__dot" style="background:#28c840;"></div>
+      <span style="margin-left:8px;">kwara-lpres.netlify.app</span>
+    </div>
+    <div class="layout-diagram__body">
+      <!-- Nav -->
+      <div class="layout-row">
+        <div class="layout-col" style="flex:1;background:#1a5c26;">NAVBAR — full width, sticky, glassmorphic</div>
+      </div>
+      <!-- Hero -->
+      <div class="layout-row">
+        <div class="layout-col" style="flex:1;background:#0d2612;height:56px;">
+          HERO — 100vh · 2-col grid (text | media card) · background image + overlay
+        </div>
+      </div>
+      <!-- QuickLinks -->
+      <div class="layout-row">
+        <div class="layout-col" style="flex:1;background:var(--green-mid);padding:6px;">QUICK LINKS BAR — scrollable pill nav</div>
+      </div>
+      <!-- 2-col -->
+      <div class="layout-row">
+        <div class="layout-col" style="flex:1;background:#0891b2;min-height:40px;">COORDINATOR (photo col)</div>
+        <div class="layout-col" style="flex:2;background:#0e7490;min-height:40px;">COORDINATOR (content col)</div>
+      </div>
+      <!-- Stats -->
+      <div class="layout-row">
+        <div class="layout-col" style="flex:1;background:#7c3aed;">STATS</div>
+        <div class="layout-col" style="flex:1;background:#6d28d9;">STATS</div>
+        <div class="layout-col" style="flex:1;background:#5b21b6;">STATS</div>
+        <div class="layout-col" style="flex:1;background:#4c1d95;">STATS</div>
+      </div>
+      <!-- 3-col -->
+      <div class="layout-row">
+        <div class="layout-col" style="flex:1;background:#c49a3e;">COMPONENT</div>
+        <div class="layout-col" style="flex:1;background:#d4aa4e;">COMPONENT</div>
+        <div class="layout-col" style="flex:1;background:#b48a2e;">COMPONENT</div>
+      </div>
+      <!-- Full width -->
+      <div class="layout-row">
+        <div class="layout-col" style="flex:1;background:var(--green-deep);">ON THE GROUND (project portfolio slider)</div>
+      </div>
+      <!-- Footer -->
+      <div class="layout-row">
+        <div class="layout-col" style="flex:1;background:#0a0f0d;">FOOTER — 4-col links + copyright</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size:10pt;font-weight:700;color:var(--ink);margin:20px 0 14px;">Responsive Breakpoints</h3>
+  <div class="breakpoints no-break">
+    <div class="bp-item">
+      <div class="bp-device" style="width:32px;height:56px;border-radius:6px;font-size:18px;">📱</div>
+      <div class="bp-label">Mobile</div>
+      <div class="bp-px">320–639px</div>
+      <div style="font-size:7.5pt;color:var(--muted);text-align:center;margin-top:4px;max-width:70px;">1-col · stacked · full-width cards</div>
+    </div>
+    <div class="bp-item">
+      <div class="bp-device" style="width:48px;height:64px;border-radius:6px;font-size:22px;">📱</div>
+      <div class="bp-label">Tablet</div>
+      <div class="bp-px">640–1023px</div>
+      <div style="font-size:7.5pt;color:var(--muted);text-align:center;margin-top:4px;max-width:80px;">2-col grids · side-by-side hero</div>
+    </div>
+    <div class="bp-item">
+      <div class="bp-device" style="width:80px;height:56px;border-radius:4px;font-size:26px;">💻</div>
+      <div class="bp-label">Laptop</div>
+      <div class="bp-px">1024–1279px</div>
+      <div style="font-size:7.5pt;color:var(--muted);text-align:center;margin-top:4px;max-width:90px;">Full layout · 3-col grids</div>
+    </div>
+    <div class="bp-item">
+      <div class="bp-device" style="width:108px;height:68px;border-radius:4px;font-size:28px;">🖥</div>
+      <div class="bp-label">Desktop</div>
+      <div class="bp-px">1280px+</div>
+      <div style="font-size:7.5pt;color:var(--muted);text-align:center;margin-top:4px;max-width:100px;">Max container 1200px · centered · 4-col stats</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     12 · DELIVERABLES SUMMARY
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page page--green break-before">
+  <div class="section-label" style="color:var(--gold)">11 · Summary</div>
+  <h1 class="page-title">What Was <em>Delivered</em></h1>
+  <p class="page-desc" style="max-width:600px;">
+    A fully designed, built, and deployed website — not a mockup. Every component shown in this document
+    is live and functional at the URL below.
+  </p>
+
+  <!-- Deliverables grid -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:36px;">
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px;" class="no-break">
+      <div style="color:var(--gold);font-size:10pt;font-weight:700;margin-bottom:10px;">🌐 Public Website</div>
+      <ul style="list-style:none;font-size:9pt;color:rgba(255,255,255,0.6);line-height:2;">
+        <li>✓ Full homepage with 12 sections</li>
+        <li>✓ News listing + article templates</li>
+        <li>✓ Filterable media gallery</li>
+        <li>✓ Project portfolio with image carousel</li>
+        <li>✓ Interactive Leaflet field survey map</li>
+        <li>✓ YouTube documentary embed</li>
+        <li>✓ Contact section</li>
+        <li>✓ Partners &amp; publications sections</li>
+      </ul>
+    </div>
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px;" class="no-break">
+      <div style="color:var(--gold);font-size:10pt;font-weight:700;margin-bottom:10px;">🔒 Admin CMS</div>
+      <ul style="list-style:none;font-size:9pt;color:rgba(255,255,255,0.6);line-height:2;">
+        <li>✓ Secure JWT login system</li>
+        <li>✓ Rich text news editor (TipTap)</li>
+        <li>✓ Multi-image project gallery manager</li>
+        <li>✓ Photo + video gallery uploader</li>
+        <li>✓ Publish / unpublish toggle</li>
+        <li>✓ Dashboard with content stats</li>
+        <li>✓ Automatic slug generation</li>
+        <li>✓ File size + type validation</li>
+      </ul>
+    </div>
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px;" class="no-break">
+      <div style="color:var(--gold);font-size:10pt;font-weight:700;margin-bottom:10px;">⚙️ Backend API</div>
+      <ul style="list-style:none;font-size:9pt;color:rgba(255,255,255,0.6);line-height:2;">
+        <li>✓ FastAPI REST API (28 endpoints)</li>
+        <li>✓ SQLite database with migrations</li>
+        <li>✓ File upload with UUID naming</li>
+        <li>✓ Seeded with sample data</li>
+        <li>✓ Interactive Swagger docs</li>
+        <li>✓ Health check endpoint</li>
+      </ul>
+    </div>
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px;" class="no-break">
+      <div style="color:var(--gold);font-size:10pt;font-weight:700;margin-bottom:10px;">🚀 Deployment</div>
+      <ul style="list-style:none;font-size:9pt;color:rgba(255,255,255,0.6);line-height:2;">
+        <li>✓ Live on Netlify CDN (HTTPS)</li>
+        <li>✓ Serverless Functions for preview</li>
+        <li>✓ One-command deploy pipeline</li>
+        <li>✓ Technical documentation PDF</li>
+        <li>✓ UI/UX design deliverable (this doc)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Live URL callout -->
+  <div style="background:rgba(196,154,62,0.1);border:1px solid rgba(196,154,62,0.3);border-radius:14px;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;" class="no-break">
+    <div>
+      <div style="font-size:8pt;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;">Live Preview URL</div>
+      <div style="font-size:16pt;font-weight:800;color:#fff;">https://kwara-lpres.netlify.app</div>
+      <div style="font-size:9pt;color:rgba(255,255,255,0.45);margin-top:4px;">Hosted on Netlify · Global CDN · Automatic HTTPS</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:8pt;color:rgba(255,255,255,0.35);margin-bottom:4px;">Admin Access</div>
+      <div style="font-size:9pt;color:rgba(255,255,255,0.7);font-family:monospace;">username: admin</div>
+      <div style="font-size:9pt;color:rgba(255,255,255,0.7);font-family:monospace;">password: lpres@admin2024</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="margin-top:40px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;">
+    <div>
+      <div style="font-size:9pt;font-weight:700;color:rgba(255,255,255,0.7);">Kwara State L-PRES Project</div>
+      <div style="font-size:8pt;color:rgba(255,255,255,0.35);">UI/UX Design Deliverable · Version 1.0 · June 2026</div>
+    </div>
+    <div style="display:flex;gap:4px;align-items:flex-end;height:36px;">
+      <div style="width:4px;border-radius:2px;background:linear-gradient(to top,var(--gold),transparent);height:12px;opacity:0.3"></div>
+      <div style="width:4px;border-radius:2px;background:linear-gradient(to top,var(--gold),transparent);height:18px;opacity:0.5"></div>
+      <div style="width:4px;border-radius:2px;background:linear-gradient(to top,var(--gold),transparent);height:26px;opacity:0.7"></div>
+      <div style="width:4px;border-radius:2px;background:linear-gradient(to top,var(--gold),transparent);height:36px;opacity:1"></div>
+      <div style="width:4px;border-radius:2px;background:linear-gradient(to top,var(--gold),transparent);height:28px;opacity:0.8"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

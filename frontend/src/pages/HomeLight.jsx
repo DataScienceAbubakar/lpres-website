@@ -37,7 +37,7 @@ const STATS = [
   { value: 12400, suffix: '+', label: 'Direct Beneficiaries' },
   { value: 16,    suffix: '',  label: 'LGAs Covered' },
   { value: 85000, suffix: '+', label: 'Animals Vaccinated' },
-  { value: 1240,  suffix: '',  label: 'VC Actors Profiled' },
+  { value: 1240,  suffix: '',  label: 'Value Chain Actors Profiled' },
   { value: 3800,  suffix: '+', label: 'Farmers Trained' },
 ];
 
@@ -46,7 +46,7 @@ const PROGRAMS = [
   { icon: Bird,          title: 'Poultry Development',         desc: 'Building a competitive poultry sub-sector through improved feeds, biosecurity training, and structured commercial buyer linkages.',          tags: ['Layers', 'Broilers', 'Feeds'],           color: '#0891b2', bg: '#e0f2fe' },
   { icon: Droplets,      title: 'Dairy & Aquaculture',         desc: 'Establishing milk collection centres, cold chain networks, and aquaculture as a complementary protein value chain across Kwara.',          tags: ['Milk', 'Cold Chain', 'Aqua'],            color: '#0d9488', bg: '#f0fdfa' },
   { icon: AlertTriangle, title: 'Conflict Early Warning',      desc: 'A real-time monitoring system tracking farmer-herder tension hotspots and enabling swift mediation before conflicts escalate.',            tags: ['Early Warning', 'CIMS', 'Mediation'],    color: '#dc2626', bg: '#fef2f2' },
-  { icon: Map,           title: 'Geospatial Decision Support', desc: 'The LPRES GDSS — GIS mapping, satellite imagery, and spatial analytics guiding livestock corridor and resource management.',              tags: ['GDSS', 'GIS', 'Remote Sensing'],         color: '#2e5e35', bg: '#f0fdf4' },
+  { icon: Map,           title: 'Geospatial Decision Support', desc: 'The LPRES GDSS: GIS mapping, satellite imagery, and spatial analytics guiding livestock corridor and resource management.',              tags: ['GDSS', 'GIS', 'Remote Sensing'],         color: '#2e5e35', bg: '#f0fdf4' },
   { icon: BookOpen,      title: 'Extension & Capacity',        desc: 'Training 3,800+ farmers and extension officers in animal husbandry, rangeland management, and agribusiness development.',                  tags: ['Training', 'Extension', 'Agribusiness'], color: '#7c3aed', bg: '#f5f3ff' },
 ];
 
@@ -97,7 +97,7 @@ function HeroLight() {
 
           <p className="hl-hero__sub">
             A statewide programme transforming livestock productivity,
-            resilience, and commercialisation — built with the farmers,
+            resilience, and commercialisation, built with the farmers,
             herders, and communities of Kwara.
           </p>
 
@@ -361,7 +361,7 @@ function MissionLight() {
           <div className="hl-mission__card hl-mission__card--vision">
             <div className="hl-mission__card-icon"><Eye size={28} /></div>
             <h3>Our Vision</h3>
-            <p>A Kwara State where a commercially viable, climate-resilient, and equitably organised livestock sector drives prosperity for farmers, herders, and their families — underpinned by world-class infrastructure and evidence-based policy.</p>
+            <p>A Kwara State where a commercially viable, climate-resilient, and equitably organised livestock sector drives prosperity for farmers, herders, and their families, underpinned by world-class infrastructure and evidence-based policy.</p>
           </div>
           <div className="hl-mission__card hl-mission__card--mission">
             <div className="hl-mission__card-icon"><Compass size={28} /></div>

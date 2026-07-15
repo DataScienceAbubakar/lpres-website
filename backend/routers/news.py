@@ -1,41 +1,45 @@
-import os
 import re
+import os
 import uuid
-import aiofiles
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
+import base64
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from typing import List
 from database import get_db
 import models, schemas, auth
 
 router = APIRouter(prefix="/api/news", tags=["news"])
 
 UPLOAD_DIR = "uploads"
-ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
-MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 
 
 def slugify(text: str) -> str:
     text = text.lower()
     text = re.sub(r"[^\w\s-]", "", text)
     text = re.sub(r"[\s_-]+", "-", text)
-    text = text.strip("-")
-    return text[:200]
+    return text.strip("-")[:200]
 
 
-async def save_upload(file: UploadFile) -> str:
-    if file.content_type not in ALLOWED_TYPES:
-        raise HTTPException(status_code=400, detail="Invalid image type")
-    content = await file.read()
-    if len(content) > MAX_FILE_SIZE:
-        raise HTTPException(status_code=400, detail="File too large (max 10 MB)")
-    ext = file.filename.rsplit(".", 1)[-1] if "." in file.filename else "jpg"
+def save_data_url(data_url: str) -> str:
+    """Decode a base64 data URL, save to disk, return the /api/news/uploads/... path."""
+    # data:image/jpeg;base64,<data>
+    header, encoded = data_url.split(",", 1)
+    mime = header.split(";")[0].split(":")[1]          # e.g. image/jpeg
+    ext = mime.split("/")[1].replace("jpeg", "jpg")    # jpg / png / webp
     filename = f"{uuid.uuid4().hex}.{ext}"
     path = os.path.join(UPLOAD_DIR, filename)
-    async with aiofiles.open(path, "wb") as f:
-        await f.write(content)
+    os.makedirs(UPLOAD_DIR, exist_ok=True)
+    with open(path, "wb") as f:
+        f.write(base64.b64decode(encoded))
     return f"/api/news/uploads/{filename}"
+
+
+def resolve_image(value: str | None) -> str | None:
+    """If the value is a base64 data URL, save it and return the file path."""
+    if value and value.startswith("data:"):
+        return save_data_url(value)
+    return value
 
 
 # ── Public endpoints ──────────────────────────────────────────
@@ -45,7 +49,10 @@ def list_published(skip: int = 0, limit: int = 12, db: Session = Depends(get_db)
     return (
         db.query(models.NewsArticle)
         .filter(models.NewsArticle.is_published == True)
-        .order_by(models.NewsArticle.created_at.desc())
+        .order_by(
+            models.NewsArticle.event_date.desc().nullslast(),
+            models.NewsArticle.created_at.desc(),
+        )
         .offset(skip).limit(limit).all()
     )
 
@@ -60,6 +67,14 @@ def list_by_category(category: str, db: Session = Depends(get_db)):
     )
 
 
+@router.get("/uploads/{filename}")
+def serve_upload(filename: str):
+    path = os.path.join("uploads", filename)
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail="File not found")
+    return FileResponse(path)
+
+
 @router.get("/{slug}", response_model=schemas.NewsArticleOut)
 def get_article(slug: str, db: Session = Depends(get_db)):
     article = db.query(models.NewsArticle).filter(
@@ -69,14 +84,6 @@ def get_article(slug: str, db: Session = Depends(get_db)):
     if not article:
         raise HTTPException(status_code=404, detail="Article not found")
     return article
-
-
-@router.get("/uploads/{filename}")
-def serve_upload(filename: str):
-    path = os.path.join(UPLOAD_DIR, filename)
-    if not os.path.exists(path):
-        raise HTTPException(status_code=404, detail="File not found")
-    return FileResponse(path)
 
 
 # ── Admin-protected endpoints ─────────────────────────────────
@@ -96,49 +103,30 @@ def list_all(
 
 
 @router.post("/admin/create", response_model=schemas.NewsArticleOut)
-async def create_article(
-    title: str = Form(...),
-    body: str = Form(...),
-    event_date: Optional[str] = Form(None),
-    published_by: str = Form(...),
-    template: int = Form(1),
-    is_published: bool = Form(False),
-    excerpt: Optional[str] = Form(None),
-    category: str = Form("News"),
-    featured_image: Optional[UploadFile] = File(None),
-    images: Optional[List[UploadFile]] = File(None),
+def create_article(
+    data: schemas.NewsArticleCreate,
     db: Session = Depends(get_db),
     _: models.Admin = Depends(auth.get_current_admin),
 ):
-    base_slug = slugify(title)
+    base_slug = slugify(data.title)
     slug = base_slug
     counter = 1
     while db.query(models.NewsArticle).filter(models.NewsArticle.slug == slug).first():
         slug = f"{base_slug}-{counter}"
         counter += 1
 
-    feat_path = None
-    if featured_image and featured_image.filename:
-        feat_path = await save_upload(featured_image)
-
-    image_paths = []
-    if images:
-        for img in images:
-            if img and img.filename:
-                image_paths.append(await save_upload(img))
-
     article = models.NewsArticle(
-        title=title,
-        body=body,
-        featured_image=feat_path,
-        images=image_paths,
-        event_date=event_date,
-        published_by=published_by,
-        template=template,
-        is_published=is_published,
+        title=data.title,
+        body=data.body,
+        featured_image=resolve_image(data.featured_image),
+        images=[resolve_image(img) for img in (data.images or [])],
+        event_date=data.event_date,
+        published_by=data.published_by,
+        template=data.template,
+        is_published=data.is_published,
         slug=slug,
-        excerpt=excerpt or (body[:200].strip() + "…" if len(body) > 200 else body),
-        category=category,
+        excerpt=data.excerpt or (data.body[:200].strip() + "…" if len(data.body) > 200 else data.body),
+        category=data.category,
     )
     db.add(article)
     db.commit()
@@ -147,18 +135,9 @@ async def create_article(
 
 
 @router.put("/admin/{article_id}", response_model=schemas.NewsArticleOut)
-async def update_article(
+def update_article(
     article_id: int,
-    title: Optional[str] = Form(None),
-    body: Optional[str] = Form(None),
-    event_date: Optional[str] = Form(None),
-    published_by: Optional[str] = Form(None),
-    template: Optional[int] = Form(None),
-    is_published: Optional[bool] = Form(None),
-    excerpt: Optional[str] = Form(None),
-    category: Optional[str] = Form(None),
-    featured_image: Optional[UploadFile] = File(None),
-    images: Optional[List[UploadFile]] = File(None),
+    data: schemas.NewsArticleUpdate,
     db: Session = Depends(get_db),
     _: models.Admin = Depends(auth.get_current_admin),
 ):
@@ -166,31 +145,26 @@ async def update_article(
     if not article:
         raise HTTPException(status_code=404, detail="Article not found")
 
-    if title is not None:
-        article.title = title
-    if body is not None:
-        article.body = body
-    if event_date is not None:
-        article.event_date = event_date
-    if published_by is not None:
-        article.published_by = published_by
-    if template is not None:
-        article.template = template
-    if is_published is not None:
-        article.is_published = is_published
-    if excerpt is not None:
-        article.excerpt = excerpt
-    if category is not None:
-        article.category = category
-    if featured_image and featured_image.filename:
-        article.featured_image = await save_upload(featured_image)
-    if images:
-        new_imgs = []
-        for img in images:
-            if img and img.filename:
-                new_imgs.append(await save_upload(img))
-        if new_imgs:
-            article.images = (article.images or []) + new_imgs
+    if data.title is not None:
+        article.title = data.title
+    if data.body is not None:
+        article.body = data.body
+    if data.event_date is not None:
+        article.event_date = data.event_date
+    if data.published_by is not None:
+        article.published_by = data.published_by
+    if data.template is not None:
+        article.template = data.template
+    if data.is_published is not None:
+        article.is_published = data.is_published
+    if data.excerpt is not None:
+        article.excerpt = data.excerpt
+    if data.category is not None:
+        article.category = data.category
+    if data.featured_image is not None:
+        article.featured_image = resolve_image(data.featured_image)
+    if data.images is not None:
+        article.images = [resolve_image(img) for img in data.images]
 
     db.commit()
     db.refresh(article)

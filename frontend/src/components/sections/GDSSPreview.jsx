@@ -18,10 +18,10 @@ export default function GDSSPreview() {
           {/* Left: text */}
           <div className="gdss__left">
             <span className="section-label">Geographic Data Support System</span>
-            <h2 className="gdss__title">GDSS Overview.</h2>
+            <h2 className="gdss__title">GDSS Overview</h2>
             <p className="gdss__body">
               Real-time geospatial intelligence on livestock grazing corridors, GPS survey coverage,
-              and ward-level mapping across Kwara State — powering evidence-based decision making for
+              and ward-level mapping across Kwara State, powering evidence-based decision making for
               the entire L-PRES programme.
             </p>
 
@@ -44,7 +44,7 @@ export default function GDSSPreview() {
 
             <div className="gdss__routes">
               <GitBranch size={14} />
-              <span><strong>GPS Corridors by Route</strong> — 92 GPS-verified corridors across 68 named routes</span>
+              <span><strong>GPS Corridors by Route</strong>: 92 GPS-verified corridors across 68 named routes</span>
             </div>
 
             <Link to="/gdss" className="btn btn-primary gdss__cta">

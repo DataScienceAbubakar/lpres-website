@@ -14,13 +14,13 @@ export default function Footer() {
             <img src="/lpres-logo.png" alt="L-PRES Kwara State" className="footer__logo" />
           </div>
           <p className="footer__tagline">
-            Kwara State Livestock Productivity and Resilience Support (L-PRES) Project —
+            Kwara State Livestock Productivity and Resilience Support (L-PRES) Project,
             transforming livestock value chains and livelihoods across all 16 LGAs.
           </p>
           <div className="footer__contact-mini">
             <a href="mailto:contact@lpreskwara.gov.ng"><Mail size={14} /> contact@lpreskwara.gov.ng</a>
-            <a href="tel:+2348008537592"><Phone size={14} /> +234 (0) 800 LPRES KWA</a>
-            <span><MapPin size={14} /> Ilorin, Kwara State, Nigeria</span>
+            <a href="tel:+2348035068906"><Phone size={14} /> +2348035068906</a>
+            <span><MapPin size={14} /> No. 11, Achimugu Road, G.R.A, Ilorin, Kwara State</span>
           </div>
         </div>
 

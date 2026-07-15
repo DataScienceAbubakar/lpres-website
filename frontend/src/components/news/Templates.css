@@ -410,6 +410,102 @@
   line-height: 1.75;
 }
 
+/* ── Lightbox ────────────────────────────────────────────── */
+
+.lb-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: lb-fade-in 0.15s ease;
+}
+
+@keyframes lb-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.lb-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  z-index: 1;
+}
+.lb-close:hover { background: rgba(255, 255, 255, 0.25); }
+
+.lb-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 92vw;
+  max-height: 85vh;
+}
+
+.lb-img {
+  max-width: 90vw;
+  max-height: 84vh;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.6);
+  display: block;
+  animation: lb-zoom-in 0.18s ease;
+}
+
+@keyframes lb-zoom-in {
+  from { transform: scale(0.96); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.lb-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  border: none;
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.lb-arrow:hover { background: rgba(255, 255, 255, 0.28); }
+.lb-arrow--prev { left: -70px; }
+.lb-arrow--next { right: -70px; }
+
+.lb-counter {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  margin-top: 16px;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 600px) {
+  .lb-arrow--prev { left: 4px; }
+  .lb-arrow--next { right: 4px; }
+  .lb-arrow { width: 40px; height: 40px; background: rgba(0,0,0,0.5); }
+}
+
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .t1__layout { grid-template-columns: 280px 1fr; gap: 32px; }

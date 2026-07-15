@@ -37,7 +37,7 @@ export default function Partners() {
       <div className="container">
         <div className="pt__header text-center">
           <span className="section-label">Working Together</span>
-          <h2 className="section-title">Our Partners.</h2>
+          <h2 className="section-title">Our Partners</h2>
           <p className="section-subtitle mx-auto text-center">
             Implemented through a collaborative partnership involving development partners,
             government institutions, and key stakeholders.

@@ -2,13 +2,16 @@
  * Template 3 — Timeline / Event Style
  * Prominent date display, image gallery grid, timeline body
  */
+import { useState } from 'react';
 import { Calendar, User, Tag, ChevronLeft, Image } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Lightbox from './Lightbox';
 import './Templates.css';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export default function Template3({ article }) {
+  const [lbIndex, setLbIndex] = useState(null);
   const imgSrc = article.featured_image
     ? (article.featured_image.startsWith('http') ? article.featured_image : `${API_BASE}${article.featured_image}`)
     : null;
@@ -65,7 +68,7 @@ export default function Template3({ article }) {
             </div>
             <div className={`t3__gallery-grid t3__gallery-grid--${Math.min(allImages.length, 4)}`}>
               {allImages.map((src, i) => (
-                <img key={i} src={src} alt={`Photo ${i + 1}`} className="t3__gallery-img" />
+                <img key={i} src={src} alt={`Photo ${i + 1}`} className="t3__gallery-img" onClick={() => setLbIndex(i)} />
               ))}
             </div>
           </div>
@@ -77,6 +80,14 @@ export default function Template3({ article }) {
           <div className="prose" dangerouslySetInnerHTML={{ __html: article.body }} />
         </div>
       </div>
+
+      {lbIndex !== null && (
+        <Lightbox
+          images={allImages}
+          startIndex={lbIndex}
+          onClose={() => setLbIndex(null)}
+        />
+      )}
     </div>
   );
 }

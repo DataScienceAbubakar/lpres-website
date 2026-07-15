@@ -102,6 +102,10 @@ export default function NewsForm() {
     setGalleryPreviews(prev => prev.filter((_, idx) => idx !== i));
   };
 
+  const removeExistingGallery = (i) => {
+    setExistingGallery(prev => prev.filter((_, idx) => idx !== i));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -329,7 +333,14 @@ export default function NewsForm() {
               <div className="admin-gallery-grid">
                 {existingGallery.map((img, i) => {
                   const src = (img.startsWith('http') || img.startsWith('data:')) ? img : `${API_BASE}${img}`;
-                  return <img key={`existing-${i}`} src={src} alt="" className="admin-gallery-thumb" />;
+                  return (
+                    <div key={`existing-${i}`} className="admin-gallery-thumb-wrap">
+                      <img src={src} alt="" className="admin-gallery-thumb" />
+                      <button type="button" className="admin-gallery-remove" onClick={() => removeExistingGallery(i)}>
+                        <X size={12} />
+                      </button>
+                    </div>
+                  );
                 })}
                 {galleryPreviews.map((src, i) => (
                   <div key={`new-${i}`} className="admin-gallery-thumb-wrap">

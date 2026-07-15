@@ -132,7 +132,7 @@ function UploadModal({ onClose, onUploaded }) {
               <div className="admin-upload-zone" onClick={() => fileRef.current.click()}>
                 <Upload size={20} />
                 <span>Click to choose {form.media_type === 'video' ? 'video' : 'image'}</span>
-                <span className="admin-upload-hint">{form.media_type === 'video' ? 'MP4, WebM — max 300 MB' : 'JPEG, PNG, WebP — max 15 MB'}</span>
+                <span className="admin-upload-hint">{form.media_type === 'video' ? 'MP4, WebM, max 300 MB' : 'JPEG, PNG, WebP, max 15 MB'}</span>
               </div>
             )}
           </div>
