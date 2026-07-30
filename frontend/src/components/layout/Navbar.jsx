@@ -27,6 +27,7 @@ const NAV = [
     ],
   },
   { label: 'Impact', href: '/impact' },
+  { label: 'Marketplace', href: '/marketplace' },
   { label: 'Gallery', href: '/gallery' },
   { label: 'News', href: '/news' },
   { label: 'Contact', href: '/contact' },
@@ -50,7 +51,7 @@ function DropdownMenu({ items, onClose }) {
 }
 
 export default function Navbar() {
-  const [open, setOpen]         = useState(false);
+  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const location = useLocation();

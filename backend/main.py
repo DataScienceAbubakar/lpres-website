@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from database import engine
 import models
-from routers import admin, news, gallery, projects
+from routers import admin, news, gallery, projects, marketplace, upload
 from auth import get_password_hash
 from database import SessionLocal
 
@@ -44,6 +44,8 @@ app.include_router(admin.router)
 app.include_router(news.router)
 app.include_router(gallery.router)
 app.include_router(projects.router)
+app.include_router(marketplace.router)
+app.include_router(upload.router)
 
 
 def seed_default_admin():
@@ -109,7 +111,57 @@ def seed_sample_data():
             models.GalleryItem(title="State Project Coordination Meeting", file_url="/api/projects/uploads/seed_spc.png", thumbnail_url="/api/projects/uploads/seed_spc.png", media_type="photo", category="Outreach", is_published=True, sort_order=2, description="Senior L-PRES officials and LGA coordinators reviewing Q2 implementation targets at the State Project Office."),
             models.GalleryItem(title="Kwara State Livestock Map Infographic", file_url="/api/projects/uploads/seed_video.mp4", thumbnail_url="/api/projects/uploads/seed_spc.png", media_type="video", category="Field Work", is_published=True, sort_order=4, description="L-PRES project area coverage and key infrastructure sites mapped across all 16 LGAs of Kwara State."),
         ]
-        for item in sample_projects + sample_gallery:
+        sample_marketplace = [
+            models.MarketplaceProduct(
+                name="Premium Bunaji Bulls (Kwara Central)",
+                description="Healthy, fully vaccinated 3-year-old White Fulani (Bunaji) fattened bulls raised under L-PRES veterinary supervision in Ilorin East. Average live weight 380kg - 420kg.",
+                category="Livestock",
+                price={"amount": 650000, "currency": "NGN", "unit": "per bull"},
+                quantity={"available": 15, "unit": "bulls"},
+                location={"region": "Ilorin East", "country": "Nigeria"},
+                images=[{"url": "https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=800&q=80", "alt": "Bunaji Bulls", "isPrimary": True}],
+                specifications={"isOrganic": True, "variety": "White Fulani (Bunaji)", "grade": "Grade A Fattened"},
+                seller={"userId": "seed-1", "name": "Alhaji Ibrahim Danladi", "contact": {"phone": "+234 803 123 4567", "email": "ibrahim.danladi@lpres-farmers.ng", "whatsapp": "+234 803 123 4567"}},
+                status="active"
+            ),
+            models.MarketplaceProduct(
+                name="Fresh Pasteurised Dairy Milk",
+                description="Daily harvested fresh raw and pasteurised cow milk produced at Offa Dairy Cold Chain Hub under strict L-PRES hygiene protocols.",
+                category="Livestock",
+                price={"amount": 1200, "currency": "NGN", "unit": "per Litre"},
+                quantity={"available": 250, "unit": "Litres"},
+                location={"region": "Offa", "country": "Nigeria"},
+                images=[{"url": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=800&q=80", "alt": "Fresh Dairy Milk", "isPrimary": True}],
+                specifications={"isOrganic": True, "variety": "Fresh Holstein-Bunaji Cross", "grade": "Premium Grade"},
+                seller={"userId": "seed-2", "name": "Offa Women Dairy Cooperative", "contact": {"phone": "+234 805 987 6543", "email": "offa.dairy@lpres-coop.ng", "whatsapp": "+234 805 987 6543"}},
+                status="active"
+            ),
+            models.MarketplaceProduct(
+                name="High-Nutrient Stylosanthes Hay Bales",
+                description="Nutritious cultivated leguminous forage pasture hay bales harvested from Baruten Grazing Reserve plots. High protein content suitable for dairy & beef cattle.",
+                category="Feed & Fodder",
+                price={"amount": 4500, "currency": "NGN", "unit": "per bale"},
+                quantity={"available": 400, "unit": "bales"},
+                location={"region": "Baruten", "country": "Nigeria"},
+                images=[{"url": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80", "alt": "Hay Bales", "isPrimary": True}],
+                specifications={"isOrganic": True, "variety": "Stylosanthes hamata", "grade": "Class 1 Feed"},
+                seller={"userId": "seed-3", "name": "Baruten Pastoralist Support Union", "contact": {"phone": "+234 812 345 6789", "email": "baruten.pasture@lpres-coop.ng", "whatsapp": "+234 812 345 6789"}},
+                status="active"
+            ),
+            models.MarketplaceProduct(
+                name="Hybrid Yellow Maize (Dried Grain)",
+                description="Clean, well-dried 50kg bags of yellow grain maize harvested in Edu LGA. Moisture content < 12%, perfect for livestock feed formulation.",
+                category="Cereals",
+                price={"amount": 48000, "currency": "NGN", "unit": "per 50kg bag"},
+                quantity={"available": 120, "unit": "bags"},
+                location={"region": "Edu", "country": "Nigeria"},
+                images=[{"url": "https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=800&q=80", "alt": "Yellow Maize", "isPrimary": True}],
+                specifications={"isOrganic": False, "variety": "SAMMAZ 15 Hybrid", "grade": "Grade A"},
+                seller={"userId": "seed-4", "name": "Mallam Usman Pategi", "contact": {"phone": "+234 814 555 7788", "email": "usman.pategi@lpres-farmers.ng", "whatsapp": "+234 814 555 7788"}},
+                status="active"
+            )
+        ]
+        for item in sample_projects + sample_gallery + sample_marketplace:
             db.add(item)
         db.commit()
         print("Sample data seeded")

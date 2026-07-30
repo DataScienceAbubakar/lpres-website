@@ -103,3 +103,52 @@ class ProjectOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# ── Marketplace ───────────────────────────────────────────────
+
+class MarketplaceUserCreate(BaseModel):
+    name: str
+    email: str
+    phone: str
+    password: str
+    whatsapp: Optional[str] = None
+    lga: Optional[str] = "Ilorin East"
+
+
+class MarketplaceUserLogin(BaseModel):
+    email: str
+    password: str
+
+
+class MarketplaceProductCreate(BaseModel):
+    name: str
+    description: str
+    category: str
+    price: dict
+    quantity: dict
+    location: dict
+    images: List[dict] = []
+    specifications: dict = {}
+    seller: dict
+
+
+class MarketplaceProductOut(BaseModel):
+    id: int
+    name: str
+    description: str
+    category: str
+    price: dict
+    quantity: dict
+    location: dict
+    images: List[dict]
+    specifications: dict
+    seller: dict
+    status: str
+    views: int
+    created_at: datetime
+    updated_at: Optional[datetime]
+
+    class Config:
+        from_attributes = True
+

@@ -65,3 +65,37 @@ class Project(Base):
     sort_order = Column(Integer, default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+
+class MarketplaceUser(Base):
+    __tablename__ = "marketplace_users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(150), nullable=False)
+    email = Column(String(150), unique=True, index=True, nullable=False)
+    phone = Column(String(50), nullable=False)
+    whatsapp = Column(String(50), nullable=True)
+    lga = Column(String(100), default="Ilorin East")
+    hashed_password = Column(String(200), nullable=False)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class MarketplaceProduct(Base):
+    __tablename__ = "marketplace_products"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(300), nullable=False)
+    description = Column(Text, nullable=False)
+    category = Column(String(100), nullable=False)
+    price = Column(JSON, nullable=False)           # {"amount": 45000, "currency": "NGN", "unit": "per bag"}
+    quantity = Column(JSON, nullable=False)        # {"available": 50, "unit": "bag"}
+    location = Column(JSON, nullable=False)        # {"region": "Ilorin East", "country": "Nigeria"}
+    images = Column(JSON, default=list)            # [{"url": "...", "alt": "...", "isPrimary": true}]
+    specifications = Column(JSON, default=dict)    # {"isOrganic": true, "variety": "...", "grade": "..."}
+    seller = Column(JSON, nullable=False)          # {"userId": "...", "name": "...", "contact": {...}}
+    status = Column(String(50), default="active")  # active | sold | reserved
+    views = Column(Integer, default=0)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
