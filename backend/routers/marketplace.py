@@ -6,7 +6,7 @@ import json
 from database import get_db
 import models
 import schemas
-from auth import get_password_hash, verify_password, create_access_token, get_current_user_optional
+from auth import get_password_hash, verify_password, create_access_token
 
 router = APIRouter(prefix="/api/marketplace", tags=["marketplace"])
 
