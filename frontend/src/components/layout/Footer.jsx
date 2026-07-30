@@ -47,7 +47,7 @@ export default function Footer() {
             <li><Link to="/programs#value-chains">Sheep</Link></li>
             <li><Link to="/programs#value-chains">Goats</Link></li>
             <li><Link to="/programs#components">Project Components</Link></li>
-            <li><Link to="/gdss">GDSS Portal</Link></li>
+            <li><a href="https://main.dgnvy1x73yeps.amplifyapp.com/" target="_blank" rel="noopener noreferrer">GDSS Portal</a></li>
           </ul>
         </div>
 

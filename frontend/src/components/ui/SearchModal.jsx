@@ -12,7 +12,7 @@ const STATIC_INDEX = [
   { title: 'Media Gallery', url: '/gallery', desc: 'Photos and videos from field activities and programme events', type: 'page', icon: 'page' },
   { title: 'News & Updates', url: '/news', desc: 'Latest news, events, announcements and field reports', type: 'page', icon: 'page' },
   { title: 'Contact Us', url: '/contact', desc: 'Office address, phone number, email and contact form', type: 'page', icon: 'page' },
-  { title: 'GDSS Portal', url: '/gdss', desc: 'Geo-referenced Decision Support System for L-PRES', type: 'page', icon: 'page' },
+  { title: 'GDSS Portal', url: 'https://main.dgnvy1x73yeps.amplifyapp.com/', desc: 'Geo-referenced Decision Support System for L-PRES', type: 'page', icon: 'page' },
   { title: "Coordinator's Message", url: '/#coordinators-message', desc: 'Message from the State Project Coordinator', type: 'section', icon: 'section' },
   { title: 'Core Values', url: '/#values', desc: 'Seven principles guiding L-PRES: accountability, innovation, inclusiveness...', type: 'section', icon: 'section' },
   { title: 'Programme Statistics', url: '/#results', desc: 'Key results and impact figures at a glance', type: 'section', icon: 'section' },
@@ -88,7 +88,7 @@ export default function SearchModal() {
           type: 'news',
           icon: 'news',
         })));
-      }).catch(() => {});
+      }).catch(() => { });
     }
     if (projectsCache.length === 0) {
       fetch('/api/projects').then(r => r.json()).then(d => {
@@ -100,7 +100,7 @@ export default function SearchModal() {
           type: 'project',
           icon: 'project',
         })));
-      }).catch(() => {});
+      }).catch(() => { });
     }
   }, [open]);
 
@@ -121,7 +121,9 @@ export default function SearchModal() {
   const go = useCallback((url) => {
     setOpen(false);
     setQuery('');
-    if (url.startsWith('/#') || url === '/') {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } else if (url.startsWith('/#') || url === '/') {
       if (window.location.pathname !== '/') navigate('/');
       setTimeout(() => {
         const id = url.split('#')[1];
@@ -136,7 +138,7 @@ export default function SearchModal() {
   const onKeyDown = (e) => {
     const max = (query ? results : SUGGESTED).length;
     if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx(i => (i + 1) % max); }
-    if (e.key === 'ArrowUp')   { e.preventDefault(); setActiveIdx(i => (i - 1 + max) % max); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx(i => (i - 1 + max) % max); }
     if (e.key === 'Enter') {
       const list = query ? results : SUGGESTED;
       if (list[activeIdx]) go(list[activeIdx].url);

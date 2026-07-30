@@ -144,7 +144,14 @@ export default function Navbar() {
             <Search size={15} />
             <kbd className="navbar__search-kbd">⌘K</kbd>
           </button>
-          <Link to="/gdss" className="btn-gdss">GDSS Portal</Link>
+          <a
+            href="https://main.dgnvy1x73yeps.amplifyapp.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-gdss"
+          >
+            GDSS Portal
+          </a>
         </div>
 
         <button className="navbar__burger" onClick={() => setOpen(!open)} aria-label="Toggle menu">
@@ -181,14 +188,16 @@ export default function Navbar() {
                 )}
               </div>
             ))}
-            <Link
-              to="/gdss"
+            <a
+              href="https://main.dgnvy1x73yeps.amplifyapp.com/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-gdss"
               style={{ marginTop: 20, width: '100%', justifyContent: 'center', display: 'flex' }}
               onClick={() => setOpen(false)}
             >
               GDSS Portal
-            </Link>
+            </a>
             <button
               className="navbar__mobile-theme"
               onClick={toggleTheme}

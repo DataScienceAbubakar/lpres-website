@@ -4,9 +4,9 @@ import './GDSSPreview.css';
 
 const STATS = [
   { value: '160', label: 'Total Corridors', sub: 'Mapped across 16 LGAs' },
-  { value: '92',  label: 'GPS Verified',    sub: 'GPS-confirmed corridors' },
-  { value: '68',  label: 'Participatory',   sub: 'Community-mapped routes' },
-  { value: '16',  label: 'LGAs Covered',    sub: 'Full state coverage' },
+  { value: '92', label: 'GPS Verified', sub: 'GPS-confirmed corridors' },
+  { value: '68', label: 'Participatory', sub: 'Community-mapped routes' },
+  { value: '16', label: 'LGAs Covered', sub: 'Full state coverage' },
 ];
 
 export default function GDSSPreview() {
@@ -47,9 +47,14 @@ export default function GDSSPreview() {
               <span><strong>GPS Corridors by Route</strong>: 92 GPS-verified corridors across 68 named routes</span>
             </div>
 
-            <Link to="/gdss" className="btn btn-primary gdss__cta">
+            <a
+              href="https://main.dgnvy1x73yeps.amplifyapp.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary gdss__cta"
+            >
               Open GDSS Portal <ArrowRight size={16} />
-            </Link>
+            </a>
           </div>
 
           {/* Right: stat grid */}
@@ -64,20 +69,20 @@ export default function GDSSPreview() {
               </div>
               <div className="gdss__map-placeholder">
                 <div className="gdss__map-grid-lines">
-                  {[1,2,3,4,5].map(i => (
-                    <div key={`h${i}`} className="gdss__grid-line gdss__grid-line--h" style={{ top: `${i*16}%` }} />
+                  {[1, 2, 3, 4, 5].map(i => (
+                    <div key={`h${i}`} className="gdss__grid-line gdss__grid-line--h" style={{ top: `${i * 16}%` }} />
                   ))}
-                  {[1,2,3,4,5,6].map(i => (
-                    <div key={`v${i}`} className="gdss__grid-line gdss__grid-line--v" style={{ left: `${i*14}%` }} />
+                  {[1, 2, 3, 4, 5, 6].map(i => (
+                    <div key={`v${i}`} className="gdss__grid-line gdss__grid-line--v" style={{ left: `${i * 14}%` }} />
                   ))}
                 </div>
                 {/* Scatter dots representing corridors */}
                 {[
-                  [22,18],[45,32],[68,22],[35,48],[72,55],[28,65],
-                  [55,70],[80,38],[15,42],[60,78],[42,25],[18,58],
-                  [85,68],[50,45],[30,80],[75,28],
-                ].map(([x,y],i) => (
-                  <div key={i} className="gdss__dot" style={{ left:`${x}%`, top:`${y}%`, animationDelay:`${i*0.18}s` }} />
+                  [22, 18], [45, 32], [68, 22], [35, 48], [72, 55], [28, 65],
+                  [55, 70], [80, 38], [15, 42], [60, 78], [42, 25], [18, 58],
+                  [85, 68], [50, 45], [30, 80], [75, 28],
+                ].map(([x, y], i) => (
+                  <div key={i} className="gdss__dot" style={{ left: `${x}%`, top: `${y}%`, animationDelay: `${i * 0.18}s` }} />
                 ))}
                 <div className="gdss__map-label">Kwara State</div>
               </div>
