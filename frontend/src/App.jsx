@@ -92,6 +92,7 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
         <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
+        <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
         <Route path="/marketplace" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
         <Route path="/marketplace/register" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
         <Route path="/marketplace/login" element={<PublicLayout><MarketplacePage /></PublicLayout>} />

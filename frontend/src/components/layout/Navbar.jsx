@@ -36,6 +36,7 @@ const NAV = [
 const MARKETPLACE_NAV = [
   { label: 'Marketplace', href: '/' },
   { label: 'About', href: '/about' },
+  { label: 'Contact Us', href: '/contact' },
 ];
 
 function DropdownMenu({ items, onClose }) {
@@ -164,23 +165,25 @@ export default function Navbar() {
               Main Website
             </a>
           ) : (
-            <a
-              href={MARKETPLACE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-marketplace"
-            >
-              Marketplace
-            </a>
+            <>
+              <a
+                href={MARKETPLACE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-marketplace"
+              >
+                Marketplace
+              </a>
+              <a
+                href={GDSS_PORTAL_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-gdss"
+              >
+                GDSS Portal
+              </a>
+            </>
           )}
-          <a
-            href={GDSS_PORTAL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-gdss"
-          >
-            GDSS Portal
-          </a>
         </div>
 
         <button className="navbar__burger" onClick={() => setOpen(!open)} aria-label="Toggle menu">
@@ -229,27 +232,29 @@ export default function Navbar() {
                 Main Website
               </a>
             ) : (
-              <a
-                href={MARKETPLACE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-marketplace"
-                style={{ marginTop: 20, width: '100%', justifyContent: 'center', display: 'flex' }}
-                onClick={() => setOpen(false)}
-              >
-                Marketplace Portal
-              </a>
+              <>
+                <a
+                  href={MARKETPLACE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-marketplace"
+                  style={{ marginTop: 20, width: '100%', justifyContent: 'center', display: 'flex' }}
+                  onClick={() => setOpen(false)}
+                >
+                  Marketplace Portal
+                </a>
+                <a
+                  href={GDSS_PORTAL_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-gdss"
+                  style={{ marginTop: 10, width: '100%', justifyContent: 'center', display: 'flex' }}
+                  onClick={() => setOpen(false)}
+                >
+                  GDSS Portal
+                </a>
+              </>
             )}
-            <a
-              href={GDSS_PORTAL_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-gdss"
-              style={{ marginTop: 10, width: '100%', justifyContent: 'center', display: 'flex' }}
-              onClick={() => setOpen(false)}
-            >
-              GDSS Portal
-            </a>
             <button
               className="navbar__mobile-theme"
               onClick={toggleTheme}
