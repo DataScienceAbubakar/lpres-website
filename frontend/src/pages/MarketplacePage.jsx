@@ -23,10 +23,9 @@ import {
 } from 'lucide-react';
 import './MarketplacePage.css';
 
-const sanitizeUrl = (url) => url ? url.trim().replace('lpress-website-backend', 'lpres-website-backend') : '';
-
-const API_BASE = sanitizeUrl(import.meta.env.VITE_API_URL)
-    || (typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://lpres-website-backend.onrender.com');
+const API_BASE = (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.trim())
+    ? import.meta.env.VITE_API_URL.trim()
+    : (typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://lpress-website.onrender.com');
 
 export default function MarketplacePage() {
     const location = useLocation();
