@@ -577,9 +577,13 @@ export default function MarketplacePage() {
                                         {/* Image */}
                                         <div className="mp-card__image-wrap">
                                             <img
-                                                src={p.images?.[0]?.url || 'https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=800&q=80'}
+                                                src={typeof p.images?.[0] === 'string' ? p.images[0] : (p.images?.[0]?.url || 'https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=800&q=80')}
                                                 alt={p.name}
                                                 className="mp-card__image"
+                                                onError={(e) => {
+                                                    e.target.onerror = null;
+                                                    e.target.src = 'https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=800&q=80';
+                                                }}
                                             />
                                             {(p.seller?.isVerified || p.seller?.is_verified) && (
                                                 <span className="mp-card__verified-badge" title="Verified by Kwara L-PRES State Project Office">
