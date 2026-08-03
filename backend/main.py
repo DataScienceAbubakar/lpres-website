@@ -37,27 +37,28 @@ models.Base.metadata.create_all(bind=engine)
 def run_migrations():
     from sqlalchemy import text
     db = SessionLocal()
-    try:
-        result = db.execute(text("PRAGMA table_info(projects)"))
-        col_names = [row[1] for row in result.fetchall()]
-        if "images" not in col_names:
-            db.execute(text("ALTER TABLE projects ADD COLUMN images TEXT DEFAULT '[]'"))
+    
+    # Migrate marketplace_users table columns
+    user_columns = [
+        ("is_verified", "BOOLEAN DEFAULT FALSE"),
+        ("verification_status", "VARCHAR(50) DEFAULT 'unverified'"),
+        ("verification_details", "TEXT DEFAULT '{}'"),
+    ]
+    
+    for col_name, col_type in user_columns:
+        try:
+            db.execute(text(f"ALTER TABLE marketplace_users ADD COLUMN {col_name} {col_type}"))
             db.commit()
+        except Exception:
+            db.rollback()
 
-        # Migrate marketplace_users table
-        mp_res = db.execute(text("PRAGMA table_info(marketplace_users)"))
-        mp_cols = [row[1] for row in mp_res.fetchall()]
-        if "is_verified" not in mp_cols:
-            db.execute(text("ALTER TABLE marketplace_users ADD COLUMN is_verified BOOLEAN DEFAULT 0"))
-        if "verification_status" not in mp_cols:
-            db.execute(text("ALTER TABLE marketplace_users ADD COLUMN verification_status VARCHAR(50) DEFAULT 'unverified'"))
-        if "verification_details" not in mp_cols:
-            db.execute(text("ALTER TABLE marketplace_users ADD COLUMN verification_details TEXT DEFAULT '{}'"))
+    try:
+        db.execute(text("ALTER TABLE projects ADD COLUMN images TEXT DEFAULT '[]'"))
         db.commit()
     except Exception:
-        pass
-    finally:
-        db.close()
+        db.rollback()
+        
+    db.close()
 
 
 run_migrations()
