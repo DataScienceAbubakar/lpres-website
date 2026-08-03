@@ -39,7 +39,7 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        value: https://lpress-website-backend.onrender.com
+        value: https://lpress-website.onrender.com
 
   # 3. Standalone Marketplace Frontend (React Vite Static Site)
   - type: static
@@ -54,7 +54,7 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        value: https://lpress-website-backend.onrender.com
+        value: https://lpress-website.onrender.com
       - key: VITE_APP_MODE
         value: marketplace
 
