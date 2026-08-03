@@ -410,34 +410,44 @@ export default function MarketplacePage() {
                     {/* Hero Header */}
                     <section className="marketplace-hero">
                         <div className="container" style={{ position: 'relative' }}>
-                            {/* Top Right User Profile Card */}
-                            {mUser ? (
-                                <div
-                                    className="mp-top-user-card"
-                                    onClick={() => switchView('profile')}
-                                    title="Click to view Marketer Profile"
+                            {/* Parallel Top Action Bar (Top-Left: List Product, Top-Right: User Profile) */}
+                            <div className="mp-top-action-bar">
+                                <button
+                                    onClick={() => requireAuthForAction('post a product', () => setShowAddModal(true))}
+                                    className="btn-mp-primary mp-top-left-list-btn"
                                 >
-                                    <div className="mp-top-user-avatar">
-                                        <User size={18} />
+                                    <Plus size={16} />
+                                    <span>List Product</span>
+                                </button>
+
+                                {mUser ? (
+                                    <div
+                                        className="mp-top-user-card"
+                                        onClick={() => switchView('profile')}
+                                        title="Click to view Marketer Profile"
+                                    >
+                                        <div className="mp-top-user-avatar">
+                                            <User size={18} />
+                                        </div>
+                                        <div className="mp-top-user-name">
+                                            {mUser.name} <span className="mp-top-user-lga">({mUser.lga || 'Offa'})</span>
+                                            {(mUser.isVerified || mUser.is_verified) && (
+                                                <ShieldCheck size={14} style={{ color: '#10b981' }} title="Verified Marketer" />
+                                            )}
+                                        </div>
                                     </div>
-                                    <div className="mp-top-user-name">
-                                        {mUser.name} <span className="mp-top-user-lga">({mUser.lga || 'Offa'})</span>
-                                        {(mUser.isVerified || mUser.is_verified) && (
-                                            <ShieldCheck size={14} style={{ color: '#10b981' }} title="Verified Marketer" />
-                                        )}
+                                ) : (
+                                    <div className="mp-top-user-card guest" onClick={() => {
+                                        setAuthIntentReason('access your marketer account');
+                                        setAuthMode('login');
+                                        setAuthError('');
+                                        setShowAuthModal(true);
+                                    }}>
+                                        <Lock size={16} />
+                                        <span>Marketer Login / Register</span>
                                     </div>
-                                </div>
-                            ) : (
-                                <div className="mp-top-user-card guest" onClick={() => {
-                                    setAuthIntentReason('access your marketer account');
-                                    setAuthMode('login');
-                                    setAuthError('');
-                                    setShowAuthModal(true);
-                                }}>
-                                    <Lock size={16} />
-                                    <span>Marketer Login / Register</span>
-                                </div>
-                            )}
+                                )}
+                            </div>
 
                             <div className="marketplace-hero__content">
                                 <div className="marketplace-hero__badge">
@@ -449,16 +459,6 @@ export default function MarketplacePage() {
                                 <p className="marketplace-hero__lead">
                                     Directly connect Kwara livestock producers, pastoralists, dairy farmers, and agro-allied marketers with verified buyers state-wide.
                                 </p>
-
-                                <div className="marketplace-hero__actions">
-                                    <button
-                                        onClick={() => requireAuthForAction('post a product', () => setShowAddModal(true))}
-                                        className="btn-mp-primary"
-                                    >
-                                        <Plus size={18} />
-                                        <span>List Your Product</span>
-                                    </button>
-                                </div>
                             </div>
                         </div>
                     </section>
@@ -1035,7 +1035,7 @@ export default function MarketplacePage() {
                             <ArrowLeft size={18} /> Back to Marketplace Catalog
                         </button>
                         <h1 className="mp-profile-page-title" style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>Marketer Profile & Control Center</h1>
-                        <button onClick={() => { handleLogout(); switchView('catalog'); }} className="btn-mp-secondary mp-profile-logout" title="Log Out" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#ef4444' }}>
+                        <button onClick={() => { handleLogout(); switchView('catalog'); }} className="btn-mp-secondary mp-profile-logout" title="Log Out" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca', fontWeight: 700, padding: '0.5rem 1rem', borderRadius: '0.5rem', cursor: 'pointer' }}>
                             <LogOut size={16} /> Log Out
                         </button>
                     </div>
@@ -1067,6 +1067,9 @@ export default function MarketplacePage() {
                                     <span><MessageCircle size={13} /> WhatsApp: {mUser.phone || 'N/A'}</span>
                                 </div>
                             </div>
+                            <button onClick={() => { handleLogout(); switchView('catalog'); }} className="btn-mp-secondary" title="Log Out" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca', fontWeight: 700, padding: '0.5rem 1rem', borderRadius: '0.5rem', cursor: 'pointer', height: 'fit-content' }}>
+                                <LogOut size={15} /> Log Out
+                            </button>
                         </div>
 
                         {/* Verification Request Banner */}

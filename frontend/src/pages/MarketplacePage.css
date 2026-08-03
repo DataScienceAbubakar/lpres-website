@@ -121,12 +121,41 @@
   transform: translateY(-1px);
 }
 
+/* Top Action Bar for Hero (Top-Left: List Product, Top-Right: Profile Card) */
+.mp-top-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 0.5rem;
+  margin-bottom: 1rem;
+  z-index: 10;
+}
+
+.mp-top-left-list-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1.15rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  background: #059669;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mp-top-left-list-btn:hover {
+  background: #047857;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.4);
+}
+
 /* Top Right Corner User Profile Card */
 .mp-top-user-card {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  z-index: 10;
   display: flex;
   align-items: center;
   gap: 0.65rem;
@@ -134,7 +163,7 @@
   border: 1px solid #e2e8f0 !important;
   padding: 0.45rem 0.85rem;
   border-radius: 9999px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
   cursor: pointer;
   transition: all 0.2s ease;
 }
