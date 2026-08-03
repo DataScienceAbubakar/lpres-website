@@ -1030,12 +1030,16 @@ export default function MarketplacePage() {
             {currentView === 'profile' && mUser && (
                 <div className="mp-profile-page-view container" style={{ padding: '2rem 1rem 4rem' }}>
                     {/* Navigation Top Bar */}
-                    <div className="mp-profile-page-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
-                        <button onClick={() => switchView('catalog')} className="btn-mp-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <ArrowLeft size={18} /> Back to Marketplace Catalog
+                    <div className="mp-profile-page-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', gap: '1rem', flexWrap: 'wrap' }}>
+                        <button
+                            onClick={() => switchView('catalog')}
+                            className="btn-mp-primary"
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#059669', color: '#ffffff', border: 'none', padding: '0.65rem 1.35rem', borderRadius: 9999, fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', boxShadow: '0 4px 14px rgba(5, 150, 105, 0.35)' }}
+                        >
+                            <ArrowLeft size={18} /> Back to Marketplace
                         </button>
                         <h1 className="mp-profile-page-title" style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>Marketer Profile & Control Center</h1>
-                        <button onClick={() => { handleLogout(); switchView('catalog'); }} className="btn-mp-secondary mp-profile-logout" title="Log Out" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca', fontWeight: 700, padding: '0.5rem 1rem', borderRadius: '0.5rem', cursor: 'pointer' }}>
+                        <button onClick={() => { handleLogout(); switchView('catalog'); }} className="btn-mp-secondary mp-profile-logout" title="Log Out" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca', fontWeight: 700, padding: '0.55rem 1.1rem', borderRadius: '0.5rem', cursor: 'pointer' }}>
                             <LogOut size={16} /> Log Out
                         </button>
                     </div>
