@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
+const API_BASE = (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.trim())
+  ? import.meta.env.VITE_API_URL.trim()
+  : (typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://lpres-website-backend.onrender.com');
 
 const api = axios.create({ baseURL: API_BASE });
 
@@ -48,21 +50,21 @@ export const adminAPI = {
 const multipart = { headers: { 'Content-Type': 'multipart/form-data' } };
 
 export const galleryAPI = {
-  list:       (params = {}) => api.get('/api/gallery/', { params }),
-  categories: ()            => api.get('/api/gallery/categories'),
-  adminList:  (skip = 0)    => api.get(`/api/gallery/admin/all?skip=${skip}`),
-  upload:     (fd)          => api.post('/api/gallery/admin/upload', fd, multipart),
-  update:     (id, fd)      => api.put(`/api/gallery/admin/${id}`, fd, multipart),
-  togglePublish: (id)       => api.patch(`/api/gallery/admin/${id}/publish`),
-  delete:     (id)          => api.delete(`/api/gallery/admin/${id}`),
+  list: (params = {}) => api.get('/api/gallery/', { params }),
+  categories: () => api.get('/api/gallery/categories'),
+  adminList: (skip = 0) => api.get(`/api/gallery/admin/all?skip=${skip}`),
+  upload: (fd) => api.post('/api/gallery/admin/upload', fd, multipart),
+  update: (id, fd) => api.put(`/api/gallery/admin/${id}`, fd, multipart),
+  togglePublish: (id) => api.patch(`/api/gallery/admin/${id}/publish`),
+  delete: (id) => api.delete(`/api/gallery/admin/${id}`),
 };
 
 export const projectsAPI = {
-  list:         (params = {}) => api.get('/api/projects/', { params }),
-  get:          (id)          => api.get(`/api/projects/${id}`),
-  adminList:    (skip = 0)    => api.get(`/api/projects/admin/all?skip=${skip}`),
-  create:       (fd)          => api.post('/api/projects/admin/', fd, multipart),
-  update:       (id, fd)      => api.put(`/api/projects/admin/${id}`, fd, multipart),
-  togglePublish:(id)          => api.patch(`/api/projects/admin/${id}/publish`),
-  delete:       (id)          => api.delete(`/api/projects/admin/${id}`),
+  list: (params = {}) => api.get('/api/projects/', { params }),
+  get: (id) => api.get(`/api/projects/${id}`),
+  adminList: (skip = 0) => api.get(`/api/projects/admin/all?skip=${skip}`),
+  create: (fd) => api.post('/api/projects/admin/', fd, multipart),
+  update: (id, fd) => api.put(`/api/projects/admin/${id}`, fd, multipart),
+  togglePublish: (id) => api.patch(`/api/projects/admin/${id}/publish`),
+  delete: (id) => api.delete(`/api/projects/admin/${id}`),
 };
