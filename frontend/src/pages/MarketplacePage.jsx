@@ -93,6 +93,11 @@ export default function MarketplacePage() {
     const [currentView, setCurrentView] = useState('catalog');
     const [profileTab, setProfileTab] = useState('listings'); // 'listings' | 'inquiries' | 'sales'
 
+    const switchView = (view) => {
+        setCurrentView(view);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     // Toggle product status (active vs sold)
     const handleToggleStatus = async (id, currentStatus) => {
         const newStatus = currentStatus === 'sold' ? 'active' : 'sold';
@@ -400,305 +405,309 @@ export default function MarketplacePage() {
 
     return (
         <div className="marketplace-page">
-            {/* Hero Header */}
-            <section className="marketplace-hero">
-                <div className="container" style={{ position: 'relative' }}>
-                    {/* Top Right User Profile Card */}
-                    {mUser ? (
-                        <div
-                            className="mp-top-user-card"
-                            onClick={() => setCurrentView('profile')}
-                            title="Click to view Marketer Profile"
-                        >
-                            <div className="mp-top-user-avatar">
-                                <User size={18} />
+            {currentView === 'catalog' ? (
+                <>
+                    {/* Hero Header */}
+                    <section className="marketplace-hero">
+                        <div className="container" style={{ position: 'relative' }}>
+                            {/* Top Right User Profile Card */}
+                            {mUser ? (
+                                <div
+                                    className="mp-top-user-card"
+                                    onClick={() => switchView('profile')}
+                                    title="Click to view Marketer Profile"
+                                >
+                                    <div className="mp-top-user-avatar">
+                                        <User size={18} />
+                                    </div>
+                                    <div className="mp-top-user-name">
+                                        {mUser.name} <span className="mp-top-user-lga">({mUser.lga || 'Offa'})</span>
+                                        {(mUser.isVerified || mUser.is_verified) && (
+                                            <ShieldCheck size={14} style={{ color: '#10b981' }} title="Verified Marketer" />
+                                        )}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="mp-top-user-card guest" onClick={() => {
+                                    setAuthIntentReason('access your marketer account');
+                                    setAuthMode('login');
+                                    setAuthError('');
+                                    setShowAuthModal(true);
+                                }}>
+                                    <Lock size={16} />
+                                    <span>Marketer Login / Register</span>
+                                </div>
+                            )}
+
+                            <div className="marketplace-hero__content">
+                                <div className="marketplace-hero__badge">
+                                    <Leaf size={16} /> Kwara L-PRES Farmers & Marketers Hub
+                                </div>
+                                <h1 className="marketplace-hero__title">
+                                    Livestock & Agro <span className="text-emerald">Marketplace</span>
+                                </h1>
+                                <p className="marketplace-hero__lead">
+                                    Directly connect Kwara livestock producers, pastoralists, dairy farmers, and agro-allied marketers with verified buyers state-wide.
+                                </p>
+
+                                <div className="marketplace-hero__actions">
+                                    <button
+                                        onClick={() => requireAuthForAction('post a product', () => setShowAddModal(true))}
+                                        className="btn-mp-primary"
+                                    >
+                                        <Plus size={18} />
+                                        <span>List Your Product</span>
+                                    </button>
+                                </div>
                             </div>
-                            <div className="mp-top-user-name">
-                                {mUser.name} <span className="mp-top-user-lga">({mUser.lga || 'Offa'})</span>
-                                {(mUser.isVerified || mUser.is_verified) && (
-                                    <ShieldCheck size={14} style={{ color: '#10b981' }} title="Verified Marketer" />
+                        </div>
+                    </section>
+
+                    {/* Filter Bar */}
+                    <section className="marketplace-filter-section">
+                        <div className="container">
+                            <div className="marketplace-filter-bar">
+                                {/* Search */}
+                                <div className="mp-search-box">
+                                    <Search size={18} className="mp-search-icon" />
+                                    <input
+                                        type="text"
+                                        placeholder="Search cattle, dairy, maize, feeds, machinery..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        className="mp-search-input"
+                                    />
+                                    {searchTerm && (
+                                        <button onClick={() => setSearchTerm('')} className="mp-search-clear">
+                                            <X size={14} />
+                                        </button>
+                                    )}
+                                </div>
+
+                                {/* Category Select */}
+                                <select
+                                    value={selectedCategory}
+                                    onChange={(e) => setSelectedCategory(e.target.value)}
+                                    className="mp-select"
+                                >
+                                    <option value="">All Categories</option>
+                                    {['Livestock', 'Feed & Fodder', 'Cereals', 'Cash Crops', 'Root Crops', 'Vegetables', 'Fruits', 'Equipment'].map((c) => (
+                                        <option key={c} value={c}>{c}</option>
+                                    ))}
+                                </select>
+
+                                {/* Kwara LGA Filter */}
+                                <select
+                                    value={selectedLga}
+                                    onChange={(e) => setSelectedLga(e.target.value)}
+                                    className="mp-select"
+                                >
+                                    <option value="">All Kwara LGAs</option>
+                                    {[
+                                        'Ilorin East', 'Ilorin West', 'Ilorin South', 'Offa', 'Baruten',
+                                        'Kaiama', 'Edu', 'Pategi', 'Ifelodun', 'Irepodun', 'Oyun', 'Isin',
+                                        'Moro', 'Asa', 'Oke Ero', 'Ekiti'
+                                    ].map((lga) => (
+                                        <option key={lga} value={lga}>{lga}</option>
+                                    ))}
+                                </select>
+
+                                {/* Verified Sellers Toggle */}
+                                <button
+                                    onClick={() => setOnlyVerifiedFilter(!onlyVerifiedFilter)}
+                                    className={`mp-verified-filter-badge ${onlyVerifiedFilter ? 'active' : ''}`}
+                                    title="Filter by L-PRES Verified Marketers"
+                                >
+                                    <ShieldCheck size={16} />
+                                    <span>Verified Only</span>
+                                </button>
+
+                                {/* View Mode Toggle */}
+                                <div className="mp-view-toggle">
+                                    <button
+                                        onClick={() => setViewMode('grid')}
+                                        className={`mp-view-btn ${viewMode === 'grid' ? 'active' : ''}`}
+                                        title="Grid view"
+                                    >
+                                        <Grid size={18} />
+                                    </button>
+                                    <button
+                                        onClick={() => setViewMode('list')}
+                                        className={`mp-view-btn ${viewMode === 'list' ? 'active' : ''}`}
+                                        title="List view"
+                                    >
+                                        <List size={18} />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Main Content Area */}
+                    <section className="marketplace-body">
+                        <div className="container">
+                            <div className="mp-status-header">
+                                <h2 className="mp-section-title">
+                                    Available Listings ({filteredProducts.length})
+                                </h2>
+                                {selectedCategory && (
+                                    <span className="mp-active-tag">Category: {selectedCategory}</span>
+                                )}
+                                {selectedLga && (
+                                    <span className="mp-active-tag">LGA: {selectedLga}</span>
                                 )}
                             </div>
-                        </div>
-                    ) : (
-                        <div className="mp-top-user-card guest" onClick={() => {
-                            setAuthIntentReason('access your marketer account');
-                            setAuthMode('login');
-                            setAuthError('');
-                            setShowAuthModal(true);
-                        }}>
-                            <Lock size={16} />
-                            <span>Marketer Login / Register</span>
-                        </div>
-                    )}
 
-                    <div className="marketplace-hero__content">
-                        <div className="marketplace-hero__badge">
-                            <Leaf size={16} /> Kwara L-PRES Farmers & Marketers Hub
-                        </div>
-                        <h1 className="marketplace-hero__title">
-                            Livestock & Agro <span className="text-emerald">Marketplace</span>
-                        </h1>
-                        <p className="marketplace-hero__lead">
-                            Directly connect Kwara livestock producers, pastoralists, dairy farmers, and agro-allied marketers with verified buyers state-wide.
-                        </p>
+                            {loading ? (
+                                <div className="mp-loading-state">
+                                    <div className="mp-spinner" />
+                                    <p>Loading Kwara L-PRES Marketplace listings...</p>
+                                </div>
+                            ) : filteredProducts.length === 0 ? (
+                                <div className="mp-empty-state">
+                                    <Package size={48} className="mp-empty-icon" />
+                                    <h3>No products found matching your search</h3>
+                                    <p>Try adjusting your category or LGA filter, or be the first to list a product in this category!</p>
+                                    <button
+                                        onClick={() => requireAuthForAction('list a product', () => setShowAddModal(true))}
+                                        className="btn-mp-primary"
+                                        style={{ marginTop: 16 }}
+                                    >
+                                        <Plus size={18} /> List a Product Now
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className={viewMode === 'grid' ? 'mp-grid' : 'mp-list'}>
+                                    {filteredProducts.map((p) => {
+                                        const prodId = p._id || p.id;
+                                        const isContactRevealed = revealedContacts[prodId] || mUser;
+                                        const isOwner = mUser && (p.seller?.userId === mUser._id || p.seller?.email === mUser.email);
 
-                        <div className="marketplace-hero__actions">
-                            <button
-                                onClick={() => requireAuthForAction('post a product', () => setShowAddModal(true))}
-                                className="btn-mp-primary"
-                            >
-                                <Plus size={18} />
-                                <span>List Your Product</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Filter Bar */}
-            <section className="marketplace-filter-section">
-                <div className="container">
-                    <div className="marketplace-filter-bar">
-                        {/* Search */}
-                        <div className="mp-search-box">
-                            <Search size={18} className="mp-search-icon" />
-                            <input
-                                type="text"
-                                placeholder="Search cattle, dairy, maize, feeds, machinery..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="mp-search-input"
-                            />
-                            {searchTerm && (
-                                <button onClick={() => setSearchTerm('')} className="mp-search-clear">
-                                    <X size={14} />
-                                </button>
-                            )}
-                        </div>
-
-                        {/* Category Select */}
-                        <select
-                            value={selectedCategory}
-                            onChange={(e) => setSelectedCategory(e.target.value)}
-                            className="mp-select"
-                        >
-                            <option value="">All Categories</option>
-                            {['Livestock', 'Feed & Fodder', 'Cereals', 'Cash Crops', 'Root Crops', 'Vegetables', 'Fruits', 'Equipment'].map((c) => (
-                                <option key={c} value={c}>{c}</option>
-                            ))}
-                        </select>
-
-                        {/* Kwara LGA Filter */}
-                        <select
-                            value={selectedLga}
-                            onChange={(e) => setSelectedLga(e.target.value)}
-                            className="mp-select"
-                        >
-                            <option value="">All Kwara LGAs</option>
-                            {[
-                                'Ilorin East', 'Ilorin West', 'Ilorin South', 'Offa', 'Baruten',
-                                'Kaiama', 'Edu', 'Pategi', 'Ifelodun', 'Irepodun', 'Oyun', 'Isin',
-                                'Moro', 'Asa', 'Oke Ero', 'Ekiti'
-                            ].map((lga) => (
-                                <option key={lga} value={lga}>{lga}</option>
-                            ))}
-                        </select>
-
-                        {/* Verified Sellers Toggle */}
-                        <button
-                            onClick={() => setOnlyVerifiedFilter(!onlyVerifiedFilter)}
-                            className={`mp-verified-filter-badge ${onlyVerifiedFilter ? 'active' : ''}`}
-                            title="Filter by L-PRES Verified Marketers"
-                        >
-                            <ShieldCheck size={16} />
-                            <span>Verified Only</span>
-                        </button>
-
-                        {/* View Mode Toggle */}
-                        <div className="mp-view-toggle">
-                            <button
-                                onClick={() => setViewMode('grid')}
-                                className={`mp-view-btn ${viewMode === 'grid' ? 'active' : ''}`}
-                                title="Grid view"
-                            >
-                                <Grid size={18} />
-                            </button>
-                            <button
-                                onClick={() => setViewMode('list')}
-                                className={`mp-view-btn ${viewMode === 'list' ? 'active' : ''}`}
-                                title="List view"
-                            >
-                                <List size={18} />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Main Content Area */}
-            <section className="marketplace-body">
-                <div className="container">
-                    <div className="mp-status-header">
-                        <h2 className="mp-section-title">
-                            Available Listings ({filteredProducts.length})
-                        </h2>
-                        {selectedCategory && (
-                            <span className="mp-active-tag">Category: {selectedCategory}</span>
-                        )}
-                        {selectedLga && (
-                            <span className="mp-active-tag">LGA: {selectedLga}</span>
-                        )}
-                    </div>
-
-                    {loading ? (
-                        <div className="mp-loading-state">
-                            <div className="mp-spinner" />
-                            <p>Loading Kwara L-PRES Marketplace listings...</p>
-                        </div>
-                    ) : filteredProducts.length === 0 ? (
-                        <div className="mp-empty-state">
-                            <Package size={48} className="mp-empty-icon" />
-                            <h3>No products found matching your search</h3>
-                            <p>Try adjusting your category or LGA filter, or be the first to list a product in this category!</p>
-                            <button
-                                onClick={() => requireAuthForAction('list a product', () => setShowAddModal(true))}
-                                className="btn-mp-primary"
-                                style={{ marginTop: 16 }}
-                            >
-                                <Plus size={18} /> List a Product Now
-                            </button>
-                        </div>
-                    ) : (
-                        <div className={viewMode === 'grid' ? 'mp-grid' : 'mp-list'}>
-                            {filteredProducts.map((p) => {
-                                const prodId = p._id || p.id;
-                                const isContactRevealed = revealedContacts[prodId] || mUser;
-                                const isOwner = mUser && (p.seller?.userId === mUser._id || p.seller?.email === mUser.email);
-
-                                return (
-                                    <div key={prodId} className="mp-card">
-                                        {/* Image */}
-                                        <div className="mp-card__image-wrap">
-                                            <img
-                                                src={typeof p.images?.[0] === 'string' ? p.images[0] : (p.images?.[0]?.url || 'https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=800&q=80')}
-                                                alt={p.name}
-                                                className="mp-card__image"
-                                                onError={(e) => {
-                                                    e.target.onerror = null;
-                                                    e.target.src = 'https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=800&q=80';
-                                                }}
-                                            />
-                                            {(p.seller?.isVerified || p.seller?.is_verified) && (
-                                                <span className="mp-card__verified-badge" title="Verified by Kwara L-PRES State Project Office">
-                                                    <ShieldCheck size={12} /> L-PRES Verified
-                                                </span>
-                                            )}
-                                            <span className="mp-card__category">{p.category}</span>
-                                            {p.specifications?.isOrganic && (
-                                                <span className="mp-card__organic-badge">
-                                                    <Leaf size={12} /> Organic
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        {/* Content */}
-                                        <div className="mp-card__content">
-                                            <div className="mp-card__header">
-                                                <h3 className="mp-card__title">{p.name}</h3>
-                                                <div className="mp-card__price-box">
-                                                    <span className="mp-card__price">{formatPrice(p.price?.amount, p.price?.unit)}</span>
-                                                    <span className="mp-card__qty">{p.quantity?.available} {p.quantity?.unit} available</span>
+                                        return (
+                                            <div key={prodId} className="mp-card">
+                                                {/* Image */}
+                                                <div className="mp-card__image-wrap">
+                                                    <img
+                                                        src={typeof p.images?.[0] === 'string' ? p.images[0] : (p.images?.[0]?.url || 'https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=800&q=80')}
+                                                        alt={p.name}
+                                                        className="mp-card__image"
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = 'https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=800&q=80';
+                                                        }}
+                                                    />
+                                                    {(p.seller?.isVerified || p.seller?.is_verified) && (
+                                                        <span className="mp-card__verified-badge" title="Verified by Kwara L-PRES State Project Office">
+                                                            <ShieldCheck size={12} /> L-PRES Verified
+                                                        </span>
+                                                    )}
+                                                    <span className="mp-card__category">{p.category}</span>
+                                                    {p.specifications?.isOrganic && (
+                                                        <span className="mp-card__organic-badge">
+                                                            <Leaf size={12} /> Organic
+                                                        </span>
+                                                    )}
                                                 </div>
-                                            </div>
 
-                                            <p className="mp-card__desc">{p.description}</p>
-
-                                            <div className="mp-card__meta">
-                                                <div className="mp-meta-item">
-                                                    <MapPin size={14} />
-                                                    <span>{p.location?.region || 'Kwara State'}, {p.location?.country || 'Nigeria'}</span>
-                                                </div>
-                                                {p.specifications?.variety && (
-                                                    <div className="mp-meta-item">
-                                                        <Star size={14} className="text-amber" />
-                                                        <span>Variety: {p.specifications.variety}</span>
+                                                {/* Content */}
+                                                <div className="mp-card__content">
+                                                    <div className="mp-card__header">
+                                                        <h3 className="mp-card__title">{p.name}</h3>
+                                                        <div className="mp-card__price-box">
+                                                            <span className="mp-card__price">{formatPrice(p.price?.amount, p.price?.unit)}</span>
+                                                            <span className="mp-card__qty">{p.quantity?.available} {p.quantity?.unit} available</span>
+                                                        </div>
                                                     </div>
-                                                )}
-                                            </div>
 
-                                            {/* Seller Footer */}
-                                            <div className="mp-card__seller-box">
-                                                <div className="mp-seller-info">
-                                                    <div className="mp-seller-name-row">
-                                                        <span className="mp-seller-name">{p.seller?.name || 'Kwara Producer'}</span>
-                                                        {(p.seller?.isVerified || p.seller?.is_verified) && (
-                                                            <ShieldCheck size={15} className="mp-verified-icon" title="L-PRES Verified Marketer" />
+                                                    <p className="mp-card__desc">{p.description}</p>
+
+                                                    <div className="mp-card__meta">
+                                                        <div className="mp-meta-item">
+                                                            <MapPin size={14} />
+                                                            <span>{p.location?.region || 'Kwara State'}, {p.location?.country || 'Nigeria'}</span>
+                                                        </div>
+                                                        {p.specifications?.variety && (
+                                                            <div className="mp-meta-item">
+                                                                <Star size={14} className="text-amber" />
+                                                                <span>Variety: {p.specifications.variety}</span>
+                                                            </div>
                                                         )}
                                                     </div>
-                                                    <span className="mp-seller-lga">
-                                                        {(p.seller?.isVerified || p.seller?.is_verified) ? 'L-PRES Verified Producer' : (p.location?.region || 'Kwara Marketer')}
-                                                    </span>
-                                                </div>
 
-                                                {/* Contact Action */}
-                                                <div className="mp-seller-actions">
-                                                    {isContactRevealed ? (
-                                                        <div className="mp-contacts-disclosed">
-                                                            <a
-                                                                href={`tel:${p.seller?.contact?.phone || '+2348000000000'}`}
-                                                                className="mp-contact-btn phone"
-                                                                title="Call Seller"
-                                                            >
-                                                                <Phone size={15} /> <span>{p.seller?.contact?.phone}</span>
-                                                            </a>
-                                                            {p.seller?.contact?.whatsapp && (
-                                                                <a
-                                                                    href={`https://wa.me/${p.seller.contact.whatsapp.replace(/[^0-9]/g, '')}`}
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                    className="mp-contact-btn whatsapp"
-                                                                    title="WhatsApp Seller"
+                                                    {/* Seller Footer */}
+                                                    <div className="mp-card__seller-box">
+                                                        <div className="mp-seller-info">
+                                                            <div className="mp-seller-name-row">
+                                                                <span className="mp-seller-name">{p.seller?.name || 'Kwara Producer'}</span>
+                                                                {(p.seller?.isVerified || p.seller?.is_verified) && (
+                                                                    <ShieldCheck size={15} className="mp-verified-icon" title="L-PRES Verified Marketer" />
+                                                                )}
+                                                            </div>
+                                                            <span className="mp-seller-lga">
+                                                                {(p.seller?.isVerified || p.seller?.is_verified) ? 'L-PRES Verified Producer' : (p.location?.region || 'Kwara Marketer')}
+                                                            </span>
+                                                        </div>
+
+                                                        {/* Contact Action */}
+                                                        <div className="mp-seller-actions">
+                                                            {isContactRevealed ? (
+                                                                <div className="mp-contacts-disclosed">
+                                                                    <a
+                                                                        href={`tel:${p.seller?.contact?.phone || '+2348000000000'}`}
+                                                                        className="mp-contact-btn phone"
+                                                                        title="Call Seller"
+                                                                    >
+                                                                        <Phone size={15} /> <span>{p.seller?.contact?.phone}</span>
+                                                                    </a>
+                                                                    {p.seller?.contact?.whatsapp && (
+                                                                        <a
+                                                                            href={`https://wa.me/${p.seller.contact.whatsapp.replace(/[^0-9]/g, '')}`}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            className="mp-contact-btn whatsapp"
+                                                                            title="WhatsApp Seller"
+                                                                        >
+                                                                            <MessageCircle size={15} /> <span>WhatsApp</span>
+                                                                        </a>
+                                                                    )}
+                                                                </div>
+                                                            ) : (
+                                                                <button
+                                                                    onClick={() => {
+                                                                        requireAuthForAction('view seller contact details', () => {
+                                                                            setRevealedContacts((prev) => ({ ...prev, [prodId]: true }));
+                                                                        });
+                                                                    }}
+                                                                    className="btn-reveal-contact"
                                                                 >
-                                                                    <MessageCircle size={15} /> <span>WhatsApp</span>
-                                                                </a>
+                                                                    <Lock size={14} /> View Seller Contact
+                                                                </button>
                                                             )}
                                                         </div>
-                                                    ) : (
-                                                        <button
-                                                            onClick={() => {
-                                                                requireAuthForAction('view seller contact details', () => {
-                                                                    setRevealedContacts((prev) => ({ ...prev, [prodId]: true }));
-                                                                });
-                                                            }}
-                                                            className="btn-reveal-contact"
-                                                        >
-                                                            <Lock size={14} /> View Seller Contact
-                                                        </button>
+                                                    </div>
+
+                                                    {/* Owner actions */}
+                                                    {isOwner && (
+                                                        <div className="mp-owner-bar">
+                                                            <span className="mp-owner-badge">Your Listing</span>
+                                                            <button
+                                                                onClick={() => handleDeleteProduct(prodId)}
+                                                                className="mp-delete-btn"
+                                                            >
+                                                                Delete
+                                                            </button>
+                                                        </div>
                                                     )}
                                                 </div>
                                             </div>
-
-                                            {/* Owner actions */}
-                                            {isOwner && (
-                                                <div className="mp-owner-bar">
-                                                    <span className="mp-owner-badge">Your Listing</span>
-                                                    <button
-                                                        onClick={() => handleDeleteProduct(prodId)}
-                                                        className="mp-delete-btn"
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                                        );
+                                    })}
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-            </section>
+                    </section>
+                </>
+            ) : null}
 
             {/* Auth Modal (Login / Register) */}
             {showAuthModal && (
@@ -1022,11 +1031,11 @@ export default function MarketplacePage() {
                 <div className="mp-profile-page-view container" style={{ padding: '2rem 1rem 4rem' }}>
                     {/* Navigation Top Bar */}
                     <div className="mp-profile-page-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
-                        <button onClick={() => setCurrentView('catalog')} className="btn-mp-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <button onClick={() => switchView('catalog')} className="btn-mp-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
                             <ArrowLeft size={18} /> Back to Marketplace Catalog
                         </button>
                         <h1 className="mp-profile-page-title" style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>Marketer Profile & Control Center</h1>
-                        <button onClick={() => { handleLogout(); setCurrentView('catalog'); }} className="btn-mp-secondary mp-profile-logout" title="Log Out" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#ef4444' }}>
+                        <button onClick={() => { handleLogout(); switchView('catalog'); }} className="btn-mp-secondary mp-profile-logout" title="Log Out" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#ef4444' }}>
                             <LogOut size={16} /> Log Out
                         </button>
                     </div>
