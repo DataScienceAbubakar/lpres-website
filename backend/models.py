@@ -78,6 +78,9 @@ class MarketplaceUser(Base):
     lga = Column(String(100), default="Ilorin East")
     hashed_password = Column(String(200), nullable=False)
     is_active = Column(Boolean, default=True)
+    is_verified = Column(Boolean, default=False)
+    verification_status = Column(String(50), default="unverified")  # unverified | pending | verified | rejected
+    verification_details = Column(JSON, default=dict)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 

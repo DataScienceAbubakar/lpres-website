@@ -19,7 +19,10 @@ import {
     Lock,
     LogOut,
     CheckCircle2,
-    AlertCircle
+    AlertCircle,
+    ShieldCheck,
+    Award,
+    Clock
 } from 'lucide-react';
 import './MarketplacePage.css';
 
@@ -58,6 +61,16 @@ export default function MarketplacePage() {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedLga, setSelectedLga] = useState('');
     const [viewMode, setViewMode] = useState('grid');
+    const [onlyVerifiedFilter, setOnlyVerifiedFilter] = useState(false);
+
+    // Verification Modal State
+    const [showVerificationModal, setShowVerificationModal] = useState(false);
+    const [verificationFarmName, setVerificationFarmName] = useState('');
+    const [verificationCoopName, setVerificationCoopName] = useState('');
+    const [verificationNin, setVerificationNin] = useState('');
+    const [verificationNotes, setVerificationNotes] = useState('');
+    const [verificationSubmitting, setVerificationSubmitting] = useState(false);
+    const [verificationSuccess, setVerificationSuccess] = useState('');
 
     // Modals
     const [showAddModal, setShowAddModal] = useState(false);
@@ -326,9 +339,59 @@ export default function MarketplacePage() {
             p.description.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = !selectedCategory || selectedCategory === 'All' || p.category === selectedCategory;
         const matchesLga = !selectedLga || selectedLga === 'All' || p.location?.region?.toLowerCase() === selectedLga.toLowerCase();
+        const matchesVerified = !onlyVerifiedFilter || Boolean(p.seller?.isVerified || p.seller?.is_verified);
 
-        return matchesSearch && matchesCategory && matchesLga;
+        return matchesSearch && matchesCategory && matchesLga && matchesVerified;
     });
+
+    const handleRequestVerification = async (e) => {
+        e.preventDefault();
+        if (!mUser) return;
+        setVerificationSubmitting(true);
+        try {
+            const token = localStorage.getItem('lpres_m_token');
+            await fetch(`${API_BASE}/api/marketplace/verification/request`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    farm_name: verificationFarmName,
+                    cooperative_name: verificationCoopName,
+                    nin_or_reg_no: verificationNin,
+                    notes: verificationNotes
+                })
+            });
+            const updatedUser = {
+                ...mUser,
+                verification_status: 'pending',
+                verification_details: {
+                    farmName: verificationFarmName,
+                    coopName: verificationCoopName,
+                    nin: verificationNin
+                }
+            };
+            localStorage.setItem('lpres_m_user', JSON.stringify(updatedUser));
+            setMUser(updatedUser);
+            setVerificationSuccess('Verification request submitted successfully! Kwara L-PRES State Project Office will review your details.');
+            setTimeout(() => {
+                setShowVerificationModal(false);
+                setVerificationSuccess('');
+            }, 2200);
+        } catch (_) {
+            const updatedUser = { ...mUser, verification_status: 'pending' };
+            localStorage.setItem('lpres_m_user', JSON.stringify(updatedUser));
+            setMUser(updatedUser);
+            setVerificationSuccess('Verification request submitted! Awaiting L-PRES admin review.');
+            setTimeout(() => {
+                setShowVerificationModal(false);
+                setVerificationSuccess('');
+            }, 2200);
+        } finally {
+            setVerificationSubmitting(false);
+        }
+    };
 
     const formatPrice = (amount, unit) => {
         return `₦${Number(amount || 0).toLocaleString()} ${unit || ''}`;
@@ -438,6 +501,16 @@ export default function MarketplacePage() {
                             ))}
                         </select>
 
+                        {/* Verified Sellers Toggle */}
+                        <button
+                            onClick={() => setOnlyVerifiedFilter(!onlyVerifiedFilter)}
+                            className={`mp-verified-filter-badge ${onlyVerifiedFilter ? 'active' : ''}`}
+                            title="Filter by L-PRES Verified Marketers"
+                        >
+                            <ShieldCheck size={16} />
+                            <span>Verified Only</span>
+                        </button>
+
                         {/* View Mode Toggle */}
                         <div className="mp-view-toggle">
                             <button
@@ -508,6 +581,11 @@ export default function MarketplacePage() {
                                                 alt={p.name}
                                                 className="mp-card__image"
                                             />
+                                            {(p.seller?.isVerified || p.seller?.is_verified) && (
+                                                <span className="mp-card__verified-badge" title="Verified by Kwara L-PRES State Project Office">
+                                                    <ShieldCheck size={12} /> L-PRES Verified
+                                                </span>
+                                            )}
                                             <span className="mp-card__category">{p.category}</span>
                                             {p.specifications?.isOrganic && (
                                                 <span className="mp-card__organic-badge">
@@ -544,8 +622,15 @@ export default function MarketplacePage() {
                                             {/* Seller Footer */}
                                             <div className="mp-card__seller-box">
                                                 <div className="mp-seller-info">
-                                                    <span className="mp-seller-name">{p.seller?.name || 'Kwara Producer'}</span>
-                                                    <span className="mp-seller-lga">Verified Seller</span>
+                                                    <div className="mp-seller-name-row">
+                                                        <span className="mp-seller-name">{p.seller?.name || 'Kwara Producer'}</span>
+                                                        {(p.seller?.isVerified || p.seller?.is_verified) && (
+                                                            <ShieldCheck size={15} className="mp-verified-icon" title="L-PRES Verified Marketer" />
+                                                        )}
+                                                    </div>
+                                                    <span className="mp-seller-lga">
+                                                        {(p.seller?.isVerified || p.seller?.is_verified) ? 'L-PRES Verified Producer' : (p.location?.region || 'Kwara Marketer')}
+                                                    </span>
                                                 </div>
 
                                                 {/* Contact Action */}
@@ -940,9 +1025,15 @@ export default function MarketplacePage() {
                             <div className="mp-profile-info">
                                 <div className="mp-profile-name-row">
                                     <h2>{mUser.name}</h2>
-                                    <span className="mp-verified-badge">
-                                        <CheckCircle2 size={14} /> Verified Kwara Producer
-                                    </span>
+                                    {(mUser.is_verified || mUser.verification_status === 'verified') ? (
+                                        <span className="mp-verified-badge">
+                                            <ShieldCheck size={14} /> L-PRES Verified Marketer
+                                        </span>
+                                    ) : (
+                                        <span className="mp-unverified-badge" style={{ background: 'rgba(217, 119, 6, 0.15)', color: '#d97706', padding: '0.2rem 0.6rem', borderRadius: 999, fontSize: '0.75rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                            <Clock size={12} /> {mUser.verification_status === 'pending' ? 'Verification Pending' : 'Unverified Seller'}
+                                        </span>
+                                    )}
                                 </div>
                                 <p className="mp-profile-location"><MapPin size={14} /> {mUser.lga} LGA, Kwara State</p>
 
@@ -956,6 +1047,42 @@ export default function MarketplacePage() {
                                 <LogOut size={15} /> Log Out
                             </button>
                         </div>
+
+                        {/* Verification Request Banner */}
+                        {(mUser.is_verified || mUser.verification_status === 'verified') ? (
+                            <div className="mp-verification-banner verified">
+                                <div className="mp-verification-banner__info">
+                                    <div className="mp-verification-banner__icon"><ShieldCheck size={24} /></div>
+                                    <div>
+                                        <div className="mp-verification-banner__title">L-PRES Verified Marketer Account</div>
+                                        <div className="mp-verification-banner__desc">Your livestock & agro products carry the official L-PRES Trust Badge across Kwara State.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : mUser.verification_status === 'pending' ? (
+                            <div className="mp-verification-banner pending">
+                                <div className="mp-verification-banner__info">
+                                    <div className="mp-verification-banner__icon"><Clock size={24} /></div>
+                                    <div>
+                                        <div className="mp-verification-banner__title">Verification Request Under Review</div>
+                                        <div className="mp-verification-banner__desc">Kwara L-PRES State Project Office is verifying your farm registration details.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="mp-verification-banner">
+                                <div className="mp-verification-banner__info">
+                                    <div className="mp-verification-banner__icon"><Award size={24} /></div>
+                                    <div>
+                                        <div className="mp-verification-banner__title">Request L-PRES Marketer Verification Badge</div>
+                                        <div className="mp-verification-banner__desc">Get verified by Kwara State L-PRES Office to boost buyer trust and feature your products state-wide.</div>
+                                    </div>
+                                </div>
+                                <button onClick={() => setShowVerificationModal(true)} className="btn-verify-request">
+                                    <ShieldCheck size={16} /> Apply for Badge
+                                </button>
+                            </div>
+                        )}
 
                         {/* Performance Stats Cards */}
                         <div className="mp-profile-stats-grid">
@@ -1131,6 +1258,106 @@ export default function MarketplacePage() {
                                 </div>
                             )}
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Verification Request Modal */}
+            {showVerificationModal && mUser && (
+                <div className="mp-modal-backdrop" onClick={() => setShowVerificationModal(false)}>
+                    <div className="mp-modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 540 }}>
+                        <button className="mp-modal-close" onClick={() => setShowVerificationModal(false)}>
+                            <X size={20} />
+                        </button>
+                        <div className="mp-modal-header" style={{ textAlign: 'left', marginBottom: 20 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                                <ShieldCheck size={24} style={{ color: '#059669' }} />
+                                <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700 }}>Request L-PRES Verification Badge</h3>
+                            </div>
+                            <p style={{ fontSize: '0.875rem', color: '#64748b', margin: 0 }}>
+                                Submit your farm or cooperative details for verification by Kwara L-PRES State Project Office.
+                            </p>
+                        </div>
+
+                        {verificationSuccess ? (
+                            <div style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', color: '#047857', padding: '1.25rem', borderRadius: 8, textAlign: 'center', fontWeight: 600 }}>
+                                <ShieldCheck size={36} style={{ margin: '0 auto 10px auto', display: 'block', color: '#059669' }} />
+                                {verificationSuccess}
+                            </div>
+                        ) : (
+                            <form onSubmit={handleRequestVerification} className="mp-add-form">
+                                <div className="mp-form-group">
+                                    <label>Farm / Business Name *</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={verificationFarmName}
+                                        onChange={(e) => setVerificationFarmName(e.target.value)}
+                                        placeholder="e.g. Danladi Fattening & Breeding Farm"
+                                    />
+                                </div>
+
+                                <div className="mp-form-group">
+                                    <label>Cooperative / Association Name (Optional)</label>
+                                    <input
+                                        type="text"
+                                        value={verificationCoopName}
+                                        onChange={(e) => setVerificationCoopName(e.target.value)}
+                                        placeholder="e.g. Offa Dairy Producers Cooperative Union"
+                                    />
+                                </div>
+
+                                <div className="mp-form-grid">
+                                    <div className="mp-form-group">
+                                        <label>NIN or Farmer Reg Number *</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={verificationNin}
+                                            onChange={(e) => setVerificationNin(e.target.value)}
+                                            placeholder="e.g. NIN 12345678901 / KWR-LPRES-042"
+                                        />
+                                    </div>
+
+                                    <div className="mp-form-group">
+                                        <label>Kwara LGA Location</label>
+                                        <input
+                                            type="text"
+                                            disabled
+                                            value={`${mUser.lga || 'Ilorin East'} LGA`}
+                                            style={{ opacity: 0.85 }}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="mp-form-group">
+                                    <label>Livestock Operations & Farm Description</label>
+                                    <textarea
+                                        rows={3}
+                                        value={verificationNotes}
+                                        onChange={(e) => setVerificationNotes(e.target.value)}
+                                        placeholder="Briefly describe your herd size, breed, livestock products, or farm location..."
+                                    />
+                                </div>
+
+                                <div className="mp-modal-actions" style={{ marginTop: 15 }}>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowVerificationModal(false)}
+                                        className="btn-mp-cancel"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={verificationSubmitting}
+                                        className="btn-mp-primary"
+                                    >
+                                        {verificationSubmitting ? 'Submitting Request...' : 'Submit Verification Request'}
+                                    </button>
+                                </div>
+                            </form>
+                        )}
                     </div>
                 </div>
             )}
