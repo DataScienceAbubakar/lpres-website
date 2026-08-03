@@ -401,7 +401,41 @@ export default function MarketplacePage() {
         <div className="marketplace-page">
             {/* Hero Header */}
             <section className="marketplace-hero">
-                <div className="container">
+                <div className="container" style={{ position: 'relative' }}>
+                    {/* Top Right User Profile Card */}
+                    {mUser ? (
+                        <div className="mp-top-user-card" onClick={() => setShowProfileModal(true)} title="Click to view Marketer Profile">
+                            <div className="mp-top-user-avatar">
+                                <User size={18} />
+                            </div>
+                            <div className="mp-top-user-info">
+                                <div className="mp-top-user-name">
+                                    {mUser.name} <span className="mp-top-user-lga">({mUser.lga || 'Offa'})</span>
+                                    {mUser.isVerified && <ShieldCheck size={14} style={{ color: '#10b981' }} title="Verified Marketer" />}
+                                </div>
+                                <div className="mp-top-user-actions">
+                                    <button onClick={(e) => { e.stopPropagation(); setShowProfileModal(true); }} className="mp-top-user-btn">
+                                        My Profile
+                                    </button>
+                                    <span className="mp-top-user-sep">•</span>
+                                    <button onClick={(e) => { e.stopPropagation(); handleLogout(); }} className="mp-top-user-logout" title="Log out">
+                                        Logout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="mp-top-user-card guest" onClick={() => {
+                            setAuthIntentReason('access your marketer account');
+                            setAuthMode('login');
+                            setAuthError('');
+                            setShowAuthModal(true);
+                        }}>
+                            <Lock size={16} />
+                            <span>Marketer Login / Register</span>
+                        </div>
+                    )}
+
                     <div className="marketplace-hero__content">
                         <div className="marketplace-hero__badge">
                             <Leaf size={16} /> Kwara L-PRES Farmers & Marketers Hub
@@ -421,32 +455,6 @@ export default function MarketplacePage() {
                                 <Plus size={18} />
                                 <span>List Your Product</span>
                             </button>
-
-                            {mUser ? (
-                                <div className="muser-pill" onClick={() => setShowProfileModal(true)} title="View Marketer Profile">
-                                    <User size={16} />
-                                    <span>{mUser.name} ({mUser.lga})</span>
-                                    <button onClick={(e) => { e.stopPropagation(); setShowProfileModal(true); }} className="muser-profile-link">
-                                        My Profile
-                                    </button>
-                                    <button onClick={(e) => { e.stopPropagation(); handleLogout(); }} className="muser-logout" title="Log out">
-                                        <LogOut size={14} />
-                                    </button>
-                                </div>
-                            ) : (
-                                <button
-                                    onClick={() => {
-                                        setAuthIntentReason('access your marketer account');
-                                        setAuthMode('login');
-                                        setAuthError('');
-                                        setShowAuthModal(true);
-                                    }}
-                                    className="btn-mp-secondary"
-                                >
-                                    <Lock size={16} />
-                                    <span>Marketer Login / Register</span>
-                                </button>
-                            )}
                         </div>
                     </div>
                 </div>
