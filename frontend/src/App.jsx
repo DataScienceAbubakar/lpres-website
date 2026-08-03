@@ -87,18 +87,6 @@ import { isMarketplaceMode } from './utils/env';
 function AppRoutes() {
   const isMarketplace = isMarketplaceMode();
 
-  const commonAdminRoutes = (
-    <>
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-      <Route path="/admin/news/new" element={<AdminRoute><NewsForm /></AdminRoute>} />
-      <Route path="/admin/news/:id/edit" element={<AdminRoute><NewsForm /></AdminRoute>} />
-      <Route path="/admin/gallery" element={<AdminRoute><GalleryManager /></AdminRoute>} />
-      <Route path="/admin/projects" element={<AdminRoute><ProjectsManager /></AdminRoute>} />
-      <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-    </>
-  );
-
   if (isMarketplace) {
     return (
       <Routes>
@@ -109,7 +97,14 @@ function AppRoutes() {
         <Route path="/marketplace/register" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
         <Route path="/marketplace/login" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
 
-        {commonAdminRoutes}
+        {/* Admin routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+        <Route path="/admin/news/new" element={<AdminRoute><NewsForm /></AdminRoute>} />
+        <Route path="/admin/news/:id/edit" element={<AdminRoute><NewsForm /></AdminRoute>} />
+        <Route path="/admin/gallery" element={<AdminRoute><GalleryManager /></AdminRoute>} />
+        <Route path="/admin/projects" element={<AdminRoute><ProjectsManager /></AdminRoute>} />
+        <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
@@ -134,7 +129,14 @@ function AppRoutes() {
       <Route path="/home-light" element={<HomeLight />} />
       <Route path="/home2" element={<PublicLayout><Home2 /></PublicLayout>} />
 
-      {commonAdminRoutes}
+      {/* Admin routes */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+      <Route path="/admin/news/new" element={<AdminRoute><NewsForm /></AdminRoute>} />
+      <Route path="/admin/news/:id/edit" element={<AdminRoute><NewsForm /></AdminRoute>} />
+      <Route path="/admin/gallery" element={<AdminRoute><GalleryManager /></AdminRoute>} />
+      <Route path="/admin/projects" element={<AdminRoute><ProjectsManager /></AdminRoute>} />
+      <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
