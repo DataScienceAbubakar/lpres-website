@@ -12,9 +12,20 @@ os.makedirs("uploads", exist_ok=True)
 
 app = FastAPI(title="LPRES Website API", version="1.0.0")
 
+origins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:5173",
+    "https://lpres-website.onrender.com",
+    "https://lpress-website.onrender.com",
+    "https://lpres-marketplace.onrender.com",
+    "https://lpres.onrender.com",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
+    allow_origin_regex=r"https://.*\.onrender\.com",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
