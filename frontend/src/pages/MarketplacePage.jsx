@@ -22,7 +22,8 @@ import {
     AlertCircle,
     ShieldCheck,
     Award,
-    Clock
+    Clock,
+    ArrowLeft
 } from 'lucide-react';
 import './MarketplacePage.css';
 
@@ -88,8 +89,8 @@ export default function MarketplacePage() {
     const [authError, setAuthError] = useState('');
     const [authSubmitting, setAuthSubmitting] = useState(false);
 
-    // Profile Modal State
-    const [showProfileModal, setShowProfileModal] = useState(false);
+    // Page View State ('catalog' | 'profile')
+    const [currentView, setCurrentView] = useState('catalog');
     const [profileTab, setProfileTab] = useState('listings'); // 'listings' | 'inquiries' | 'sales'
 
     // Toggle product status (active vs sold)
@@ -404,24 +405,19 @@ export default function MarketplacePage() {
                 <div className="container" style={{ position: 'relative' }}>
                     {/* Top Right User Profile Card */}
                     {mUser ? (
-                        <div className="mp-top-user-card" onClick={() => setShowProfileModal(true)} title="Click to view Marketer Profile">
+                        <div
+                            className="mp-top-user-card"
+                            onClick={() => setCurrentView('profile')}
+                            title="Click to view Marketer Profile"
+                        >
                             <div className="mp-top-user-avatar">
                                 <User size={18} />
                             </div>
-                            <div className="mp-top-user-info">
-                                <div className="mp-top-user-name">
-                                    {mUser.name} <span className="mp-top-user-lga">({mUser.lga || 'Offa'})</span>
-                                    {mUser.isVerified && <ShieldCheck size={14} style={{ color: '#10b981' }} title="Verified Marketer" />}
-                                </div>
-                                <div className="mp-top-user-actions">
-                                    <button onClick={(e) => { e.stopPropagation(); setShowProfileModal(true); }} className="mp-top-user-btn">
-                                        My Profile
-                                    </button>
-                                    <span className="mp-top-user-sep">•</span>
-                                    <button onClick={(e) => { e.stopPropagation(); handleLogout(); }} className="mp-top-user-logout" title="Log out">
-                                        Logout
-                                    </button>
-                                </div>
+                            <div className="mp-top-user-name">
+                                {mUser.name} <span className="mp-top-user-lga">({mUser.lga || 'Offa'})</span>
+                                {(mUser.isVerified || mUser.is_verified) && (
+                                    <ShieldCheck size={14} style={{ color: '#10b981' }} title="Verified Marketer" />
+                                )}
                             </div>
                         </div>
                     ) : (
@@ -1021,14 +1017,21 @@ export default function MarketplacePage() {
                 </div>
             )}
 
-            {/* Marketer Profile Dashboard Modal */}
-            {showProfileModal && mUser && (
-                <div className="mp-modal-backdrop" onClick={() => setShowProfileModal(false)}>
-                    <div className="mp-modal-content mp-profile-modal" onClick={(e) => e.stopPropagation()}>
-                        <button className="mp-modal-close" onClick={() => setShowProfileModal(false)}>
-                            <X size={20} />
+            {/* Dedicated Full Page Marketer Profile View */}
+            {currentView === 'profile' && mUser && (
+                <div className="mp-profile-page-view container" style={{ padding: '2rem 1rem 4rem' }}>
+                    {/* Navigation Top Bar */}
+                    <div className="mp-profile-page-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+                        <button onClick={() => setCurrentView('catalog')} className="btn-mp-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <ArrowLeft size={18} /> Back to Marketplace Catalog
                         </button>
+                        <h1 className="mp-profile-page-title" style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>Marketer Profile & Control Center</h1>
+                        <button onClick={() => { handleLogout(); setCurrentView('catalog'); }} className="btn-mp-secondary mp-profile-logout" title="Log Out" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#ef4444' }}>
+                            <LogOut size={16} /> Log Out
+                        </button>
+                    </div>
 
+                    <div className="mp-profile-page-card" style={{ background: '#ffffff', borderRadius: '1rem', padding: '1.75rem', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)', border: '1px solid #e2e8f0' }}>
                         {/* Profile Header & Contact Details */}
                         <div className="mp-profile-header">
                             <div className="mp-profile-avatar">
@@ -1055,9 +1058,6 @@ export default function MarketplacePage() {
                                     <span><MessageCircle size={13} /> WhatsApp: {mUser.phone || 'N/A'}</span>
                                 </div>
                             </div>
-                            <button onClick={handleLogout} className="btn-mp-secondary mp-profile-logout" title="Log Out">
-                                <LogOut size={15} /> Log Out
-                            </button>
                         </div>
 
                         {/* Verification Request Banner */}
