@@ -46,6 +46,11 @@ export const adminAPI = {
   me: () => api.get('/api/admin/me'),
 };
 
+export const adminMarketplaceAPI = {
+  getVerifications: () => api.get('/api/admin/marketplace/verifications'),
+  actionVerification: (userId, action, reason = '') => api.post(`/api/admin/marketplace/verifications/${userId}/action`, { action, reason }),
+};
+
 const multipart = { headers: { 'Content-Type': 'multipart/form-data' } };
 
 export const galleryAPI = {
