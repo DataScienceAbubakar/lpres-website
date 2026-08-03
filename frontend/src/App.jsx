@@ -100,7 +100,7 @@ function AppRoutes() {
         {/* Admin routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-        <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
@@ -132,7 +132,7 @@ function AppRoutes() {
       <Route path="/admin/news/:id/edit" element={<AdminRoute><NewsForm /></AdminRoute>} />
       <Route path="/admin/gallery" element={<AdminRoute><GalleryManager /></AdminRoute>} />
       <Route path="/admin/projects" element={<AdminRoute><ProjectsManager /></AdminRoute>} />
-      <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+      <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

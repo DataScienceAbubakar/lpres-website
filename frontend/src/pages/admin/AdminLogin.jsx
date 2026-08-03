@@ -1,16 +1,20 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Eye, EyeOff, Lock, User, AlertCircle } from 'lucide-react';
 import './Admin.css';
 
 export default function AdminLogin() {
-  const { login } = useAuth();
+  const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: '', password: '' });
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  if (isAuthenticated) {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,7 +60,7 @@ export default function AdminLogin() {
                 type="text"
                 placeholder="Enter your username"
                 value={form.username}
-                onChange={e => setForm(f => ({...f, username: e.target.value}))}
+                onChange={e => setForm(f => ({ ...f, username: e.target.value }))}
                 required
                 autoFocus
               />
@@ -71,7 +75,7 @@ export default function AdminLogin() {
                 type={showPwd ? 'text' : 'password'}
                 placeholder="Enter your password"
                 value={form.password}
-                onChange={e => setForm(f => ({...f, password: e.target.value}))}
+                onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
                 required
               />
               <button type="button" className="admin-field__toggle" onClick={() => setShowPwd(!showPwd)}>
