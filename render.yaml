@@ -40,3 +40,19 @@ services:
     envVars:
       - key: VITE_API_URL
         sync: false
+
+  # 3. Standalone Marketplace Frontend (React Vite Static Site)
+  - type: static
+    name: lpres-marketplace
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        sync: false
+

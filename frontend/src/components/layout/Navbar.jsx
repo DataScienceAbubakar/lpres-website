@@ -145,6 +145,14 @@ export default function Navbar() {
             <kbd className="navbar__search-kbd">⌘K</kbd>
           </button>
           <a
+            href={import.meta.env.VITE_MARKETPLACE_URL || "https://lpres-marketplace.onrender.com/"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-marketplace"
+          >
+            Marketplace
+          </a>
+          <a
             href="https://main.dgnvy1x73yeps.amplifyapp.com/"
             target="_blank"
             rel="noopener noreferrer"
@@ -189,11 +197,21 @@ export default function Navbar() {
               </div>
             ))}
             <a
+              href={import.meta.env.VITE_MARKETPLACE_URL || "https://lpres-marketplace.onrender.com/"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-marketplace"
+              style={{ marginTop: 20, width: '100%', justifyContent: 'center', display: 'flex' }}
+              onClick={() => setOpen(false)}
+            >
+              Marketplace Portal
+            </a>
+            <a
               href="https://main.dgnvy1x73yeps.amplifyapp.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-gdss"
-              style={{ marginTop: 20, width: '100%', justifyContent: 'center', display: 'flex' }}
+              style={{ marginTop: 10, width: '100%', justifyContent: 'center', display: 'flex' }}
               onClick={() => setOpen(false)}
             >
               GDSS Portal

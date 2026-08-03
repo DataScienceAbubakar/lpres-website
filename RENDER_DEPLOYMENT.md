@@ -45,12 +45,33 @@ This guide outlines how to deploy both the **Backend Web Service** and **Fronten
 
 | Key | Example Value | Description |
 | :--- | :--- | :--- |
-| `VITE_API_URL` | `https://lpres-website-backend.onrender.com` | Live URL of your Render backend Web Service |
+| `VITE_API_URL` | `https://lpress-website-backend.onrender.com` | Live URL of your Render backend Web Service |
+| `VITE_MARKETPLACE_URL` | `https://lpres-marketplace.onrender.com` | Live URL of your standalone Marketplace service |
 
 ---
 
-## 3. Blueprint Option (One-Click Render Setup)
+## 3. Standalone Marketplace Static Site Deployment
+
+- **Service Type**: Static Site
+- **Name**: `lpres-marketplace`
+- **Root Directory**: `frontend`
+- **Build Command**: `npm install && npm run build`
+- **Publish Directory**: `dist`
+- **Redirects / Rewrites**:
+  - **Source**: `/*`
+  - **Destination**: `/index.html`
+  - **Action**: `Rewrite`
+
+### Environment Variables for Marketplace Static Site
+
+| Key | Example Value | Description |
+| :--- | :--- | :--- |
+| `VITE_API_URL` | `https://lpress-website-backend.onrender.com` | Connects the Marketplace to the unified FastAPI backend |
+
+---
+
+## 4. Blueprint Option (One-Click Render Setup)
 If using Render Blueprints:
 1. Connect your repository to Render.
-2. Render will automatically detect `render.yaml`.
+2. Render will automatically detect `render.yaml` and provision all 3 services (`lpres-website-backend`, `lpres-website-frontend`, and `lpres-marketplace`).
 3. Fill in the prompted values (`DATABASE_URL`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `ADMIN_SEED_PASSWORD`, `VITE_API_URL`).

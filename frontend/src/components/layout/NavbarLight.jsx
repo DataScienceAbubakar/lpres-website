@@ -65,6 +65,7 @@ export default function NavbarLight() {
         </ul>
 
         <div className="nl-nav__actions">
+          <a href={import.meta.env.VITE_MARKETPLACE_URL || "https://lpres-marketplace.onrender.com/"} target="_blank" rel="noopener noreferrer" className="nl-btn-marketplace">Marketplace</a>
           <a href="https://main.dgnvy1x73yeps.amplifyapp.com/" target="_blank" rel="noopener noreferrer" className="nl-btn-gdss">GDSS Portal</a>
         </div>
 
@@ -85,7 +86,10 @@ export default function NavbarLight() {
                 <Link key={link.label} to={link.href} className="nl-nav__mobile-link">{link.label}</Link>
               )
             )}
-            <a href="https://main.dgnvy1x73yeps.amplifyapp.com/" target="_blank" rel="noopener noreferrer" className="nl-btn-gdss" style={{ marginTop: 16, display: 'flex', justifyContent: 'center' }}>
+            <a href={import.meta.env.VITE_MARKETPLACE_URL || "https://lpres-marketplace.onrender.com/"} target="_blank" rel="noopener noreferrer" className="nl-btn-marketplace" style={{ marginTop: 16, display: 'flex', justifyContent: 'center' }}>
+              Marketplace Portal
+            </a>
+            <a href="https://main.dgnvy1x73yeps.amplifyapp.com/" target="_blank" rel="noopener noreferrer" className="nl-btn-gdss" style={{ marginTop: 10, display: 'flex', justifyContent: 'center' }}>
               GDSS Portal
             </a>
           </div>
