@@ -1,8 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, Sun, Moon, Search } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
-import './Navbar.css';
+import { isMarketplaceMode, MAIN_WEBSITE_URL, MARKETPLACE_URL, GDSS_PORTAL_URL } from '../../utils/env';
 
 const NAV = [
   { label: 'Home', href: '/' },
@@ -27,10 +23,14 @@ const NAV = [
     ],
   },
   { label: 'Impact', href: '/impact' },
-  { label: 'Marketplace', href: '/marketplace' },
   { label: 'Gallery', href: '/gallery' },
   { label: 'News', href: '/news' },
   { label: 'Contact', href: '/contact' },
+];
+
+const MARKETPLACE_NAV = [
+  { label: 'Marketplace', href: '/' },
+  { label: 'About', href: '/about' },
 ];
 
 function DropdownMenu({ items, onClose }) {
@@ -57,6 +57,8 @@ export default function Navbar() {
   const location = useLocation();
   const dropdownRef = useRef(null);
   const { theme, toggleTheme } = useTheme();
+  const isMarketplace = isMarketplaceMode();
+  const activeNav = isMarketplace ? MARKETPLACE_NAV : NAV;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -102,13 +104,15 @@ export default function Navbar() {
           </div>
           <div className="navbar__brand-text">
             <span className="navbar__brand-name">Kwara L-PRES</span>
-            <span className="navbar__brand-tagline">Livestock Productivity and Resilience Support</span>
+            <span className="navbar__brand-tagline">
+              {isMarketplace ? 'Kwara Livestock Marketplace Portal' : 'Livestock Productivity and Resilience Support'}
+            </span>
           </div>
         </Link>
 
         {/* Desktop links */}
         <ul className="navbar__links" ref={dropdownRef}>
-          {NAV.map((link) => (
+          {activeNav.map((link) => (
             <li key={link.label} className="navbar__item">
               {link.children ? (
                 <button
@@ -133,7 +137,7 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* GDSS CTA + Theme toggle */}
+        {/* Actions */}
         <div className="navbar__actions">
           <button
             className="navbar__search-btn"
@@ -144,16 +148,28 @@ export default function Navbar() {
             <Search size={15} />
             <kbd className="navbar__search-kbd">⌘K</kbd>
           </button>
+          {isMarketplace ? (
+            <a
+              href={MAIN_WEBSITE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-marketplace"
+              style={{ background: 'linear-gradient(135deg, #1e3a8a, #3b82f6)' }}
+            >
+              Main Website
+            </a>
+          ) : (
+            <a
+              href={MARKETPLACE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-marketplace"
+            >
+              Marketplace
+            </a>
+          )}
           <a
-            href={import.meta.env.VITE_MARKETPLACE_URL || "https://lpres-marketplace.onrender.com/"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-marketplace"
-          >
-            Marketplace
-          </a>
-          <a
-            href="https://main.dgnvy1x73yeps.amplifyapp.com/"
+            href={GDSS_PORTAL_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-gdss"
@@ -171,7 +187,7 @@ export default function Navbar() {
       {open && (
         <div className="navbar__mobile">
           <div className="container">
-            {NAV.map((link) => (
+            {activeNav.map((link) => (
               <div key={link.label}>
                 <Link
                   to={link.href}
@@ -196,18 +212,31 @@ export default function Navbar() {
                 )}
               </div>
             ))}
+            {isMarketplace ? (
+              <a
+                href={MAIN_WEBSITE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-marketplace"
+                style={{ marginTop: 20, width: '100%', justifyContent: 'center', display: 'flex', background: 'linear-gradient(135deg, #1e3a8a, #3b82f6)' }}
+                onClick={() => setOpen(false)}
+              >
+                Main Website
+              </a>
+            ) : (
+              <a
+                href={MARKETPLACE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-marketplace"
+                style={{ marginTop: 20, width: '100%', justifyContent: 'center', display: 'flex' }}
+                onClick={() => setOpen(false)}
+              >
+                Marketplace Portal
+              </a>
+            )}
             <a
-              href={import.meta.env.VITE_MARKETPLACE_URL || "https://lpres-marketplace.onrender.com/"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-marketplace"
-              style={{ marginTop: 20, width: '100%', justifyContent: 'center', display: 'flex' }}
-              onClick={() => setOpen(false)}
-            >
-              Marketplace Portal
-            </a>
-            <a
-              href="https://main.dgnvy1x73yeps.amplifyapp.com/"
+              href={GDSS_PORTAL_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-gdss"

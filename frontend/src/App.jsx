@@ -82,6 +82,62 @@ function AdminRoute({ children }) {
   return isAuthenticated ? children : <Navigate to="/admin/login" replace />;
 }
 
+import { isMarketplaceMode } from './utils/env';
+
+function AppRoutes() {
+  const isMarketplace = isMarketplaceMode();
+
+  if (isMarketplace) {
+    return (
+      <Routes>
+        <Route path="/" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
+        <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
+        <Route path="/marketplace" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
+        <Route path="/marketplace/register" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
+        <Route path="/marketplace/login" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
+
+        {/* Admin routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+        <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    );
+  }
+
+  return (
+    <Routes>
+      {/* Public routes */}
+      <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
+      <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
+      <Route path="/programs" element={<PublicLayout><ProgramsPage /></PublicLayout>} />
+      <Route path="/impact" element={<PublicLayout><ResultsPage /></PublicLayout>} />
+      <Route path="/partners" element={<PublicLayout><PartnersPage /></PublicLayout>} />
+      <Route path="/news" element={<PublicLayout><NewsPage /></PublicLayout>} />
+      <Route path="/news/:slug" element={<PublicLayout><NewsArticle /></PublicLayout>} />
+      <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
+      <Route path="/gallery" element={<PublicLayout><GalleryPage /></PublicLayout>} />
+      <Route path="/marketplace" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
+      <Route path="/marketplace/register" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
+      <Route path="/marketplace/login" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
+      <Route path="/home-light" element={<HomeLight />} />
+      <Route path="/home2" element={<PublicLayout><Home2 /></PublicLayout>} />
+
+      {/* Admin routes */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+      <Route path="/admin/news/new" element={<AdminRoute><NewsForm /></AdminRoute>} />
+      <Route path="/admin/news/:id/edit" element={<AdminRoute><NewsForm /></AdminRoute>} />
+      <Route path="/admin/gallery" element={<AdminRoute><GalleryManager /></AdminRoute>} />
+      <Route path="/admin/projects" element={<AdminRoute><ProjectsManager /></AdminRoute>} />
+      <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -98,34 +154,7 @@ export default function App() {
           <ScrollAnimator />
           <SearchModal />
           <ChatBot />
-          <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
-            <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
-            <Route path="/programs" element={<PublicLayout><ProgramsPage /></PublicLayout>} />
-            <Route path="/impact" element={<PublicLayout><ResultsPage /></PublicLayout>} />
-            <Route path="/partners" element={<PublicLayout><PartnersPage /></PublicLayout>} />
-            <Route path="/news" element={<PublicLayout><NewsPage /></PublicLayout>} />
-            <Route path="/news/:slug" element={<PublicLayout><NewsArticle /></PublicLayout>} />
-            <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
-            <Route path="/gallery" element={<PublicLayout><GalleryPage /></PublicLayout>} />
-            <Route path="/marketplace" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
-            <Route path="/marketplace/register" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
-            <Route path="/marketplace/login" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
-            <Route path="/home-light" element={<HomeLight />} />
-            <Route path="/home2" element={<PublicLayout><Home2 /></PublicLayout>} />
-
-            {/* Admin routes */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-            <Route path="/admin/news/new" element={<AdminRoute><NewsForm /></AdminRoute>} />
-            <Route path="/admin/news/:id/edit" element={<AdminRoute><NewsForm /></AdminRoute>} />
-            <Route path="/admin/gallery" element={<AdminRoute><GalleryManager /></AdminRoute>} />
-            <Route path="/admin/projects" element={<AdminRoute><ProjectsManager /></AdminRoute>} />
-            <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
-
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <AppRoutes />
         </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>
