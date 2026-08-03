@@ -13,57 +13,81 @@ router = APIRouter(prefix="/api/marketplace", tags=["marketplace"])
 
 @router.post("/auth/register")
 def register_user(user_data: schemas.MarketplaceUserCreate, db: Session = Depends(get_db)):
-    existing = db.query(models.MarketplaceUser).filter(models.MarketplaceUser.email == user_data.email).first()
-    if existing:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    
-    hashed_pwd = get_password_hash(user_data.password)
-    new_user = models.MarketplaceUser(
-        name=user_data.name,
-        email=user_data.email,
-        phone=user_data.phone,
-        whatsapp=user_data.whatsapp or user_data.phone,
-        lga=user_data.lga or "Ilorin East",
-        hashed_password=hashed_pwd
-    )
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
+    try:
+        existing = db.query(models.MarketplaceUser).filter(models.MarketplaceUser.email == user_data.email).first()
+        if existing:
+            raise HTTPException(status_code=400, detail="Email already registered")
+        
+        hashed_pwd = get_password_hash(user_data.password)
+        new_user = models.MarketplaceUser(
+            name=user_data.name,
+            email=user_data.email,
+            phone=user_data.phone,
+            whatsapp=user_data.whatsapp or user_data.phone,
+            lga=user_data.lga or "Ilorin East",
+            hashed_password=hashed_pwd,
+            is_verified=False,
+            verification_status="unverified"
+        )
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
 
-    token = create_access_token(data={"sub": new_user.email, "user_id": str(new_user.id), "name": new_user.name})
-    return {
-        "success": True,
-        "token": token,
-        "user": {
-            "_id": str(new_user.id),
-            "name": new_user.name,
-            "email": new_user.email,
-            "phone": new_user.phone,
-            "whatsapp": new_user.whatsapp,
-            "lga": new_user.lga
+        token = create_access_token(data={"sub": new_user.email, "user_id": str(new_user.id), "name": new_user.name})
+        return {
+            "success": True,
+            "token": token,
+            "user": {
+                "_id": str(new_user.id),
+                "name": new_user.name,
+                "email": new_user.email,
+                "phone": new_user.phone,
+                "whatsapp": new_user.whatsapp,
+                "lga": new_user.lga,
+                "isVerified": False,
+                "verificationStatus": "unverified"
+            }
         }
-    }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.post("/auth/login")
 def login_user(credentials: schemas.MarketplaceUserLogin, db: Session = Depends(get_db)):
-    user = db.query(models.MarketplaceUser).filter(models.MarketplaceUser.email == credentials.email).first()
-    if not user or not verify_password(credentials.password, user.hashed_password):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
-    
-    token = create_access_token(data={"sub": user.email, "user_id": str(user.id), "name": user.name})
-    return {
-        "success": True,
-        "token": token,
-        "user": {
-            "_id": str(user.id),
-            "name": user.name,
-            "email": user.email,
-            "phone": user.phone,
-            "whatsapp": user.whatsapp,
-            "lga": user.lga
+    try:
+        user = db.query(models.MarketplaceUser).filter(models.MarketplaceUser.email == credentials.email).first()
+        if not user or not getattr(user, 'hashed_password', None):
+            raise HTTPException(status_code=401, detail="Invalid email or password")
+        
+        try:
+            is_valid = verify_password(credentials.password, user.hashed_password)
+        except Exception:
+            is_valid = False
+
+        if not is_valid:
+            raise HTTPException(status_code=401, detail="Invalid email or password")
+        
+        token = create_access_token(data={"sub": user.email, "user_id": str(user.id), "name": user.name})
+        return {
+            "success": True,
+            "token": token,
+            "user": {
+                "_id": str(user.id),
+                "name": user.name,
+                "email": user.email,
+                "phone": user.phone,
+                "whatsapp": user.whatsapp,
+                "lga": user.lga,
+                "isVerified": bool(getattr(user, "is_verified", False)),
+                "verificationStatus": getattr(user, "verification_status", "unverified") or "unverified"
+            }
         }
-    }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/products")
@@ -176,4 +200,33 @@ def update_product_status(product_id: int, status: str = Query(...), db: Session
     prod.status = status
     db.commit()
     return {"success": True, "message": f"Product status updated to {status}", "status": status}
+
+
+@router.post("/verification/request")
+def request_verification(req_data: schemas.MarketplaceVerificationRequest, db: Session = Depends(get_db)):
+    try:
+        user = db.query(models.MarketplaceUser).filter(models.MarketplaceUser.email == req_data.email).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        details = {
+            "farm_name": req_data.farm_name,
+            "coop_name": req_data.coop_name,
+            "nin_reg": req_data.nin_reg,
+            "notes": req_data.notes
+        }
+        user.verification_status = "pending"
+        user.verification_details = json.dumps(details)
+        db.commit()
+        db.refresh(user)
+        
+        return {
+            "success": True,
+            "message": "Verification request submitted successfully",
+            "verificationStatus": user.verification_status
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
