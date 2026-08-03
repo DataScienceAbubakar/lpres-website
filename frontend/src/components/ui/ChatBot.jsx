@@ -121,7 +121,7 @@ export default function ChatBot() {
               </div>
               <div>
                 <div className="chat__header-name">L-PRES Assistant</div>
-                <div className="chat__header-sub">Powered by Claude AI</div>
+                <div className="chat__header-sub">Online Support</div>
               </div>
             </div>
             <div className="chat__header-actions">
