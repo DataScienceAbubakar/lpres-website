@@ -29,6 +29,16 @@ const rawApiBase = (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL
 
 const API_BASE = rawApiBase.replace(/\/+$/, '');
 
+const renderLocationText = (loc) => {
+    if (!loc) return 'Kwara State';
+    if (typeof loc === 'string') return loc;
+    if (typeof loc === 'object') {
+        const parts = [loc.region || loc.lga, loc.state || 'Kwara State'].filter(Boolean);
+        return parts.join(', ');
+    }
+    return String(loc);
+};
+
 export default function MarketplacePage() {
     const location = useLocation();
     const navigate = useNavigate();
@@ -1032,9 +1042,11 @@ export default function MarketplacePage() {
                                                     />
                                                     <div className="mp-item-details">
                                                         <h4>{item.name}</h4>
-                                                        <span className="mp-item-price">₦{item.price?.toLocaleString()}</span>
+                                                        <span className="mp-item-price">
+                                                            ₦{typeof item.price === 'object' ? (item.price?.amount || 0).toLocaleString() : Number(item.price || 0).toLocaleString()}
+                                                        </span>
                                                         <div className="mp-item-meta">
-                                                            <span><MapPin size={12} /> {item.location}</span>
+                                                            <span><MapPin size={12} /> {renderLocationText(item.location)}</span>
                                                             <span className={`mp-status-pill ${item.status === 'sold' ? 'sold' : 'active'}`}>
                                                                 {item.status === 'sold' ? 'Sold Out' : 'Active Listing'}
                                                             </span>
@@ -1109,10 +1121,10 @@ export default function MarketplacePage() {
                                                 <div key={soldItem._id || soldItem.id} className="mp-sale-row">
                                                     <div className="mp-sale-info">
                                                         <strong>{soldItem.name}</strong>
-                                                        <span>Completed sale • {soldItem.location}</span>
+                                                        <span>Completed sale • {renderLocationText(soldItem.location)}</span>
                                                     </div>
                                                     <div className="mp-sale-price">
-                                                        ₦{soldItem.price?.toLocaleString()}
+                                                        ₦{typeof soldItem.price === 'object' ? (soldItem.price?.amount || 0).toLocaleString() : Number(soldItem.price || 0).toLocaleString()}
                                                     </div>
                                                 </div>
                                             ))}
