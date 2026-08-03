@@ -1,4 +1,9 @@
+import { useState, useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X, ChevronDown, Sun, Moon, Search } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 import { isMarketplaceMode, MAIN_WEBSITE_URL, MARKETPLACE_URL, GDSS_PORTAL_URL } from '../../utils/env';
+import './Navbar.css';
 
 const NAV = [
   { label: 'Home', href: '/' },
