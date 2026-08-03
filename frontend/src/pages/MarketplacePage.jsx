@@ -23,11 +23,9 @@ import {
 } from 'lucide-react';
 import './MarketplacePage.css';
 
-const rawApiBase = (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.trim())
-    ? import.meta.env.VITE_API_URL.trim()
-    : (typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://lpress-website.onrender.com');
+import { DEFAULT_API_URL } from '../utils/env';
 
-const API_BASE = rawApiBase.replace(/\/+$/, '');
+const API_BASE = DEFAULT_API_URL;
 
 const renderLocationText = (loc) => {
     if (!loc) return 'Kwara State';

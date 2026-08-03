@@ -1,2 +1,2 @@
-/api/*    https://lpress-website.onrender.com/api/:splat    200!
+/api/*    https://lpress-website-backend.onrender.com/api/:splat    200!
 /*        /index.html                                       200

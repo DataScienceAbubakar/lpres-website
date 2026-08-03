@@ -1,10 +1,7 @@
 import axios from 'axios';
+import { DEFAULT_API_URL } from '../utils/env';
 
-const rawApiBase = (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.trim())
-  ? import.meta.env.VITE_API_URL.trim()
-  : (typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://lpress-website.onrender.com');
-
-export const API_BASE = rawApiBase.replace(/\/+$/, '');
+export const API_BASE = DEFAULT_API_URL;
 
 const api = axios.create({ baseURL: API_BASE });
 
