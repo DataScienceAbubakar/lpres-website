@@ -417,7 +417,32 @@
   text-transform: uppercase;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1120px) {
+  .navbar__inner {
+    gap: 12px;
+  }
+
+  .navbar__links {
+    gap: 0px;
+  }
+
+  .navbar__link {
+    padding: 8px 8px;
+    font-size: 13px;
+  }
+
+  .navbar__actions {
+    gap: 8px;
+  }
+
+  .btn-marketplace,
+  .btn-gdss {
+    padding: 8px 14px;
+    font-size: 12.5px;
+  }
+}
+
+@media (max-width: 960px) {
   .navbar__links {
     display: none;
   }
