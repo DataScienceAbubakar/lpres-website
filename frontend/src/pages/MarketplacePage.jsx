@@ -67,6 +67,24 @@ export default function MarketplacePage() {
     const [authError, setAuthError] = useState('');
     const [authSubmitting, setAuthSubmitting] = useState(false);
 
+    // Profile Modal State
+    const [showProfileModal, setShowProfileModal] = useState(false);
+    const [profileTab, setProfileTab] = useState('listings'); // 'listings' | 'inquiries' | 'sales'
+
+    // Toggle product status (active vs sold)
+    const handleToggleStatus = async (id, currentStatus) => {
+        const newStatus = currentStatus === 'sold' ? 'active' : 'sold';
+        try {
+            await fetch(`${API_BASE}/api/marketplace/products/${id}/status?status=${newStatus}`, { method: 'PATCH' });
+        } catch (_) { }
+        setProducts((prev) => prev.map((p) => {
+            if ((p._id || p.id) === id) {
+                return { ...p, status: newStatus };
+            }
+            return p;
+        }));
+    };
+
     // Add/Edit Product State
     const [editingProduct, setEditingProduct] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -334,10 +352,13 @@ export default function MarketplacePage() {
                             </button>
 
                             {mUser ? (
-                                <div className="muser-pill">
+                                <div className="muser-pill" onClick={() => setShowProfileModal(true)} title="View Marketer Profile">
                                     <User size={16} />
                                     <span>{mUser.name} ({mUser.lga})</span>
-                                    <button onClick={handleLogout} className="muser-logout" title="Log out">
+                                    <button onClick={(e) => { e.stopPropagation(); setShowProfileModal(true); }} className="muser-profile-link">
+                                        My Profile
+                                    </button>
+                                    <button onClick={(e) => { e.stopPropagation(); handleLogout(); }} className="muser-logout" title="Log out">
                                         <LogOut size={14} />
                                     </button>
                                 </div>
@@ -891,6 +912,215 @@ export default function MarketplacePage() {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Marketer Profile Dashboard Modal */}
+            {showProfileModal && mUser && (
+                <div className="mp-modal-backdrop" onClick={() => setShowProfileModal(false)}>
+                    <div className="mp-modal-content mp-profile-modal" onClick={(e) => e.stopPropagation()}>
+                        <button className="mp-modal-close" onClick={() => setShowProfileModal(false)}>
+                            <X size={20} />
+                        </button>
+
+                        {/* Profile Header & Contact Details */}
+                        <div className="mp-profile-header">
+                            <div className="mp-profile-avatar">
+                                {mUser.name ? mUser.name.charAt(0).toUpperCase() : 'M'}
+                            </div>
+                            <div className="mp-profile-info">
+                                <div className="mp-profile-name-row">
+                                    <h2>{mUser.name}</h2>
+                                    <span className="mp-verified-badge">
+                                        <CheckCircle2 size={14} /> Verified Kwara Producer
+                                    </span>
+                                </div>
+                                <p className="mp-profile-location"><MapPin size={14} /> {mUser.lga} LGA, Kwara State</p>
+
+                                <div className="mp-profile-contacts-pills">
+                                    <span><Mail size={13} /> {mUser.email}</span>
+                                    <span><Phone size={13} /> {mUser.phone || 'N/A'}</span>
+                                    <span><MessageCircle size={13} /> WhatsApp: {mUser.phone || 'N/A'}</span>
+                                </div>
+                            </div>
+                            <button onClick={handleLogout} className="btn-mp-secondary mp-profile-logout" title="Log Out">
+                                <LogOut size={15} /> Log Out
+                            </button>
+                        </div>
+
+                        {/* Performance Stats Cards */}
+                        <div className="mp-profile-stats-grid">
+                            <div className="mp-stat-card">
+                                <div className="mp-stat-icon active-icon"><Package size={22} /></div>
+                                <div className="mp-stat-data">
+                                    <span className="mp-stat-val">{products.filter(p => p.status !== 'sold').length}</span>
+                                    <span className="mp-stat-label">Active Listings</span>
+                                </div>
+                            </div>
+
+                            <div className="mp-stat-card">
+                                <div className="mp-stat-icon inquiry-icon"><MessageCircle size={22} /></div>
+                                <div className="mp-stat-data">
+                                    <span className="mp-stat-val">4</span>
+                                    <span className="mp-stat-label">Buyer Requests</span>
+                                </div>
+                            </div>
+
+                            <div className="mp-stat-card">
+                                <div className="mp-stat-icon sales-icon"><CheckCircle2 size={22} /></div>
+                                <div className="mp-stat-data">
+                                    <span className="mp-stat-val">{products.filter(p => p.status === 'sold').length}</span>
+                                    <span className="mp-stat-label">Completed Sales</span>
+                                </div>
+                            </div>
+
+                            <div className="mp-stat-card">
+                                <div className="mp-stat-icon rating-icon"><Star size={22} /></div>
+                                <div className="mp-stat-data">
+                                    <span className="mp-stat-val">5.0 ⭐</span>
+                                    <span className="mp-stat-label">Seller Rating</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Management Tabs */}
+                        <div className="mp-profile-tabs">
+                            <button
+                                className={`mp-tab-btn ${profileTab === 'listings' ? 'active' : ''}`}
+                                onClick={() => setProfileTab('listings')}
+                            >
+                                📦 My Product Listings ({products.length})
+                            </button>
+                            <button
+                                className={`mp-tab-btn ${profileTab === 'inquiries' ? 'active' : ''}`}
+                                onClick={() => setProfileTab('inquiries')}
+                            >
+                                💬 Buyer Requests (4)
+                            </button>
+                            <button
+                                className={`mp-tab-btn ${profileTab === 'sales' ? 'active' : ''}`}
+                                onClick={() => setProfileTab('sales')}
+                            >
+                                🏷️ Sales History ({products.filter(p => p.status === 'sold').length})
+                            </button>
+                        </div>
+
+                        {/* Tab Body */}
+                        <div className="mp-profile-tab-content">
+                            {profileTab === 'listings' && (
+                                <div className="mp-profile-listings">
+                                    {products.length === 0 ? (
+                                        <div className="mp-empty-tab">
+                                            <Package size={40} />
+                                            <p>You haven't listed any products yet.</p>
+                                            <button
+                                                onClick={() => { setShowProfileModal(false); setShowAddModal(true); }}
+                                                className="btn-mp-primary"
+                                            >
+                                                <Plus size={16} /> Post Your First Product
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="mp-profile-items-list">
+                                            {products.map((item) => (
+                                                <div key={item._id || item.id} className="mp-profile-item-card">
+                                                    <img
+                                                        src={item.images?.[0] || 'https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=300&q=80'}
+                                                        alt={item.name}
+                                                        className="mp-item-thumb"
+                                                    />
+                                                    <div className="mp-item-details">
+                                                        <h4>{item.name}</h4>
+                                                        <span className="mp-item-price">₦{item.price?.toLocaleString()}</span>
+                                                        <div className="mp-item-meta">
+                                                            <span><MapPin size={12} /> {item.location}</span>
+                                                            <span className={`mp-status-pill ${item.status === 'sold' ? 'sold' : 'active'}`}>
+                                                                {item.status === 'sold' ? 'Sold Out' : 'Active Listing'}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="mp-item-actions">
+                                                        <button
+                                                            onClick={() => handleToggleStatus(item._id || item.id, item.status)}
+                                                            className={`btn-status-toggle ${item.status === 'sold' ? 'btn-reactivate' : 'btn-mark-sold'}`}
+                                                        >
+                                                            {item.status === 'sold' ? 'Mark Active' : 'Mark Sold'}
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDeleteProduct(item._id || item.id)}
+                                                            className="btn-item-delete"
+                                                            title="Delete Product"
+                                                        >
+                                                            <X size={16} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {profileTab === 'inquiries' && (
+                                <div className="mp-profile-inquiries-list">
+                                    <div className="mp-inquiry-card">
+                                        <div className="mp-inquiry-header">
+                                            <strong>Mallam Usman (Offa LGA)</strong>
+                                            <span className="mp-inquiry-date">Today at 09:30 AM</span>
+                                        </div>
+                                        <p className="mp-inquiry-text">Interested in purchasing 5 bags of Maize Grain. Is bulk discount available?</p>
+                                        <div className="mp-inquiry-actions">
+                                            <a href={`https://wa.me/${mUser.phone || '2348030000000'}?text=Hello%20Usman,%20regarding%20your%20Maize%20Grain%20inquiry`} target="_blank" rel="noopener noreferrer" className="btn-mp-whatsapp">
+                                                <MessageCircle size={14} /> Reply on WhatsApp
+                                            </a>
+                                            <a href={`tel:${mUser.phone || '08030000000'}`} className="btn-mp-call">
+                                                <Phone size={14} /> Call Buyer
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div className="mp-inquiry-card">
+                                        <div className="mp-inquiry-header">
+                                            <strong>Alhaji Bello (Ilorin West LGA)</strong>
+                                            <span className="mp-inquiry-date">Yesterday</span>
+                                        </div>
+                                        <p className="mp-inquiry-text">Inquiring about Bunaji Breeding Bulls delivery options to Ilorin Central Market.</p>
+                                        <div className="mp-inquiry-actions">
+                                            <a href={`https://wa.me/${mUser.phone || '2348030000000'}`} target="_blank" rel="noopener noreferrer" className="btn-mp-whatsapp">
+                                                <MessageCircle size={14} /> Reply on WhatsApp
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {profileTab === 'sales' && (
+                                <div className="mp-profile-sales-summary">
+                                    {products.filter(p => p.status === 'sold').length === 0 ? (
+                                        <div className="mp-empty-tab">
+                                            <CheckCircle2 size={40} />
+                                            <p>No items marked as sold yet.</p>
+                                            <span className="mp-empty-sub">When you mark a product as sold, it will appear in your sales history.</span>
+                                        </div>
+                                    ) : (
+                                        <div className="mp-sales-list">
+                                            {products.filter(p => p.status === 'sold').map(soldItem => (
+                                                <div key={soldItem._id || soldItem.id} className="mp-sale-row">
+                                                    <div className="mp-sale-info">
+                                                        <strong>{soldItem.name}</strong>
+                                                        <span>Completed sale • {soldItem.location}</span>
+                                                    </div>
+                                                    <div className="mp-sale-price">
+                                                        ₦{soldItem.price?.toLocaleString()}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             )}

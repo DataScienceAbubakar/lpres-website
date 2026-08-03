@@ -166,3 +166,14 @@ def delete_product(product_id: int, db: Session = Depends(get_db)):
     db.delete(prod)
     db.commit()
     return {"success": True, "message": "Product deleted"}
+
+
+@router.patch("/products/{product_id}/status")
+def update_product_status(product_id: int, status: str = Query(...), db: Session = Depends(get_db)):
+    prod = db.query(models.MarketplaceProduct).filter(models.MarketplaceProduct.id == product_id).first()
+    if not prod:
+        raise HTTPException(status_code=404, detail="Product not found")
+    prod.status = status
+    db.commit()
+    return {"success": True, "message": f"Product status updated to {status}", "status": status}
+
