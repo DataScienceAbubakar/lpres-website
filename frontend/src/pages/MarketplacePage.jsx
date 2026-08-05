@@ -261,35 +261,35 @@ export default function MarketplacePage() {
 
         const form = e.target;
         const newProduct = {
-            name: form.name.value,
-            description: form.description.value,
-            category: form.category.value,
+            name: form.name?.value || '',
+            description: form.description?.value || '',
+            category: form.category?.value || 'Livestock',
             price: {
-                amount: parseFloat(form.price.value) || 0,
+                amount: parseFloat(form.price?.value) || 0,
                 currency: 'NGN',
-                unit: form.priceUnit.value
+                unit: form.priceUnit?.value || 'per unit'
             },
             quantity: {
-                available: parseInt(form.quantity.value, 10) || 1,
-                unit: form.quantityUnit.value
+                available: parseInt(form.quantity?.value, 10) || 1,
+                unit: form.quantityUnit?.value || 'units'
             },
             location: {
-                region: form.region.value || 'Ilorin East',
+                region: form.region?.value || mUser?.lga || 'Ilorin East',
                 country: 'Nigeria'
             },
             specifications: {
-                isOrganic: form.organic.checked,
-                variety: form.variety.value || '',
-                grade: form.grade.value || ''
+                isOrganic: form.organic ? form.organic.checked : true,
+                variety: form.variety?.value || '',
+                grade: form.grade?.value || ''
             },
-            images: imagePreviews.map((url, i) => ({ url, alt: form.name.value, isPrimary: i === 0 })),
+            images: imagePreviews.map((url, i) => ({ url, alt: form.name?.value || 'Product Image', isPrimary: i === 0 })),
             seller: {
-                userId: mUser._id || mUser.email,
+                userId: mUser._id || mUser.id || mUser.email,
                 name: mUser.name,
                 contact: {
-                    phone: form.phone.value || mUser.phone,
+                    phone: form.phone?.value || mUser.phone || '',
                     email: mUser.email,
-                    whatsapp: form.whatsapp.value || form.phone.value || mUser.phone
+                    whatsapp: form.whatsapp?.value || form.phone?.value || mUser.phone || ''
                 }
             }
         };
