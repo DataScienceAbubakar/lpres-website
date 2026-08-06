@@ -14,29 +14,6 @@ const HEADERS = {
 
 const SEED_PRODUCTS = [
     {
-        _id: "seed-1",
-        id: 1,
-        name: "Premium Bunaji Bulls (Kwara Central)",
-        description: "Healthy, fully vaccinated 3-year-old White Fulani (Bunaji) fattened bulls raised under L-PRES veterinary supervision in Ilorin East. Average live weight 380kg - 420kg.",
-        category: "Livestock",
-        price: { amount: 650000, currency: "NGN", unit: "per bull" },
-        quantity: { available: 15, unit: "bulls" },
-        location: { region: "Ilorin East", country: "Nigeria" },
-        images: [{ url: "https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=800&q=80", alt: "Bunaji Bulls", isPrimary: true }],
-        specifications: { isOrganic: true, variety: "White Fulani (Bunaji)", grade: "Grade A Fattened" },
-        seller: {
-            userId: "seller-1",
-            name: "Alhaji Ibrahim Danladi",
-            contact: { phone: "+234 803 123 4567", email: "ibrahim.danladi@lpres-farmers.ng", whatsapp: "+234 803 123 4567" }
-        },
-        status: "active",
-        views: 124,
-        averageRating: 4.9,
-        ratings: [],
-        inquiries: [],
-        createdAt: new Date().toISOString()
-    },
-    {
         _id: "seed-2",
         id: 2,
         name: "Fresh Pasteurised Dairy Milk",
