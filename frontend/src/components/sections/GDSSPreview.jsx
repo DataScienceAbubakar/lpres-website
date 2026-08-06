@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Map, ArrowRight, Navigation, GitBranch } from 'lucide-react';
+import { GDSS_PORTAL_URL } from '../../utils/env';
 import './GDSSPreview.css';
 
 const STATS = [
@@ -48,7 +49,7 @@ export default function GDSSPreview() {
             </div>
 
             <a
-              href="https://main.dgnvy1x73yeps.amplifyapp.com/"
+              href={GDSS_PORTAL_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-primary gdss__cta"

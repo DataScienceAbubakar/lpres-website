@@ -12,7 +12,7 @@ const STATIC_INDEX = [
   { title: 'Media Gallery', url: '/gallery', desc: 'Photos and videos from field activities and programme events', type: 'page', icon: 'page' },
   { title: 'News & Updates', url: '/news', desc: 'Latest news, events, announcements and field reports', type: 'page', icon: 'page' },
   { title: 'Contact Us', url: '/contact', desc: 'Office address, phone number, email and contact form', type: 'page', icon: 'page' },
-  { title: 'GDSS Portal', url: 'https://main.dgnvy1x73yeps.amplifyapp.com/', desc: 'Geo-referenced Decision Support System for L-PRES', type: 'page', icon: 'page' },
+  { title: 'GDSS Portal', url: 'https://gdss.lpres.kw.gov.ng/login', desc: 'Geo-referenced Decision Support System for L-PRES', type: 'page', icon: 'page' },
   { title: "Coordinator's Message", url: '/#coordinators-message', desc: 'Message from the State Project Coordinator', type: 'section', icon: 'section' },
   { title: 'Core Values', url: '/#values', desc: 'Seven principles guiding L-PRES: accountability, innovation, inclusiveness...', type: 'section', icon: 'section' },
   { title: 'Programme Statistics', url: '/#results', desc: 'Key results and impact figures at a glance', type: 'section', icon: 'section' },

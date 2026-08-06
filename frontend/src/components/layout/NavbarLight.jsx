@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { GDSS_PORTAL_URL } from '../../utils/env';
 import './NavbarLight.css';
 
 const NAV_LINKS = [
@@ -66,7 +67,7 @@ export default function NavbarLight() {
 
         <div className="nl-nav__actions">
           <a href={import.meta.env.VITE_MARKETPLACE_URL || "https://lpres-marketplace.onrender.com/"} target="_blank" rel="noopener noreferrer" className="nl-btn-marketplace">Marketplace</a>
-          <a href="https://main.dgnvy1x73yeps.amplifyapp.com/" target="_blank" rel="noopener noreferrer" className="nl-btn-gdss">GDSS Portal</a>
+          <a href={GDSS_PORTAL_URL} target="_blank" rel="noopener noreferrer" className="nl-btn-gdss">GDSS Portal</a>
         </div>
 
         <button className="nl-nav__burger" onClick={() => setOpen(!open)} aria-label="Toggle menu">
@@ -89,7 +90,7 @@ export default function NavbarLight() {
             <a href={import.meta.env.VITE_MARKETPLACE_URL || "https://lpres-marketplace.onrender.com/"} target="_blank" rel="noopener noreferrer" className="nl-btn-marketplace" style={{ marginTop: 16, display: 'flex', justifyContent: 'center' }}>
               Marketplace Portal
             </a>
-            <a href="https://main.dgnvy1x73yeps.amplifyapp.com/" target="_blank" rel="noopener noreferrer" className="nl-btn-gdss" style={{ marginTop: 10, display: 'flex', justifyContent: 'center' }}>
+            <a href={GDSS_PORTAL_URL} target="_blank" rel="noopener noreferrer" className="nl-btn-gdss" style={{ marginTop: 10, display: 'flex', justifyContent: 'center' }}>
               GDSS Portal
             </a>
           </div>

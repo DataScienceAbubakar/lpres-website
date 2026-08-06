@@ -15,7 +15,7 @@ export const isMarketplaceMode = () => {
 
 export const MAIN_WEBSITE_URL = import.meta.env.VITE_MAIN_WEBSITE_URL || 'https://lpres-website.onrender.com';
 export const MARKETPLACE_URL = import.meta.env.VITE_MARKETPLACE_URL || 'https://lpres-marketplace.onrender.com';
-export const GDSS_PORTAL_URL = 'https://main.dgnvy1x73yeps.amplifyapp.com/';
+export const GDSS_PORTAL_URL = 'https://gdss.lpres.kw.gov.ng/login';
 
 export const DEFAULT_API_URL = (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.trim())
     ? import.meta.env.VITE_API_URL.trim().replace(/\/+$/, '')
