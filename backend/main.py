@@ -20,6 +20,9 @@ origins = [
     "https://lpress-website.onrender.com",
     "https://lpres-marketplace.onrender.com",
     "https://lpres.onrender.com",
+    "https://lpres.kw.gov.ng",
+    "https://www.lpres.kw.gov.ng",
+    "https://market.lpres.kw.gov.ng",
 ]
 
 app.add_middleware(
