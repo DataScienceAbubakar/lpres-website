@@ -106,6 +106,8 @@ def get_products(
     
     result_list = []
     for p in products:
+        if "bunaji bulls" in p.name.lower():
+            continue
         p_dict = {
             "_id": str(p.id),
             "id": p.id,

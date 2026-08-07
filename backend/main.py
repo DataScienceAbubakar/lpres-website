@@ -60,6 +60,12 @@ def run_migrations():
         db.commit()
     except Exception:
         db.rollback()
+
+    try:
+        db.execute(text("DELETE FROM marketplace_products WHERE name LIKE '%Bunaji Bulls%'"))
+        db.commit()
+    except Exception:
+        db.rollback()
         
     db.close()
 
