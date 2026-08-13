@@ -93,6 +93,86 @@ export default function MarketplacePage() {
     const [currentView, setCurrentView] = useState('catalog');
     const [profileTab, setProfileTab] = useState('listings'); // 'listings' | 'inquiries' | 'sales'
 
+    // Enterprise Trade Request Modal State
+    const [showRequestModal, setShowRequestModal] = useState(false);
+    const [requestProduct, setRequestProduct] = useState(null);
+    const [reqQty, setReqQty] = useState('1');
+    const [reqIncludeInspection, setReqIncludeInspection] = useState(true);
+    const [reqRequestSupplyChain, setReqRequestSupplyChain] = useState(false);
+    const [reqBuyerName, setReqBuyerName] = useState('');
+    const [reqBuyerEmail, setReqBuyerEmail] = useState('');
+    const [reqBuyerPhone, setReqBuyerPhone] = useState('');
+    const [reqBuyerLga, setReqBuyerLga] = useState('Ilorin East');
+    const [reqDeliveryLocation, setReqDeliveryLocation] = useState('');
+    const [reqAdditionalNotes, setReqAdditionalNotes] = useState('');
+    const [reqSubmitting, setReqSubmitting] = useState(false);
+    const [reqSuccessData, setReqSuccessData] = useState(null);
+    const [reqError, setReqError] = useState('');
+
+    const handleOpenRequestModal = (prod) => {
+        setRequestProduct(prod);
+        setReqQty('1');
+        setReqIncludeInspection(true);
+        setReqRequestSupplyChain(false);
+        setReqBuyerName(mUser?.name || '');
+        setReqBuyerEmail(mUser?.email || '');
+        setReqBuyerPhone(mUser?.phone || '');
+        setReqBuyerLga(mUser?.lga || 'Ilorin East');
+        setReqDeliveryLocation('');
+        setReqAdditionalNotes('');
+        setReqSuccessData(null);
+        setReqError('');
+        setShowRequestModal(true);
+    };
+
+    const handleSubmitTradeRequest = async (e) => {
+        e.preventDefault();
+        if (!requestProduct) return;
+        setReqSubmitting(true);
+        setReqError('');
+
+        const unitAmount = typeof requestProduct.price === 'object' ? (requestProduct.price.amount || 0) : Number(requestProduct.price || 0);
+        const qtyNum = parseFloat(reqQty) || 1;
+        const totalAmount = unitAmount * qtyNum;
+        const currency = (typeof requestProduct.price === 'object' && requestProduct.price.currency) || 'NGN';
+
+        const payload = {
+            product_id: String(requestProduct._id || requestProduct.id),
+            product_name: requestProduct.name,
+            product_category: requestProduct.category || 'General',
+            unit_price: typeof requestProduct.price === 'object' ? requestProduct.price : { amount: unitAmount, currency, unit: 'unit' },
+            requested_qty: String(reqQty),
+            estimated_total: { amount: totalAmount, currency },
+            include_inspection: reqIncludeInspection,
+            request_supply_chain: reqRequestSupplyChain,
+            buyer_name: reqBuyerName,
+            buyer_email: reqBuyerEmail,
+            buyer_phone: reqBuyerPhone,
+            buyer_lga: reqBuyerLga,
+            delivery_location: reqDeliveryLocation,
+            additional_notes: reqAdditionalNotes,
+            seller_name: requestProduct.seller?.name || 'Kwara Producer',
+            seller_id: requestProduct.seller?.userId || '',
+            seller_contact: requestProduct.seller?.contact || {}
+        };
+
+        try {
+            const res = await fetch(`${API_BASE}/api/marketplace/requests`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || data.message || 'Failed to submit trade request');
+            setReqSuccessData(data);
+        } catch (err) {
+            setReqError(err.message || 'Error submitting request. Please try again.');
+        } finally {
+            setReqSubmitting(false);
+        }
+    };
+
+
     const switchView = (view) => {
         setCurrentView(view);
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -451,20 +531,118 @@ export default function MarketplacePage() {
 
                             <div className="marketplace-hero__content">
                                 <div className="marketplace-hero__badge">
-                                    <Leaf size={16} /> Kwara L-PRES Farmers & Marketers Hub
+                                    <Award size={16} /> Official Government Trade Intermediary — Kwara L-PRES
                                 </div>
                                 <h1 className="marketplace-hero__title">
-                                    Livestock & Agro <span className="text-emerald">Marketplace</span>
+                                    Enterprise Livestock & Agro <span className="text-emerald">Marketplace</span>
                                 </h1>
                                 <p className="marketplace-hero__lead">
-                                    Directly connect Kwara livestock producers, pastoralists, dairy farmers, and agro-allied marketers with verified buyers state-wide.
+                                    L-PRES facilitates end-to-end secure trade between agricultural producers and commercial buyers. Enjoy official escrow protection, 1% veterinary health inspections, and logistics support state-wide.
                                 </p>
+                            </div>
+                        </div>
+
+                        {/* Enterprise Service Gateway & Overview */}
+                        <div className="mp-landing-gateway">
+                            <div className="mp-gateway-header">
+                                <span className="mp-gateway-subtitle">OUR ENTERPRISE SERVICES</span>
+                                <h2>How L-PRES Facilitates Enterprise Agricultural Trade</h2>
+                                <p>We bridge the gap between Kwara livestock producers and enterprise buyers with government-backed transparency and reliability.</p>
+                            </div>
+
+                            {/* Services 4-Grid */}
+                            <div className="mp-services-grid">
+                                <div className="mp-service-card">
+                                    <div className="mp-service-card__icon mp-service-card__icon--emerald">
+                                        <ShieldCheck size={26} />
+                                    </div>
+                                    <h3>Intermediary Trade Facilitation</h3>
+                                    <p>L-PRES handles buyer requests, escrow protection, and seller coordination to eliminate fraudulent transactions and protect market integrity.</p>
+                                    <span className="mp-service-card__badge">Government Intermediary</span>
+                                </div>
+
+                                <div className="mp-service-card">
+                                    <div className="mp-service-card__icon mp-service-card__icon--amber">
+                                        <CheckCircle2 size={26} />
+                                    </div>
+                                    <h3>1% Quality & Health Inspection</h3>
+                                    <p>Optional official veterinary inspections for livestock health, breed certification, weight grading, and vaccination clearance before delivery.</p>
+                                    <span className="mp-service-card__badge">1% Fee Service</span>
+                                </div>
+
+                                <div className="mp-service-card">
+                                    <div className="mp-service-card__icon mp-service-card__icon--blue">
+                                        <Package size={26} />
+                                    </div>
+                                    <h3>Supply Chain & Logistics</h3>
+                                    <p>State-wide logistics facilitation, livestock transit, and cold-chain support connecting all 16 Kwara LGAs to regional national hubs.</p>
+                                    <span className="mp-service-card__badge">Full Haulage</span>
+                                </div>
+
+                                <div className="mp-service-card">
+                                    <div className="mp-service-card__icon mp-service-card__icon--purple">
+                                        <Award size={26} />
+                                    </div>
+                                    <h3>Verified Marketer Network</h3>
+                                    <p>Access vetted livestock cooperatives, licensed pastoralists, and commercial agro-producers with verified Kwara L-PRES badges.</p>
+                                    <span className="mp-service-card__badge">Vetted Producers</span>
+                                </div>
+                            </div>
+
+                            {/* How Facilitation Works Flow */}
+                            <div className="mp-how-it-works">
+                                <div className="mp-how-title">
+                                    <Clock size={18} /> 4-Step Enterprise Facilitation Process
+                                </div>
+                                <div className="mp-steps-row">
+                                    <div className="mp-step-item">
+                                        <div className="mp-step-num">1</div>
+                                        <h4>Select & Request</h4>
+                                        <p>Browse listings and click <strong>"Request Item"</strong> to submit your order specifications to L-PRES.</p>
+                                    </div>
+                                    <div className="mp-step-arrow">→</div>
+                                    <div className="mp-step-item">
+                                        <div className="mp-step-num">2</div>
+                                        <h4>Inspection & Quote</h4>
+                                        <p>Optionally add <strong>1% Veterinary Inspection</strong> for official health check & weight verification.</p>
+                                    </div>
+                                    <div className="mp-step-arrow">→</div>
+                                    <div className="mp-step-item">
+                                        <div className="mp-step-num">3</div>
+                                        <h4>Logistics & Haulage</h4>
+                                        <p>L-PRES coordinates secure transit from farm-gate to buyer location across Kwara LGAs.</p>
+                                    </div>
+                                    <div className="mp-step-arrow">→</div>
+                                    <div className="mp-step-item">
+                                        <div className="mp-step-num">4</div>
+                                        <h4>Settlement & Delivery</h4>
+                                        <p>Confirm item delivery and quality to trigger automated release to the verified producer.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Landing CTA Bar */}
+                            <div className="mp-gateway-cta">
+                                <a href="#catalog-section" className="btn btn-primary mp-cta-btn">
+                                    <Leaf size={18} /> Explore Marketplace Catalog & Request Trade
+                                </a>
+                                <button
+                                    onClick={() => {
+                                        setAuthIntentReason('register as an L-PRES Marketer');
+                                        setAuthMode('register');
+                                        setAuthError('');
+                                        setShowAuthModal(true);
+                                    }}
+                                    className="btn btn-secondary mp-cta-btn-alt"
+                                >
+                                    <Plus size={18} /> Register as Kwara Livestock Marketer
+                                </button>
                             </div>
                         </div>
                     </section>
 
                     {/* Filter Bar */}
-                    <section className="marketplace-filter-section">
+                    <section id="catalog-section" className="marketplace-filter-section">
                         <div className="container">
                             <div className="marketplace-filter-bar">
                                 {/* Search */}
@@ -648,41 +826,15 @@ export default function MarketplacePage() {
                                                             </span>
                                                         </div>
 
-                                                        {/* Contact Action */}
+                                                        {/* Enterprise Intermediary Facilitation Action */}
                                                         <div className="mp-seller-actions">
-                                                            {isContactRevealed ? (
-                                                                <div className="mp-contacts-disclosed">
-                                                                    <a
-                                                                        href={`tel:${p.seller?.contact?.phone || '+2348000000000'}`}
-                                                                        className="mp-contact-btn phone"
-                                                                        title="Call Seller"
-                                                                    >
-                                                                        <Phone size={15} /> <span>{p.seller?.contact?.phone}</span>
-                                                                    </a>
-                                                                    {p.seller?.contact?.whatsapp && (
-                                                                        <a
-                                                                            href={`https://wa.me/${p.seller.contact.whatsapp.replace(/[^0-9]/g, '')}`}
-                                                                            target="_blank"
-                                                                            rel="noopener noreferrer"
-                                                                            className="mp-contact-btn whatsapp"
-                                                                            title="WhatsApp Seller"
-                                                                        >
-                                                                            <MessageCircle size={15} /> <span>WhatsApp</span>
-                                                                        </a>
-                                                                    )}
-                                                                </div>
-                                                            ) : (
-                                                                <button
-                                                                    onClick={() => {
-                                                                        requireAuthForAction('view seller contact details', () => {
-                                                                            setRevealedContacts((prev) => ({ ...prev, [prodId]: true }));
-                                                                        });
-                                                                    }}
-                                                                    className="btn-reveal-contact"
-                                                                >
-                                                                    <Lock size={14} /> View Seller Contact
-                                                                </button>
-                                                            )}
+                                                            <button
+                                                                onClick={() => handleOpenRequestModal(p)}
+                                                                className="btn-request-trade"
+                                                                title="Initiate facilitated transaction via L-PRES Intermediary"
+                                                            >
+                                                                <ShieldCheck size={16} /> Request Item (L-PRES Facilitated)
+                                                            </button>
                                                         </div>
                                                     </div>
 
@@ -1389,6 +1541,241 @@ export default function MarketplacePage() {
                     </div>
                 </div>
             )}
+
+            {/* Enterprise Trade Facilitation Request Modal */}
+            {showRequestModal && requestProduct && (
+                <div className="mp-modal-overlay" onClick={() => setShowRequestModal(false)}>
+                    <div className="mp-modal-content mp-enterprise-modal" onClick={(e) => e.stopPropagation()}>
+                        <button onClick={() => setShowRequestModal(false)} className="mp-modal-close">
+                            <X size={20} />
+                        </button>
+
+                        <div className="mp-modal-header" style={{ textAlign: 'left', marginBottom: 16 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
+                                <ShieldCheck size={26} style={{ color: '#059669' }} />
+                                <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: '#1e293b' }}>Enterprise Trade Facilitation Request</h3>
+                            </div>
+                            <p style={{ fontSize: '0.875rem', color: '#64748b', margin: 0 }}>
+                                L-PRES acts as an official trade intermediary. We facilitate payment settlement, official health inspection, and supply chain logistics between buyer and seller.
+                            </p>
+                        </div>
+
+                        {reqSuccessData ? (
+                            <div className="mp-request-success-box">
+                                <CheckCircle2 size={48} className="mp-success-icon" style={{ color: '#059669', margin: '0 auto 12px auto' }} />
+                                <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>Enterprise Request Received!</h4>
+                                <p style={{ color: '#334155', fontSize: '0.9rem', marginBottom: 14 }}>
+                                    Your request tracking ID is <strong style={{ color: '#047857', fontFamily: 'monospace', fontSize: '1rem' }}>{reqSuccessData.requestCode || reqSuccessData.data?.requestCode}</strong>
+                                </p>
+                                <div className="mp-success-details-card">
+                                    <div className="mp-detail-row">
+                                        <span>Product:</span> <strong>{requestProduct.name}</strong>
+                                    </div>
+                                    <div className="mp-detail-row">
+                                        <span>Status:</span> <span className="mp-status-pill pending">Pending L-PRES Intermediary Review</span>
+                                    </div>
+                                    {reqIncludeInspection && (
+                                        <div className="mp-detail-row" style={{ color: '#065f46', fontWeight: 600 }}>
+                                            <span>Official Health Inspection:</span> <strong>Requested (1% Fee Applied)</strong>
+                                        </div>
+                                    )}
+                                    {reqRequestSupplyChain && (
+                                        <div className="mp-detail-row" style={{ color: '#1e40af', fontWeight: 600 }}>
+                                            <span>Supply Chain Facilitation:</span> <strong>Requested (Logistics & Pickup)</strong>
+                                        </div>
+                                    )}
+                                </div>
+                                <p style={{ fontSize: '0.78rem', color: '#64748b', marginTop: 16 }}>
+                                    An L-PRES Trade Officer will review your request, verify stock availability with {requestProduct.seller?.name || 'the seller'}, and contact you via phone ({reqBuyerPhone}) or email ({reqBuyerEmail}).
+                                </p>
+                                <button
+                                    onClick={() => setShowRequestModal(false)}
+                                    className="btn-mp-primary"
+                                    style={{ width: '100%', marginTop: 16 }}
+                                >
+                                    Close & Return to Marketplace
+                                </button>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubmitTradeRequest} className="mp-add-form">
+                                {reqError && (
+                                    <div className="mp-form-error" style={{ marginBottom: 14, background: '#fef2f2', border: '1px solid #fca5a5', color: '#991b1b', padding: '10px 14px', borderRadius: 6, fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: 8 }}>
+                                        <AlertCircle size={16} /> {reqError}
+                                    </div>
+                                )}
+
+                                {/* Product Summary Card */}
+                                <div className="mp-req-product-card">
+                                    <div className="mp-req-prod-header">
+                                        <span className="mp-req-category">{requestProduct.category || 'Livestock & Agro'}</span>
+                                        <span className="mp-req-badge"><ShieldCheck size={13} /> L-PRES Intermediary Managed</span>
+                                    </div>
+                                    <h4 className="mp-req-prod-title">{requestProduct.name}</h4>
+                                    <div className="mp-req-prod-meta">
+                                        <span>Seller: <strong>{requestProduct.seller?.name || 'Producer'}</strong></span>
+                                        <span>Location: <strong>{renderLocationText(requestProduct.location)}</strong></span>
+                                    </div>
+                                    <div className="mp-req-price-tag">
+                                        Unit Price: <strong>₦{(typeof requestProduct.price === 'object' ? requestProduct.price.amount : requestProduct.price)?.toLocaleString()}</strong> / {(typeof requestProduct.price === 'object' ? requestProduct.price.unit : 'unit')}
+                                    </div>
+                                </div>
+
+                                {/* Order & Facilitation Configurator */}
+                                <div className="mp-form-grid" style={{ marginTop: 14 }}>
+                                    <div className="mp-form-group">
+                                        <label>Quantity Required *</label>
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            required
+                                            value={reqQty}
+                                            onChange={(e) => setReqQty(e.target.value)}
+                                            placeholder="e.g. 10"
+                                        />
+                                    </div>
+
+                                    <div className="mp-form-group">
+                                        <label>Estimated Total Order Value</label>
+                                        <div className="mp-calculated-total-box">
+                                            ₦{((typeof requestProduct.price === 'object' ? requestProduct.price.amount : Number(requestProduct.price || 0)) * (parseFloat(reqQty) || 1)).toLocaleString()}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Facilitation Options Toggles */}
+                                <div className="mp-facilitation-options-container">
+                                    <h5 className="mp-options-heading">L-PRES Enterprise Trade Options</h5>
+
+                                    <label className={`mp-checkbox-option-card ${reqIncludeInspection ? 'active-gold' : ''}`}>
+                                        <input
+                                            type="checkbox"
+                                            checked={reqIncludeInspection}
+                                            onChange={(e) => setReqIncludeInspection(e.target.checked)}
+                                        />
+                                        <div className="mp-option-text">
+                                            <div className="mp-option-title">
+                                                <span>Include Official L-PRES Veterinary & Quality Inspection</span>
+                                                <span className="mp-fee-badge">+1% Fee</span>
+                                            </div>
+                                            <p className="mp-option-desc">
+                                                L-PRES veterinary/agro officers perform physical quality & health inspection prior to fund release.
+                                                {reqIncludeInspection && (
+                                                    <span className="mp-fee-calc-highlight">
+                                                        Calculated Inspection Fee: ₦{Math.round(((typeof requestProduct.price === 'object' ? requestProduct.price.amount : Number(requestProduct.price || 0)) * (parseFloat(reqQty) || 1)) * 0.01).toLocaleString()} NGN
+                                                    </span>
+                                                )}
+                                            </p>
+                                        </div>
+                                    </label>
+
+                                    <label className={`mp-checkbox-option-card ${reqRequestSupplyChain ? 'active-blue' : ''}`}>
+                                        <input
+                                            type="checkbox"
+                                            checked={reqRequestSupplyChain}
+                                            onChange={(e) => setReqRequestSupplyChain(e.target.checked)}
+                                        />
+                                        <div className="mp-option-text">
+                                            <div className="mp-option-title">
+                                                <span>Request L-PRES Supply Chain & Logistics Facilitation</span>
+                                                <span className="mp-logistics-badge">Logistics</span>
+                                            </div>
+                                            <p className="mp-option-desc">
+                                                Request cold chain, haulage, or transport support from farm plot / grazing reserve directly to your designated delivery point.
+                                            </p>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                {/* Buyer Details */}
+                                <h5 className="mp-options-heading" style={{ marginTop: 16 }}>Buyer & Delivery Information</h5>
+                                <div className="mp-form-grid">
+                                    <div className="mp-form-group">
+                                        <label>Your Full Name *</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={reqBuyerName}
+                                            onChange={(e) => setReqBuyerName(e.target.value)}
+                                            placeholder="e.g. Alhaji Ibrahim Dan-Bappa"
+                                        />
+                                    </div>
+                                    <div className="mp-form-group">
+                                        <label>Phone Number *</label>
+                                        <input
+                                            type="tel"
+                                            required
+                                            value={reqBuyerPhone}
+                                            onChange={(e) => setReqBuyerPhone(e.target.value)}
+                                            placeholder="e.g. 0803 123 4567"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="mp-form-grid">
+                                    <div className="mp-form-group">
+                                        <label>Email Address *</label>
+                                        <input
+                                            type="email"
+                                            required
+                                            value={reqBuyerEmail}
+                                            onChange={(e) => setReqBuyerEmail(e.target.value)}
+                                            placeholder="e.g. buyer@example.com"
+                                        />
+                                    </div>
+                                    <div className="mp-form-group">
+                                        <label>Delivery LGA / Region *</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={reqBuyerLga}
+                                            onChange={(e) => setReqBuyerLga(e.target.value)}
+                                            placeholder="e.g. Ilorin South / Offa"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="mp-form-group">
+                                    <label>Destination Address / Delivery Details</label>
+                                    <textarea
+                                        rows={2}
+                                        value={reqDeliveryLocation}
+                                        onChange={(e) => setReqDeliveryLocation(e.target.value)}
+                                        placeholder="Specific address, depot, feedlot, or pickup location instructions..."
+                                    />
+                                </div>
+
+                                <div className="mp-form-group">
+                                    <label>Additional Notes / Trade Requirements (Optional)</label>
+                                    <textarea
+                                        rows={2}
+                                        value={reqAdditionalNotes}
+                                        onChange={(e) => setReqAdditionalNotes(e.target.value)}
+                                        placeholder="Any specific weight, packaging, or health certificate requirements..."
+                                    />
+                                </div>
+
+                                <div className="mp-modal-actions" style={{ marginTop: 18 }}>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowRequestModal(false)}
+                                        className="btn-mp-cancel"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={reqSubmitting}
+                                        className="btn-mp-primary btn-enterprise-submit"
+                                    >
+                                        {reqSubmitting ? 'Submitting Request...' : 'Submit Enterprise Trade Request'}
+                                    </button>
+                                </div>
+                            </form>
+                        )}
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }

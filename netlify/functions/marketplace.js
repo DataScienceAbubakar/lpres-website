@@ -158,6 +158,37 @@ exports.handler = async (event) => {
             };
         }
 
+        if (method === 'POST' && (path === 'requests' || path === 'requests/')) {
+            const body = JSON.parse(event.body || '{}');
+            const estTotal = parseFloat(body.estimated_total?.amount || body.estimatedTotal?.amount || 0);
+            let inspectionFee = null;
+            if (body.include_inspection || body.includeInspection) {
+                const feeAmt = Math.round(estTotal * 0.01);
+                inspectionFee = { amount: feeAmt, currency: "NGN", percentage: 1.0 };
+            }
+            const requestCode = `LPRES-REQ-${Date.now()}-${Math.floor(Math.random() * 900 + 100)}`;
+            const newRequest = {
+                id: Date.now(),
+                requestCode,
+                productName: body.product_name || body.productName || "Agro Produce",
+                status: "pending_review",
+                includeInspection: Boolean(body.include_inspection || body.includeInspection),
+                inspectionFee: inspectionFee || body.inspection_fee || body.inspectionFee,
+                requestSupplyChain: Boolean(body.request_supply_chain || body.requestSupplyChain),
+                createdAt: new Date().toISOString()
+            };
+            return {
+                statusCode: 200,
+                headers: HEADERS,
+                body: JSON.stringify({
+                    success: true,
+                    message: "Enterprise trade request submitted successfully. L-PRES State Project Office will facilitate transaction.",
+                    requestCode,
+                    data: newRequest
+                })
+            };
+        }
+
         if (method === 'DELETE') {
             const match = path.match(/products\/(.+)$/);
             if (match) {
@@ -175,3 +206,4 @@ exports.handler = async (event) => {
         return { statusCode: 500, headers: HEADERS, body: JSON.stringify({ detail: err.message }) };
     }
 };
+

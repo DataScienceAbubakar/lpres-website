@@ -49,6 +49,8 @@ export const adminAPI = {
 export const adminMarketplaceAPI = {
   getVerifications: () => api.get('/api/admin/marketplace/verifications'),
   actionVerification: (userId, action, reason = '') => api.post(`/api/admin/marketplace/verifications/${userId}/action`, { action, reason }),
+  getRequests: (statusFilter = '') => api.get(`/api/admin/marketplace/requests${statusFilter ? `?status_filter=${statusFilter}` : ''}`),
+  updateRequestStatus: (requestId, status, notes = '') => api.patch(`/api/admin/marketplace/requests/${requestId}`, { status, admin_notes: notes }),
 };
 
 const multipart = { headers: { 'Content-Type': 'multipart/form-data' } };

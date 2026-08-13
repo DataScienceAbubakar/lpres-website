@@ -232,3 +232,96 @@ def request_verification(req_data: schemas.MarketplaceVerificationRequest, db: S
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
+@router.post("/requests")
+def submit_trade_request(req_data: schemas.MarketplaceRequestCreate, db: Session = Depends(get_db)):
+    try:
+        import time, random
+        req_code = f"LPRES-REQ-{int(time.time())}-{random.randint(100, 999)}"
+        
+        # Calculate inspection fee if requested
+        inspection_fee = None
+        if req_data.include_inspection:
+            try:
+                est_total = float(req_data.estimated_total.get("amount", 0))
+            except Exception:
+                est_total = 0.0
+            fee_amount = round(est_total * 0.01, 2)
+            inspection_fee = {
+                "amount": fee_amount,
+                "currency": req_data.estimated_total.get("currency", "NGN"),
+                "percentage": 1.0
+            }
+            
+        new_request = models.MarketplaceRequest(
+            request_code=req_code,
+            product_id=str(req_data.product_id),
+            product_name=req_data.product_name,
+            product_category=req_data.product_category or "General",
+            unit_price=req_data.unit_price,
+            requested_qty=str(req_data.requested_qty),
+            estimated_total=req_data.estimated_total,
+            include_inspection=req_data.include_inspection,
+            inspection_fee=inspection_fee or req_data.inspection_fee,
+            request_supply_chain=req_data.request_supply_chain,
+            buyer_name=req_data.buyer_name,
+            buyer_email=req_data.buyer_email,
+            buyer_phone=req_data.buyer_phone,
+            buyer_lga=req_data.buyer_lga or "Ilorin East",
+            delivery_location=req_data.delivery_location,
+            additional_notes=req_data.additional_notes,
+            seller_name=req_data.seller_name,
+            seller_id=str(req_data.seller_id or ""),
+            seller_contact=req_data.seller_contact or {},
+            status="pending_review"
+        )
+        
+        db.add(new_request)
+        db.commit()
+        db.refresh(new_request)
+        
+        return {
+            "success": True,
+            "message": "Enterprise trade request submitted successfully. L-PRES State Project Office will contact both parties.",
+            "requestCode": req_code,
+            "data": {
+                "id": new_request.id,
+                "requestCode": new_request.request_code,
+                "productName": new_request.product_name,
+                "status": new_request.status,
+                "includeInspection": new_request.include_inspection,
+                "inspectionFee": new_request.inspection_fee,
+                "requestSupplyChain": new_request.request_supply_chain,
+                "createdAt": new_request.created_at.isoformat() if new_request.created_at else ""
+            }
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/requests/my")
+def get_my_trade_requests(email: str = Query(...), db: Session = Depends(get_db)):
+    requests = db.query(models.MarketplaceRequest).filter(
+        models.MarketplaceRequest.buyer_email == email
+    ).order_by(models.MarketplaceRequest.created_at.desc()).all()
+    
+    items = []
+    for r in requests:
+        items.append({
+            "id": r.id,
+            "requestCode": r.request_code,
+            "productName": r.product_name,
+            "unitPrice": r.unit_price,
+            "requestedQty": r.requested_qty,
+            "estimatedTotal": r.estimated_total,
+            "includeInspection": r.include_inspection,
+            "inspectionFee": r.inspection_fee,
+            "requestSupplyChain": r.request_supply_chain,
+            "status": r.status,
+            "buyerLga": r.buyer_lga,
+            "deliveryLocation": r.delivery_location,
+            "createdAt": r.created_at.isoformat() if r.created_at else ""
+        })
+    return {"success": True, "data": items}
+
+

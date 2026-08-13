@@ -12,7 +12,7 @@ import './Admin.css';
 export default function AdminDashboard() {
   const { admin, logout } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('articles'); // 'articles' | 'verifications'
+  const [activeTab, setActiveTab] = useState('articles'); // 'articles' | 'verifications' | 'requests'
 
   // Articles state
   const [articles, setArticles] = useState([]);
@@ -22,6 +22,12 @@ export default function AdminDashboard() {
   const [verifications, setVerifications] = useState([]);
   const [verificationsLoading, setVerificationsLoading] = useState(false);
   const [actionProcessing, setActionProcessing] = useState(null);
+
+  // Enterprise Trade Requests state
+  const [tradeRequests, setTradeRequests] = useState([]);
+  const [tradeRequestsLoading, setTradeRequestsLoading] = useState(false);
+  const [requestActionProcessing, setRequestActionProcessing] = useState(null);
+  const [requestStatusFilter, setRequestStatusFilter] = useState('');
 
   const fetchArticles = () => {
     newsAPI.adminList()
@@ -42,9 +48,22 @@ export default function AdminDashboard() {
       .finally(() => setVerificationsLoading(false));
   };
 
+  const fetchTradeRequests = (filter = '') => {
+    setTradeRequestsLoading(true);
+    adminMarketplaceAPI.getRequests(filter)
+      .then((res) => {
+        if (res.data?.data) {
+          setTradeRequests(res.data.data);
+        }
+      })
+      .catch((err) => console.error('Error fetching trade requests:', err))
+      .finally(() => setTradeRequestsLoading(false));
+  };
+
   useEffect(() => {
     fetchArticles();
     fetchVerifications();
+    fetchTradeRequests();
   }, []);
 
   const handleLogout = () => {
@@ -80,11 +99,30 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleUpdateRequestStatus = async (requestId, newStatus) => {
+    const notes = window.prompt(`Update status to "${newStatus.replace('_', ' ')}"? Optional admin notes:`);
+    if (notes === null) return;
+
+    setRequestActionProcessing(requestId);
+    try {
+      await adminMarketplaceAPI.updateRequestStatus(requestId, newStatus, notes);
+      fetchTradeRequests(requestStatusFilter);
+    } catch (err) {
+      alert('Error updating request status: ' + (err.response?.data?.detail || err.message));
+    } finally {
+      setRequestActionProcessing(null);
+    }
+  };
+
   const published = articles.filter(a => a.is_published).length;
   const drafts = articles.filter(a => !a.is_published).length;
 
   const pendingVerifications = verifications.filter(v => v.verification_status === 'pending');
   const verifiedMarketers = verifications.filter(v => v.verification_status === 'verified');
+
+  const pendingTradeRequests = tradeRequests.filter(r => r.status === 'pending_review');
+  const inspectionTradeRequests = tradeRequests.filter(r => r.include_inspection);
+  const logisticsTradeRequests = tradeRequests.filter(r => r.request_supply_chain);
 
   return (
     <div className="admin-layout">
@@ -108,12 +146,34 @@ export default function AdminDashboard() {
           </div>
 
           <div
+            className={`admin-sidebar__nav-item ${activeTab === 'requests' ? 'active' : ''}`}
+            onClick={() => setActiveTab('requests')}
+            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          >
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              <Award size={18} /> Enterprise Trade Requests
+            </span>
+            {pendingTradeRequests.length > 0 && (
+              <span style={{
+                background: '#059669',
+                color: '#fff',
+                fontSize: '0.7rem',
+                fontWeight: 700,
+                padding: '2px 7px',
+                borderRadius: 999
+              }}>
+                {pendingTradeRequests.length}
+              </span>
+            )}
+          </div>
+
+          <div
             className={`admin-sidebar__nav-item ${activeTab === 'verifications' ? 'active' : ''}`}
             onClick={() => setActiveTab('verifications')}
             style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
           >
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-              <ShieldCheck size={18} /> Marketplace Verifications
+              <ShieldCheck size={18} /> Marketer Verifications
             </span>
             {pendingVerifications.length > 0 && (
               <span style={{
@@ -265,6 +325,211 @@ export default function AdminDashboard() {
                         </td>
                       </tr>
                     ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </>
+        ) : activeTab === 'requests' ? (
+          /* Enterprise Trade Requests View */
+          <>
+            <div className="admin-main__header">
+              <div>
+                <h1 className="admin-main__title">Enterprise Trade Facilitation Requests</h1>
+                <p className="admin-main__sub">Manage L-PRES facilitated buyer-seller trade requests, official inspections (1%), and supply chain logistics</p>
+              </div>
+              <div style={{ display: 'flex', gap: 10 }}>
+                <select
+                  value={requestStatusFilter}
+                  onChange={(e) => {
+                    setRequestStatusFilter(e.target.value);
+                    fetchTradeRequests(e.target.value);
+                  }}
+                  className="mp-select"
+                  style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}
+                >
+                  <option value="">All Statuses</option>
+                  <option value="pending_review">Pending Intermediary Review</option>
+                  <option value="inspection_scheduled">Inspection Scheduled</option>
+                  <option value="logistics_assigned">Logistics Assigned</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+                <button onClick={() => fetchTradeRequests(requestStatusFilter)} className="btn btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  Refresh
+                </button>
+              </div>
+            </div>
+
+            {/* Trade Requests Stats */}
+            <div className="admin-stats">
+              <div className="admin-stat-card admin-stat-card--green">
+                <div className="admin-stat-card__icon"><Award size={22} /></div>
+                <div className="admin-stat-card__num">{tradeRequests.length}</div>
+                <div className="admin-stat-card__label">Total Trade Requests</div>
+              </div>
+              <div className="admin-stat-card admin-stat-card--amber">
+                <div className="admin-stat-card__icon"><Clock size={22} /></div>
+                <div className="admin-stat-card__num">{pendingTradeRequests.length}</div>
+                <div className="admin-stat-card__label">Pending Review</div>
+              </div>
+              <div className="admin-stat-card">
+                <div className="admin-stat-card__icon"><ShieldCheck size={22} /></div>
+                <div className="admin-stat-card__num">{inspectionTradeRequests.length}</div>
+                <div className="admin-stat-card__label">1% Inspection Requested</div>
+              </div>
+              <div className="admin-stat-card">
+                <div className="admin-stat-card__icon"><Briefcase size={22} /></div>
+                <div className="admin-stat-card__num">{logisticsTradeRequests.length}</div>
+                <div className="admin-stat-card__label">Logistics Facilitation</div>
+              </div>
+            </div>
+
+            {/* Trade Requests Table */}
+            <div className="admin-table-wrap">
+              <div className="admin-table-header">
+                <h2>L-PRES Intermediary Trade Facilitation Orders</h2>
+              </div>
+
+              {tradeRequestsLoading ? (
+                <div className="admin-loading">Loading trade requests...</div>
+              ) : tradeRequests.length === 0 ? (
+                <div className="admin-empty">
+                  <Award size={40} />
+                  <p>No enterprise trade requests submitted yet.</p>
+                </div>
+              ) : (
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Req Code / Product</th>
+                      <th>Buyer Details</th>
+                      <th>Order & Est. Total</th>
+                      <th>Facilitation Options</th>
+                      <th>Seller Info</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tradeRequests.map((r) => {
+                      const isPending = r.status === 'pending_review';
+                      const isCompleted = r.status === 'completed';
+                      const isCancelled = r.status === 'cancelled';
+
+                      return (
+                        <tr key={r.id}>
+                          <td className="admin-table__title">
+                            <div style={{ fontWeight: 800, color: '#047857', fontFamily: 'monospace' }}>{r.request_code}</div>
+                            <div style={{ fontWeight: 700, color: '#0f172a', marginTop: 2 }}>{r.product_name}</div>
+                            <span className="tag" style={{ marginTop: 4 }}>{r.product_category || 'Livestock'}</span>
+                          </td>
+
+                          <td>
+                            <div style={{ fontWeight: 700, color: '#1e293b' }}>{r.buyer_name}</div>
+                            <div style={{ fontSize: '0.8rem', color: '#64748b', display: 'flex', flexDirection: 'column', gap: 2, marginTop: 4 }}>
+                              <span><Phone size={12} style={{ verticalAlign: 'middle', marginRight: 4 }} />{r.buyer_phone}</span>
+                              <span><Mail size={12} style={{ verticalAlign: 'middle', marginRight: 4 }} />{r.buyer_email}</span>
+                              <span><MapPin size={12} style={{ verticalAlign: 'middle', marginRight: 4 }} />{r.buyer_lga}</span>
+                            </div>
+                          </td>
+
+                          <td>
+                            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#059669' }}>
+                              ₦{(r.estimated_total?.amount || 0).toLocaleString()} NGN
+                            </div>
+                            <div style={{ fontSize: '0.8rem', color: '#475569', marginTop: 2 }}>
+                              Qty: <strong>{r.requested_qty}</strong>
+                            </div>
+                          </td>
+
+                          <td>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                              {r.include_inspection ? (
+                                <span style={{ background: '#fef3c7', color: '#b45309', padding: '2px 8px', borderRadius: 4, fontSize: '0.75rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                  <ShieldCheck size={12} /> Inspection (1% Fee: ₦{(r.inspection_fee || 0).toLocaleString()})
+                                </span>
+                              ) : (
+                                <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>No Inspection</span>
+                              )}
+
+                              {r.request_supply_chain ? (
+                                <span style={{ background: '#dbeafe', color: '#1e40af', padding: '2px 8px', borderRadius: 4, fontSize: '0.75rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                                  <Briefcase size={12} /> Logistics Facilitation
+                                </span>
+                              ) : (
+                                <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>Standard Delivery</span>
+                              )}
+                            </div>
+                          </td>
+
+                          <td>
+                            <div style={{ fontWeight: 600, color: '#1e293b' }}>{r.seller_name}</div>
+                          </td>
+
+                          <td>
+                            <span className={`admin-table__status ${isCompleted ? 'published' : isPending ? 'draft' : ''}`} style={{
+                              background: isPending ? '#fef3c7' : isCompleted ? '#dcfce7' : isCancelled ? '#fee2e2' : '#e0f2fe',
+                              color: isPending ? '#b45309' : isCompleted ? '#15803d' : isCancelled ? '#b91c1c' : '#0369a1',
+                              borderColor: isPending ? '#fde68a' : isCompleted ? '#86efac' : isCancelled ? '#fca5a5' : '#7dd3fc',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: 4
+                            }}>
+                              {r.status?.replace('_', ' ').toUpperCase()}
+                            </span>
+                          </td>
+
+                          <td>
+                            <div className="admin-table__actions" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
+                              {isPending && (
+                                <button
+                                  className="admin-action-btn admin-action-btn--green"
+                                  disabled={requestActionProcessing === r.id}
+                                  onClick={() => handleUpdateRequestStatus(r.id, 'inspection_scheduled')}
+                                  style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', background: '#059669', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 700, cursor: 'pointer' }}
+                                >
+                                  Schedule Inspection
+                                </button>
+                              )}
+
+                              {r.status === 'inspection_scheduled' && (
+                                <button
+                                  className="admin-action-btn"
+                                  disabled={requestActionProcessing === r.id}
+                                  onClick={() => handleUpdateRequestStatus(r.id, 'logistics_assigned')}
+                                  style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', background: '#0284c7', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 700, cursor: 'pointer' }}
+                                >
+                                  Assign Logistics
+                                </button>
+                              )}
+
+                              {(r.status === 'logistics_assigned' || isPending) && (
+                                <button
+                                  className="admin-action-btn"
+                                  disabled={requestActionProcessing === r.id}
+                                  onClick={() => handleUpdateRequestStatus(r.id, 'completed')}
+                                  style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', background: '#16a34a', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 700, cursor: 'pointer' }}
+                                >
+                                  Mark Completed
+                                </button>
+                              )}
+
+                              {!isCancelled && !isCompleted && (
+                                <button
+                                  className="admin-action-btn admin-action-btn--danger"
+                                  disabled={requestActionProcessing === r.id}
+                                  onClick={() => handleUpdateRequestStatus(r.id, 'cancelled')}
+                                  style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', background: '#ef4444', color: '#fff', border: 'none', borderRadius: 4, fontWeight: 700, cursor: 'pointer' }}
+                                >
+                                  Cancel Request
+                                </button>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               )}

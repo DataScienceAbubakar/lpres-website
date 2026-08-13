@@ -160,3 +160,66 @@ class MarketplaceProductOut(BaseModel):
     class Config:
         from_attributes = True
 
+
+class MarketplaceRequestCreate(BaseModel):
+    product_id: str
+    product_name: str
+    product_category: Optional[str] = "General"
+    unit_price: dict
+    requested_qty: str = "1"
+    estimated_total: dict
+    
+    # Intermediary Facilitation Options
+    include_inspection: bool = False
+    inspection_fee: Optional[dict] = None
+    request_supply_chain: bool = False
+    
+    # Buyer Details
+    buyer_name: str
+    buyer_email: str
+    buyer_phone: str
+    buyer_lga: Optional[str] = "Ilorin East"
+    delivery_location: Optional[str] = None
+    additional_notes: Optional[str] = None
+    
+    # Seller Details (Captured internally for Admin intermediary contact)
+    seller_name: str
+    seller_id: Optional[str] = None
+    seller_contact: Optional[dict] = None
+
+
+class MarketplaceRequestStatusUpdate(BaseModel):
+    status: str
+    admin_notes: Optional[str] = None
+
+
+class MarketplaceRequestOut(BaseModel):
+    id: int
+    request_code: str
+    product_id: str
+    product_name: str
+    product_category: Optional[str]
+    unit_price: dict
+    requested_qty: str
+    estimated_total: dict
+    include_inspection: bool
+    inspection_fee: Optional[dict]
+    request_supply_chain: bool
+    buyer_name: str
+    buyer_email: str
+    buyer_phone: str
+    buyer_lga: str
+    delivery_location: Optional[str]
+    additional_notes: Optional[str]
+    seller_name: str
+    seller_id: Optional[str]
+    seller_contact: Optional[dict]
+    status: str
+    admin_notes: Optional[str]
+    created_at: datetime
+    updated_at: Optional[datetime]
+
+    class Config:
+        from_attributes = True
+
+

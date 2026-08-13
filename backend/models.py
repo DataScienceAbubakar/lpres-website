@@ -102,3 +102,41 @@ class MarketplaceProduct(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
+
+class MarketplaceRequest(Base):
+    __tablename__ = "marketplace_requests"
+
+    id = Column(Integer, primary_key=True, index=True)
+    request_code = Column(String(50), unique=True, index=True, nullable=False)
+    product_id = Column(String(100), nullable=False)
+    product_name = Column(String(300), nullable=False)
+    product_category = Column(String(100), nullable=True)
+    unit_price = Column(JSON, nullable=False)        # {"amount": 45000, "unit": "per bag"}
+    requested_qty = Column(String(50), nullable=False, default="1")
+    estimated_total = Column(JSON, nullable=False)   # {"amount": 45000, "currency": "NGN"}
+    
+    # Intermediary Facilitation Options
+    include_inspection = Column(Boolean, default=False)
+    inspection_fee = Column(JSON, nullable=True)     # {"amount": 450, "currency": "NGN", "percentage": 1.0}
+    request_supply_chain = Column(Boolean, default=False)
+    
+    # Buyer Details
+    buyer_name = Column(String(150), nullable=False)
+    buyer_email = Column(String(150), nullable=False)
+    buyer_phone = Column(String(50), nullable=False)
+    buyer_lga = Column(String(100), default="Ilorin East")
+    delivery_location = Column(Text, nullable=True)
+    additional_notes = Column(Text, nullable=True)
+    
+    # Seller Details (Captured for Admin Intermediary reference only)
+    seller_name = Column(String(150), nullable=False)
+    seller_id = Column(String(100), nullable=True)
+    seller_contact = Column(JSON, nullable=True)
+    
+    # Facilitation Status & Tracking
+    status = Column(String(50), default="pending_review")  # pending_review | under_facilitation | inspection_scheduled | inspection_passed | logistics_dispatched | completed | cancelled
+    admin_notes = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+
