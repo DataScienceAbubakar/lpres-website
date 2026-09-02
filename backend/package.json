@@ -1,0 +1,15 @@
+{
+    "name": "lpres-website-and-marketplace-backend",
+    "version": "1.0.0",
+    "description": "AWS Lambda Serverless Backend for L-PRES Website & Marketplace",
+    "main": "handler.js",
+    "scripts": {
+        "deploy": "serverless deploy",
+        "info": "serverless info",
+        "logs": "serverless logs -f lpres_website_and_marketplace"
+    },
+    "devDependencies": {
+        "serverless": "^3.38.0",
+        "serverless-python-requirements": "^6.0.1"
+    }
+}

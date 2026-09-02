@@ -37,3 +37,16 @@ frontend/public/uploads/*
 # OS
 .DS_Store
 Thumbs.db
+
+# Serverless & Deployment build artifacts
+.serverless/
+backend/.serverless/
+backend/package/
+*.zip
+backend/*.zip
+response.json
+backend/response.json
+.env
+backend/.env
+frontend/.env
+

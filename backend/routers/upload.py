@@ -5,8 +5,14 @@ from utils.s3_service import upload_file_to_s3
 
 router = APIRouter(prefix="/api/upload", tags=["upload"])
 
-UPLOAD_DIR = "uploads"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
+import tempfile
+
+UPLOAD_DIR = os.path.join(tempfile.gettempdir(), "uploads")
+try:
+    os.makedirs(UPLOAD_DIR, exist_ok=True)
+except Exception:
+    pass
+
 
 
 @router.post("")

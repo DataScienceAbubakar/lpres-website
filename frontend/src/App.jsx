@@ -19,11 +19,14 @@ import GalleryPage from './pages/GalleryPage';
 import MarketplacePage from './pages/MarketplacePage';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import MarketplaceAdminLogin from './pages/admin/MarketplaceAdminLogin';
+import MarketplaceAdminDashboard from './pages/admin/MarketplaceAdminDashboard';
 import NewsForm from './pages/admin/NewsForm';
 import GalleryManager from './pages/admin/GalleryManager';
 import ProjectsManager from './pages/admin/ProjectsManager';
 import SearchModal from './components/ui/SearchModal';
 import ChatBot from './components/ui/ChatBot';
+
 
 function ScrollAnimator() {
   const { pathname } = useLocation();
@@ -97,6 +100,12 @@ function AppRoutes() {
         <Route path="/marketplace/register" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
         <Route path="/marketplace/login" element={<PublicLayout><MarketplacePage /></PublicLayout>} />
 
+        {/* Marketplace Admin routes */}
+        <Route path="/marketplace-admin/login" element={<MarketplaceAdminLogin />} />
+        <Route path="/marketplace-admin" element={<MarketplaceAdminDashboard />} />
+        <Route path="/marketplace/admin/login" element={<MarketplaceAdminLogin />} />
+        <Route path="/marketplace/admin" element={<MarketplaceAdminDashboard />} />
+
         {/* Admin routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
@@ -129,6 +138,12 @@ function AppRoutes() {
       <Route path="/home-light" element={<HomeLight />} />
       <Route path="/home2" element={<PublicLayout><Home2 /></PublicLayout>} />
 
+      {/* Marketplace Admin routes */}
+      <Route path="/marketplace-admin/login" element={<MarketplaceAdminLogin />} />
+      <Route path="/marketplace-admin" element={<MarketplaceAdminDashboard />} />
+      <Route path="/marketplace/admin/login" element={<MarketplaceAdminLogin />} />
+      <Route path="/marketplace/admin" element={<MarketplaceAdminDashboard />} />
+
       {/* Admin routes */}
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
@@ -137,6 +152,7 @@ function AppRoutes() {
       <Route path="/admin/gallery" element={<AdminRoute><GalleryManager /></AdminRoute>} />
       <Route path="/admin/projects" element={<AdminRoute><ProjectsManager /></AdminRoute>} />
       <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

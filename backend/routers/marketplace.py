@@ -6,7 +6,13 @@ import json
 from database import get_db
 import models
 import schemas
-from auth import get_password_hash, verify_password, create_access_token
+from auth import get_password_hash, verify_password, create_access_token, get_current_marketplace_admin
+from utils.email import (
+    send_welcome_email,
+    send_new_trade_request_email,
+    send_request_approved_email,
+    send_request_shipped_email
+)
 
 router = APIRouter(prefix="/api/marketplace", tags=["marketplace"])
 
@@ -33,7 +39,14 @@ def register_user(user_data: schemas.MarketplaceUserCreate, db: Session = Depend
         db.commit()
         db.refresh(new_user)
 
+        # Trigger Resend Welcome Auto-Email
+        try:
+            send_welcome_email(user_email=new_user.email, user_name=new_user.name)
+        except Exception as email_err:
+            print(f"[REGISTER EMAIL ERROR] {email_err}")
+
         token = create_access_token(data={"sub": new_user.email, "user_id": str(new_user.id), "name": new_user.name})
+
         return {
             "success": True,
             "token": token,
@@ -280,6 +293,22 @@ def submit_trade_request(req_data: schemas.MarketplaceRequestCreate, db: Session
         db.commit()
         db.refresh(new_request)
         
+        # Trigger Resend Trade Request Auto-Email
+        try:
+            est_total_dict = req_data.estimated_total or {}
+            amt = est_total_dict.get("amount", 0)
+            curr = est_total_dict.get("currency", "NGN")
+            formatted_amt = f"{curr} {amt:,.2f}" if isinstance(amt, (int, float)) else f"{curr} {amt}"
+            send_new_trade_request_email(
+                buyer_email=new_request.buyer_email,
+                buyer_name=new_request.buyer_name,
+                request_code=new_request.request_code,
+                product_name=new_request.product_name,
+                total_amount=formatted_amt
+            )
+        except Exception as email_err:
+            print(f"[TRADE REQUEST EMAIL ERROR] {email_err}")
+
         return {
             "success": True,
             "message": "Enterprise trade request submitted successfully. L-PRES State Project Office will contact both parties.",
@@ -323,5 +352,210 @@ def get_my_trade_requests(email: str = Query(...), db: Session = Depends(get_db)
             "createdAt": r.created_at.isoformat() if r.created_at else ""
         })
     return {"success": True, "data": items}
+
+
+# ── MARKETPLACE ADMIN ENDPOINTS ───────────────────────────────────────
+
+@router.post("/admin/login")
+def login_marketplace_admin(credentials: schemas.MarketplaceAdminLogin, db: Session = Depends(get_db)):
+    admin = db.query(models.MarketplaceAdmin).filter(models.MarketplaceAdmin.username == credentials.username).first()
+    if not admin or not verify_password(credentials.password, admin.hashed_password):
+        raise HTTPException(status_code=401, detail="Invalid marketplace admin username or password")
+    
+    token = create_access_token(data={"sub": admin.username, "role": "marketplace_admin", "admin_id": str(admin.id)})
+    return {
+        "success": True,
+        "token": token,
+        "admin": {
+            "id": admin.id,
+            "username": admin.username,
+            "email": admin.email
+        }
+    }
+
+
+@router.get("/admin/analytics")
+def get_marketplace_analytics(
+    m_admin: models.MarketplaceAdmin = Depends(get_current_marketplace_admin),
+    db: Session = Depends(get_db)
+):
+    requests = db.query(models.MarketplaceRequest).all()
+    total_requests = len(requests)
+    
+    total_amount = 0.0
+    status_counts = {
+        "pending_review": 0,
+        "approved": 0,
+        "shipped": 0,
+        "completed": 0,
+        "cancelled": 0
+    }
+    
+    for r in requests:
+        try:
+            amt = float(r.estimated_total.get("amount", 0) if isinstance(r.estimated_total, dict) else 0)
+            total_amount += amt
+        except Exception:
+            pass
+            
+        st = (r.status or "pending_review").lower()
+        if st in ["under_facilitation", "inspection_scheduled", "inspection_passed"]:
+            st = "approved"
+        elif st in ["logistics_dispatched"]:
+            st = "shipped"
+            
+        status_counts[st] = status_counts.get(st, 0) + 1
+        
+    total_users = db.query(models.MarketplaceUser).count()
+    products = db.query(models.MarketplaceProduct).all()
+    total_products = len(products)
+    active_products = sum(1 for p in products if p.status == "active")
+    
+    return {
+        "success": True,
+        "data": {
+            "total_requests": total_requests,
+            "total_amount": round(total_amount, 2),
+            "total_users": total_users,
+            "total_products": total_products,
+            "active_products": active_products,
+            "status_counts": status_counts
+        }
+    }
+
+
+@router.get("/admin/requests")
+def get_all_marketplace_requests(
+    status: Optional[str] = None,
+    m_admin: models.MarketplaceAdmin = Depends(get_current_marketplace_admin),
+    db: Session = Depends(get_db)
+):
+    query = db.query(models.MarketplaceRequest)
+    if status and status != "All":
+        query = query.filter(models.MarketplaceRequest.status == status)
+    
+    requests = query.order_by(models.MarketplaceRequest.created_at.desc()).all()
+    
+    result = []
+    for r in requests:
+        result.append({
+            "id": r.id,
+            "requestCode": r.request_code,
+            "productId": r.product_id,
+            "productName": r.product_name,
+            "productCategory": r.product_category,
+            "unitPrice": r.unit_price,
+            "requestedQty": r.requested_qty,
+            "estimatedTotal": r.estimated_total,
+            "includeInspection": r.include_inspection,
+            "inspectionFee": r.inspection_fee,
+            "requestSupplyChain": r.request_supply_chain,
+            "buyerName": r.buyer_name,
+            "buyerEmail": r.buyer_email,
+            "buyerPhone": r.buyer_phone,
+            "buyerLga": r.buyer_lga,
+            "deliveryLocation": r.delivery_location,
+            "additionalNotes": r.additional_notes,
+            "sellerName": r.seller_name,
+            "sellerId": r.seller_id,
+            "sellerContact": r.seller_contact,
+            "status": r.status,
+            "adminNotes": r.admin_notes,
+            "createdAt": r.created_at.isoformat() if r.created_at else ""
+        })
+    return {"success": True, "data": result}
+
+
+@router.patch("/admin/requests/{request_id}/status")
+def update_marketplace_request_status(
+    request_id: int,
+    status_update: schemas.MarketplaceRequestStatusUpdate,
+    m_admin: models.MarketplaceAdmin = Depends(get_current_marketplace_admin),
+    db: Session = Depends(get_db)
+):
+    req = db.query(models.MarketplaceRequest).filter(models.MarketplaceRequest.id == request_id).first()
+    if not req:
+        raise HTTPException(status_code=404, detail="Trade request not found")
+        
+    old_status = req.status
+    new_status = status_update.status
+    req.status = new_status
+    if status_update.admin_notes is not None:
+        req.admin_notes = status_update.admin_notes
+        
+    db.commit()
+    db.refresh(req)
+    
+    # Trigger Resend Auto-Emails on Status Changes (Approved / Shipped)!
+    try:
+        if new_status in ["approved", "under_facilitation"] and old_status not in ["approved", "under_facilitation"]:
+            send_request_approved_email(
+                buyer_email=req.buyer_email,
+                buyer_name=req.buyer_name,
+                request_code=req.request_code,
+                product_name=req.product_name
+            )
+        elif new_status in ["shipped", "logistics_dispatched"] and old_status not in ["shipped", "logistics_dispatched"]:
+            send_request_shipped_email(
+                buyer_email=req.buyer_email,
+                buyer_name=req.buyer_name,
+                request_code=req.request_code,
+                product_name=req.product_name,
+                admin_notes=req.admin_notes or ""
+            )
+    except Exception as email_err:
+        print(f"[STATUS CHANGE EMAIL ERROR] ({new_status}): {email_err}")
+        
+    return {
+        "success": True,
+        "message": f"Request status updated to {new_status}",
+        "data": {
+            "id": req.id,
+            "requestCode": req.request_code,
+            "status": req.status,
+            "adminNotes": req.admin_notes
+        }
+    }
+
+
+@router.get("/admin/users")
+def get_marketplace_users(
+    m_admin: models.MarketplaceAdmin = Depends(get_current_marketplace_admin),
+    db: Session = Depends(get_db)
+):
+    users = db.query(models.MarketplaceUser).order_by(models.MarketplaceUser.created_at.desc()).all()
+    result = []
+    for u in users:
+        result.append({
+            "id": u.id,
+            "name": u.name,
+            "email": u.email,
+            "phone": u.phone,
+            "whatsapp": u.whatsapp,
+            "lga": u.lga,
+            "isVerified": u.is_verified,
+            "verificationStatus": u.verification_status,
+            "verificationDetails": u.verification_details,
+            "createdAt": u.created_at.isoformat() if u.created_at else ""
+        })
+    return {"success": True, "data": result}
+
+
+@router.patch("/admin/users/{user_id}/verify")
+def verify_marketplace_user(
+    user_id: int,
+    status: str = Query(...),
+    m_admin: models.MarketplaceAdmin = Depends(get_current_marketplace_admin),
+    db: Session = Depends(get_db)
+):
+    user = db.query(models.MarketplaceUser).filter(models.MarketplaceUser.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+        
+    user.verification_status = status
+    user.is_verified = (status == "verified")
+    db.commit()
+    return {"success": True, "message": f"User verification status updated to {status}"}
+
 
 

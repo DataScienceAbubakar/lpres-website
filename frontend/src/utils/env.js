@@ -24,5 +24,6 @@ export const DEFAULT_API_URL = (import.meta.env.VITE_API_URL && import.meta.env.
     ? import.meta.env.VITE_API_URL.trim().replace(/\/+$/, '')
     : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
         ? 'http://localhost:8000'
-        : 'https://lpress-website.onrender.com');
+        : 'https://ccsswcf2d0.execute-api.us-east-1.amazonaws.com');
+
 

@@ -1,0 +1,58 @@
+service: lpres-website-and-marketplace
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: python3.11
+  stage: dev
+  region: us-east-1
+  memorySize: 512
+  timeout: 29
+  environment:
+    DATABASE_URL: ${env:DATABASE_URL, "postgresql://lpres_admin:lpres_admin@lpres-spatial-rds-dev.cejyqycwo39y.us-east-1.rds.amazonaws.com:5432/lpres_db"}
+    SECRET_KEY: ${env:SECRET_KEY, "agteuja8sksdhs78eh!@atshksiusjs"}
+    ADMIN_SEED_PASSWORD: ${env:ADMIN_SEED_PASSWORD, "Admin123!!!"}
+    MARKETPLACE_ADMIN_SEED_PASSWORD: ${env:MARKETPLACE_ADMIN_SEED_PASSWORD, "MarketplaceAdmin2026!"}
+    S3_BUCKET_NAME: ${env:S3_BUCKET_NAME, "lpres-intelligence-docs-dev"}
+    AWS_REGION: ${env:AWS_REGION, "us-east-1"}
+    RESEND_API_KEY: ${env:RESEND_API_KEY, ""}
+    RESEND_FROM_EMAIL: ${env:RESEND_FROM_EMAIL, "L-PRES Marketplace <onboarding@resend.dev>"}
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    pythonBin: C:\Users\Administrator\AppData\Local\Programs\Python\Python311\python.exe
+    dockerizePip: false
+    slim: true
+    strip: true
+    noDeploy:
+      - pytest
+      - botocore
+      - boto3
+
+
+
+functions:
+  lpres_website_and_marketplace:
+    name: lpres_website_and_marketplace
+    handler: handler.handler
+    description: Dedicated FastAPI backend for L-PRES Website & Livestock Marketplace
+    events:
+      - httpApi:
+          path: '/'
+          method: '*'
+      - httpApi:
+          path: '/{proxy+}'
+          method: '*'
+
+package:
+  patterns:
+    - '!node_modules/**'
+    - '!.git/**'
+    - '!__pycache__/**'
+    - '!*.sqlite3'
+    - '!uploads/**'
+    - '!test_marketplace_admin.py'

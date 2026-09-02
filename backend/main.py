@@ -8,7 +8,13 @@ from routers import admin, news, gallery, projects, marketplace, upload
 from auth import get_password_hash
 from database import SessionLocal
 
-os.makedirs("uploads", exist_ok=True)
+import tempfile
+
+uploads_dir = os.path.join(tempfile.gettempdir(), "uploads")
+try:
+    os.makedirs(uploads_dir, exist_ok=True)
+except Exception:
+    pass
 
 app = FastAPI(title="LPRES Website API", version="1.0.0")
 
@@ -25,14 +31,16 @@ origins = [
     "https://market.lpres.kw.gov.ng",
 ]
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_origin_regex=r"https://.*\.onrender\.com",
+    allow_origin_regex=r"https?://.*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -102,6 +110,31 @@ def seed_default_admin():
 
 
 seed_default_admin()
+
+
+def seed_marketplace_admin():
+    seed_password = os.environ.get("MARKETPLACE_ADMIN_SEED_PASSWORD", "MarketplaceAdmin2026!")
+    db = SessionLocal()
+    try:
+        existing = db.query(models.MarketplaceAdmin).filter(models.MarketplaceAdmin.username == "marketplace_admin").first()
+        if not existing:
+            m_admin = models.MarketplaceAdmin(
+                username="marketplace_admin",
+                email="marketplace.admin@lpres.kw.gov.ng",
+                hashed_password=get_password_hash(seed_password),
+                is_active=True
+            )
+            db.add(m_admin)
+            db.commit()
+            print("Default marketplace admin created: username=marketplace_admin")
+    except Exception as e:
+        print(f"Marketplace admin seed skipped: {e}")
+        db.rollback()
+    finally:
+        db.close()
+
+
+seed_marketplace_admin()
 
 
 def seed_sample_data():

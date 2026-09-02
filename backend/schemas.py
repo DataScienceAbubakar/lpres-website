@@ -223,3 +223,28 @@ class MarketplaceRequestOut(BaseModel):
         from_attributes = True
 
 
+class MarketplaceAdminLogin(BaseModel):
+    username: str
+    password: str
+
+
+class MarketplaceAdminOut(BaseModel):
+    id: int
+    username: str
+    email: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class MarketplaceAnalyticsOut(BaseModel):
+    total_requests: int
+    total_amount: float
+    total_users: int
+    total_products: int
+    active_products: int
+    status_counts: dict
+
+
+
