@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional, List
+from typing import Optional, List, Any
 from datetime import datetime
 
 
@@ -165,13 +165,13 @@ class MarketplaceRequestCreate(BaseModel):
     product_id: str
     product_name: str
     product_category: Optional[str] = "General"
-    unit_price: dict
-    requested_qty: str = "1"
-    estimated_total: dict
+    unit_price: Any = {}
+    requested_qty: Any = "1"
+    estimated_total: Any = {}
     
     # Intermediary Facilitation Options
     include_inspection: bool = False
-    inspection_fee: Optional[dict] = None
+    inspection_fee: Optional[Any] = None
     request_supply_chain: bool = False
     
     # Buyer Details
@@ -185,7 +185,7 @@ class MarketplaceRequestCreate(BaseModel):
     # Seller Details (Captured internally for Admin intermediary contact)
     seller_name: str
     seller_id: Optional[str] = None
-    seller_contact: Optional[dict] = None
+    seller_contact: Optional[Any] = None
 
 
 class MarketplaceRequestStatusUpdate(BaseModel):
