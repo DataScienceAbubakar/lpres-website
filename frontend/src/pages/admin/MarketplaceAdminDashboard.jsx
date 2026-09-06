@@ -21,7 +21,8 @@ import {
     MapPin,
     Check,
     X,
-    FileText
+    FileText,
+    Tag
 } from 'lucide-react';
 import { DEFAULT_API_URL } from '../../utils/env';
 import './MarketplaceAdmin.css';
@@ -55,6 +56,7 @@ export default function MarketplaceAdminDashboard() {
     const [requests, setRequests] = useState([]);
     const [users, setUsers] = useState([]);
     const [products, setProducts] = useState([]);
+    const [bids, setBids] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
@@ -118,6 +120,13 @@ export default function MarketplaceAdminDashboard() {
                 setProducts(dataProducts.data.products);
             }
 
+            // Bids
+            const resBids = await fetch(`${API_BASE}/api/marketplace/admin/bids`, { headers: authHeader });
+            const dataBids = await resBids.json();
+            if (dataBids.success && dataBids.data) {
+                setBids(dataBids.data);
+            }
+
         } catch (err) {
             console.error('Failed to load Marketplace Admin data:', err);
             setError('Unable to load latest data from backend server.');
@@ -169,6 +178,36 @@ export default function MarketplaceAdminDashboard() {
             alert(err.message || 'Error updating status');
         } finally {
             setUpdatingStatus(false);
+        }
+    };
+
+    // Update Bid Status (Accept or Reject)
+    const handleUpdateBidStatus = async (bidId, newStatus) => {
+        const notes = prompt(`Enter admin notes for bidder (optional):`, newStatus === 'accepted' ? 'Bid accepted by Kwara L-PRES Trade Desk.' : 'Bid offer was below reserve price.');
+        if (notes === null) return;
+
+        try {
+            const res = await fetch(`${API_BASE}/api/marketplace/admin/bids/${bidId}/status`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    status: newStatus,
+                    admin_notes: notes
+                })
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || 'Failed to update bid status');
+
+            alert(`Bid updated to "${newStatus}"! Auto-email dispatched to bidder.`);
+
+            setBids(prev => prev.map(b => b.id === bidId ? { ...b, status: newStatus, adminNotes: notes } : b));
+            fetchDashboardData();
+        } catch (err) {
+            alert(err.message || 'Error updating bid status');
         }
     };
 
@@ -341,6 +380,14 @@ export default function MarketplaceAdminDashboard() {
                     >
                         <Package size={18} />
                         <span>Catalog Products ({products.length})</span>
+                    </button>
+
+                    <button
+                        className={`mp-admin-tab ${activeTab === 'bids' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('bids')}
+                    >
+                        <Tag size={18} />
+                        <span>Marketplace Bids ({bids.length})</span>
                     </button>
                 </div>
 
@@ -592,6 +639,98 @@ export default function MarketplaceAdminDashboard() {
                                 </tbody>
                             </table>
                         </div>
+                    </section>
+                )}
+
+                {/* TAB 4: BIDS */}
+                {activeTab === 'bids' && (
+                    <section className="mp-admin-section">
+                        {bids.length === 0 ? (
+                            <div className="mp-admin-empty">
+                                <Tag size={40} />
+                                <h3>No bids submitted yet</h3>
+                                <p>Customer price offers will appear here for review and decisioning.</p>
+                            </div>
+                        ) : (
+                            <div className="mp-table-wrapper">
+                                <table className="mp-data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Bid Code</th>
+                                            <th>Product Name</th>
+                                            <th>Offered Amount & Qty</th>
+                                            <th>Bidder Information</th>
+                                            <th>Notes / Rationale</th>
+                                            <th>Status</th>
+                                            <th>Decision Actions (Auto-Email)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {bids.map(b => {
+                                            const amt = b.bidAmount?.amount || 0;
+                                            const curr = b.bidAmount?.currency || 'NGN';
+
+                                            return (
+                                                <tr key={b.id}>
+                                                    <td>
+                                                        <strong className="mp-code">{b.bidCode}</strong>
+                                                        <div className="mp-time">{new Date(b.createdAt).toLocaleDateString()}</div>
+                                                    </td>
+                                                    <td>
+                                                        <strong>{b.productName}</strong>
+                                                    </td>
+                                                    <td>
+                                                        <div className="mp-total-amt">₦{Number(amt).toLocaleString()}</div>
+                                                        <div className="mp-time">Qty: {b.offeredQty}</div>
+                                                    </td>
+                                                    <td>
+                                                        <div><strong>{b.bidderName}</strong></div>
+                                                        <div className="mp-buyer-contact"><Mail size={12} /> {b.bidderEmail}</div>
+                                                        <div className="mp-buyer-contact"><Phone size={12} /> {b.bidderPhone} ({b.bidderLga})</div>
+                                                    </td>
+                                                    <td>
+                                                        <div style={{ fontSize: '0.825rem', color: '#475569', maxWidth: 220 }}>
+                                                            {b.notes || 'No custom notes provided'}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        {b.status === 'accepted' ? (
+                                                            <span className="mp-badge mp-badge-approved"><CheckCircle2 size={13} /> Accepted</span>
+                                                        ) : b.status === 'rejected' ? (
+                                                            <span className="mp-badge mp-badge-cancelled"><XCircle size={13} /> Rejected</span>
+                                                        ) : (
+                                                            <span className="mp-badge mp-badge-pending"><Clock size={13} /> Pending Review</span>
+                                                        )}
+                                                    </td>
+                                                    <td>
+                                                        <div className="mp-action-btns-row">
+                                                            {b.status !== 'accepted' && (
+                                                                <button
+                                                                    onClick={() => handleUpdateBidStatus(b.id, 'accepted')}
+                                                                    className="mp-btn-action mp-btn-approve"
+                                                                    title="Accept Bid & Send Confirmation Email"
+                                                                >
+                                                                    <CheckCircle2 size={13} /> Accept Bid
+                                                                </button>
+                                                            )}
+                                                            {b.status !== 'rejected' && (
+                                                                <button
+                                                                    onClick={() => handleUpdateBidStatus(b.id, 'rejected')}
+                                                                    className="mp-btn-action mp-btn-cancel"
+                                                                    title="Reject Bid & Send Rejection Email"
+                                                                >
+                                                                    <XCircle size={13} /> Reject Bid
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
                     </section>
                 )}
             </div>

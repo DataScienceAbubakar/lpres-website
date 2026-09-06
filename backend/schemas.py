@@ -247,4 +247,24 @@ class MarketplaceAnalyticsOut(BaseModel):
     status_counts: dict
 
 
+class MarketplaceBidCreate(BaseModel):
+    product_id: str
+    product_name: str
+    bidder_name: str
+    bidder_email: str
+    bidder_phone: str
+    bidder_lga: Optional[str] = "Ilorin East"
+    bid_amount: dict
+    offered_qty: str = "1"
+    notes: Optional[str] = None
+    seller_id: Optional[str] = None
+    seller_name: Optional[str] = None
+
+
+class MarketplaceBidStatusUpdate(BaseModel):
+    status: str
+    admin_notes: Optional[str] = None
+
+
+
 

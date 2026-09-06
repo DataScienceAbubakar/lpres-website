@@ -189,6 +189,31 @@ exports.handler = async (event) => {
             };
         }
 
+        if (method === 'POST' && (path === 'bids' || path === 'bids/')) {
+            const body = JSON.parse(event.body || '{}');
+            const bidCode = `LPRES-BID-${Date.now()}-${Math.floor(Math.random() * 900 + 100)}`;
+            const newBid = {
+                id: Date.now(),
+                bidCode,
+                productName: body.product_name || body.productName || "Agro Produce",
+                bidderName: body.bidder_name || body.bidderName || "Buyer",
+                bidderEmail: body.bidder_email || body.bidderEmail || "",
+                bidAmount: body.bid_amount || body.bidAmount || { amount: 0, currency: "NGN" },
+                status: "pending_review",
+                createdAt: new Date().toISOString()
+            };
+            return {
+                statusCode: 200,
+                headers: HEADERS,
+                body: JSON.stringify({
+                    success: true,
+                    message: "Bid submitted successfully! Kwara L-PRES trade office and seller will review your offer.",
+                    bidCode,
+                    data: newBid
+                })
+            };
+        }
+
         if (method === 'DELETE') {
             const match = path.match(/products\/(.+)$/);
             if (match) {

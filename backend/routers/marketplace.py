@@ -9,12 +9,35 @@ import schemas
 from auth import get_password_hash, verify_password, create_access_token, get_current_marketplace_admin
 from utils.email import (
     send_welcome_email,
+    send_admin_new_user_alert,
     send_new_trade_request_email,
+    send_admin_new_request_alert,
     send_request_approved_email,
-    send_request_shipped_email
+    send_request_shipped_email,
+    send_new_bid_email,
+    send_bid_accepted_email,
+    send_bid_rejected_email
 )
 
 router = APIRouter(prefix="/api/marketplace", tags=["marketplace"])
+
+
+def safe_parse_json(val, default=None):
+    if default is None:
+        default = {}
+    if val is None:
+        return default
+    if isinstance(val, (dict, list)):
+        return val
+    if isinstance(val, str):
+        s = val.strip()
+        if not s:
+            return default
+        try:
+            return json.loads(s)
+        except Exception:
+            return default
+    return default
 
 
 @router.post("/auth/register")
@@ -39,9 +62,15 @@ def register_user(user_data: schemas.MarketplaceUserCreate, db: Session = Depend
         db.commit()
         db.refresh(new_user)
 
-        # Trigger Resend Welcome Auto-Email
+        # Trigger Resend Welcome & Admin Auto-Emails
         try:
             send_welcome_email(user_email=new_user.email, user_name=new_user.name)
+            send_admin_new_user_alert(
+                user_email=new_user.email,
+                user_name=new_user.name,
+                user_phone=new_user.phone,
+                user_lga=new_user.lga or "Ilorin East"
+            )
         except Exception as email_err:
             print(f"[REGISTER EMAIL ERROR] {email_err}")
 
@@ -110,51 +139,59 @@ def get_products(
     search: Optional[str] = None,
     db: Session = Depends(get_db)
 ):
-    query = db.query(models.MarketplaceProduct)
-    
-    if category and category != "All":
-        query = query.filter(models.MarketplaceProduct.category == category)
+    try:
+        query = db.query(models.MarketplaceProduct)
         
-    products = query.order_by(models.MarketplaceProduct.created_at.desc()).all()
-    
-    result_list = []
-    for p in products:
-        if "bunaji bulls" in p.name.lower():
-            continue
-        p_dict = {
-            "_id": str(p.id),
-            "id": p.id,
-            "name": p.name,
-            "description": p.description,
-            "category": p.category,
-            "price": p.price if isinstance(p.price, dict) else json.loads(p.price or "{}"),
-            "quantity": p.quantity if isinstance(p.quantity, dict) else json.loads(p.quantity or "{}"),
-            "location": p.location if isinstance(p.location, dict) else json.loads(p.location or "{}"),
-            "images": p.images if isinstance(p.images, list) else json.loads(p.images or "[]"),
-            "specifications": p.specifications if isinstance(p.specifications, dict) else json.loads(p.specifications or "{}"),
-            "seller": p.seller if isinstance(p.seller, dict) else json.loads(p.seller or "{}"),
-            "status": p.status,
-            "views": p.views or 0,
-            "averageRating": 5.0,
-            "ratings": [],
-            "inquiries": [],
-            "createdAt": p.created_at.isoformat() if p.created_at else ""
-        }
+        if category and category != "All":
+            query = query.filter(models.MarketplaceProduct.category == category)
+            
+        products = query.order_by(models.MarketplaceProduct.created_at.desc()).all()
+        
+        result_list = []
+        for p in products:
+            p_name = p.name or ""
+            if "bunaji bulls" in p_name.lower():
+                continue
+                
+            p_dict = {
+                "_id": str(p.id),
+                "id": p.id,
+                "name": p_name,
+                "description": p.description or "",
+                "category": p.category or "Agro Produce",
+                "price": safe_parse_json(p.price, {"amount": 0, "currency": "NGN", "unit": "unit"}),
+                "quantity": safe_parse_json(p.quantity, {"available": 0, "unit": "unit"}),
+                "location": safe_parse_json(p.location, {"region": "Kwara", "country": "Nigeria"}),
+                "images": safe_parse_json(p.images, []),
+                "specifications": safe_parse_json(p.specifications, {}),
+                "seller": safe_parse_json(p.seller, {"name": "Kwara Producer"}),
+                "status": p.status or "active",
+                "views": p.views or 0,
+                "averageRating": 5.0,
+                "ratings": [],
+                "inquiries": [],
+                "createdAt": p.created_at.isoformat() if p.created_at else ""
+            }
 
-        # Filter by region/LGA if search or region is specified
-        if region and region != "All":
-            prod_region = p_dict["location"].get("region", "")
-            if prod_region.lower() != region.lower():
-                continue
-                
-        if search:
-            s = search.lower()
-            if s not in p.name.lower() and s not in p.description.lower():
-                continue
-                
-        result_list.append(p_dict)
-        
-    return {"success": True, "data": {"products": result_list}}
+            # Filter by region/LGA if search or region is specified
+            if region and region != "All":
+                loc = p_dict["location"]
+                prod_region = loc.get("region", "") if isinstance(loc, dict) else str(loc)
+                if prod_region.lower() != region.lower():
+                    continue
+                    
+            if search:
+                s = search.lower()
+                desc = (p.description or "").lower()
+                if s not in p_name.lower() and s not in desc:
+                    continue
+                    
+            result_list.append(p_dict)
+            
+        return {"success": True, "data": {"products": result_list}}
+    except Exception as e:
+        print(f"Error fetching marketplace products: {e}")
+        return {"success": True, "data": {"products": []}}
 
 
 @router.post("/products")
@@ -293,7 +330,7 @@ def submit_trade_request(req_data: schemas.MarketplaceRequestCreate, db: Session
         db.commit()
         db.refresh(new_request)
         
-        # Trigger Resend Trade Request Auto-Email
+        # Trigger Resend Trade Request Auto-Emails (Buyer & Admin)
         try:
             est_total_dict = req_data.estimated_total or {}
             amt = est_total_dict.get("amount", 0)
@@ -305,6 +342,15 @@ def submit_trade_request(req_data: schemas.MarketplaceRequestCreate, db: Session
                 request_code=new_request.request_code,
                 product_name=new_request.product_name,
                 total_amount=formatted_amt
+            )
+            send_admin_new_request_alert(
+                buyer_name=new_request.buyer_name,
+                buyer_email=new_request.buyer_email,
+                buyer_phone=new_request.buyer_phone,
+                request_code=new_request.request_code,
+                product_name=new_request.product_name,
+                total_amount=formatted_amt,
+                include_inspection=new_request.include_inspection
             )
         except Exception as email_err:
             print(f"[TRADE REQUEST EMAIL ERROR] {email_err}")
@@ -556,6 +602,184 @@ def verify_marketplace_user(
     user.is_verified = (status == "verified")
     db.commit()
     return {"success": True, "message": f"User verification status updated to {status}"}
+
+
+# ── BIDS ENDPOINTS ────────────────────────────────────────────────────────────
+
+@router.post("/bids")
+def submit_bid(bid_data: schemas.MarketplaceBidCreate, db: Session = Depends(get_db)):
+    try:
+        import time, random
+        bid_code = f"LPRES-BID-{int(time.time())}-{random.randint(100, 999)}"
+
+        new_bid = models.MarketplaceBid(
+            bid_code=bid_code,
+            product_id=str(bid_data.product_id),
+            product_name=bid_data.product_name,
+            bidder_name=bid_data.bidder_name,
+            bidder_email=bid_data.bidder_email,
+            bidder_phone=bid_data.bidder_phone,
+            bidder_lga=bid_data.bidder_lga or "Ilorin East",
+            bid_amount=bid_data.bid_amount,
+            offered_qty=str(bid_data.offered_qty or "1"),
+            notes=bid_data.notes,
+            seller_id=str(bid_data.seller_id or ""),
+            seller_name=bid_data.seller_name or "",
+            status="pending_review"
+        )
+        db.add(new_bid)
+        db.commit()
+        db.refresh(new_bid)
+
+        # Trigger Resend Auto-Emails for New Bid (Customer & Admin)
+        try:
+            amt = bid_data.bid_amount.get("amount", 0) if isinstance(bid_data.bid_amount, dict) else 0
+            curr = bid_data.bid_amount.get("currency", "NGN") if isinstance(bid_data.bid_amount, dict) else "NGN"
+            formatted_amt = f"{curr} {amt:,.2f}" if isinstance(amt, (int, float)) else f"{curr} {amt}"
+
+            send_new_bid_email(
+                bidder_email=new_bid.bidder_email,
+                bidder_name=new_bid.bidder_name,
+                bid_code=new_bid.bid_code,
+                product_name=new_bid.product_name,
+                bid_amount=formatted_amt,
+                quantity=new_bid.offered_qty,
+                notes=new_bid.notes or ""
+            )
+        except Exception as email_err:
+            print(f"[BID EMAIL ERROR] {email_err}")
+
+        return {
+            "success": True,
+            "message": "Bid submitted successfully! Kwara L-PRES trade office and seller will review your offer.",
+            "bidCode": bid_code,
+            "data": {
+                "id": new_bid.id,
+                "bidCode": new_bid.bid_code,
+                "productName": new_bid.product_name,
+                "bidAmount": new_bid.bid_amount,
+                "status": new_bid.status,
+                "createdAt": new_bid.created_at.isoformat() if new_bid.created_at else ""
+            }
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/bids/my")
+def get_my_bids(email: str = Query(...), db: Session = Depends(get_db)):
+    bids = db.query(models.MarketplaceBid).filter(
+        models.MarketplaceBid.bidder_email == email
+    ).order_by(models.MarketplaceBid.created_at.desc()).all()
+
+    items = []
+    for b in bids:
+        items.append({
+            "id": b.id,
+            "bidCode": b.bid_code,
+            "productId": b.product_id,
+            "productName": b.product_name,
+            "bidAmount": b.bid_amount,
+            "offeredQty": b.offered_qty,
+            "notes": b.notes,
+            "status": b.status,
+            "adminNotes": b.admin_notes,
+            "createdAt": b.created_at.isoformat() if b.created_at else ""
+        })
+    return {"success": True, "data": items}
+
+
+@router.get("/admin/bids")
+def get_all_bids(
+    status: Optional[str] = None,
+    m_admin: models.MarketplaceAdmin = Depends(get_current_marketplace_admin),
+    db: Session = Depends(get_db)
+):
+    query = db.query(models.MarketplaceBid)
+    if status and status != "All":
+        query = query.filter(models.MarketplaceBid.status == status)
+
+    bids = query.order_by(models.MarketplaceBid.created_at.desc()).all()
+    result = []
+    for b in bids:
+        result.append({
+            "id": b.id,
+            "bidCode": b.bid_code,
+            "productId": b.product_id,
+            "productName": b.product_name,
+            "bidderName": b.bidder_name,
+            "bidderEmail": b.bidder_email,
+            "bidderPhone": b.bidder_phone,
+            "bidderLga": b.bidder_lga,
+            "bidAmount": b.bid_amount,
+            "offeredQty": b.offered_qty,
+            "notes": b.notes,
+            "sellerId": b.seller_id,
+            "sellerName": b.seller_name,
+            "status": b.status,
+            "adminNotes": b.admin_notes,
+            "createdAt": b.created_at.isoformat() if b.created_at else ""
+        })
+    return {"success": True, "data": result}
+
+
+@router.patch("/admin/bids/{bid_id}/status")
+def update_bid_status(
+    bid_id: int,
+    status_update: schemas.MarketplaceBidStatusUpdate,
+    m_admin: models.MarketplaceAdmin = Depends(get_current_marketplace_admin),
+    db: Session = Depends(get_db)
+):
+    bid = db.query(models.MarketplaceBid).filter(models.MarketplaceBid.id == bid_id).first()
+    if not bid:
+        raise HTTPException(status_code=404, detail="Bid not found")
+
+    new_status = status_update.status
+    bid.status = new_status
+    if status_update.admin_notes is not None:
+        bid.admin_notes = status_update.admin_notes
+
+    db.commit()
+    db.refresh(bid)
+
+    # Trigger Resend Auto-Email for Bid Accepted or Rejected!
+    try:
+        amt = bid.bid_amount.get("amount", 0) if isinstance(bid.bid_amount, dict) else 0
+        curr = bid.bid_amount.get("currency", "NGN") if isinstance(bid.bid_amount, dict) else "NGN"
+        formatted_amt = f"{curr} {amt:,.2f}" if isinstance(amt, (int, float)) else f"{curr} {amt}"
+
+        if new_status == "accepted":
+            send_bid_accepted_email(
+                bidder_email=bid.bidder_email,
+                bidder_name=bid.bidder_name,
+                bid_code=bid.bid_code,
+                product_name=bid.product_name,
+                bid_amount=formatted_amt,
+                admin_notes=bid.admin_notes or ""
+            )
+        elif new_status == "rejected":
+            send_bid_rejected_email(
+                bidder_email=bid.bidder_email,
+                bidder_name=bid.bidder_name,
+                bid_code=bid.bid_code,
+                product_name=bid.product_name,
+                bid_amount=formatted_amt,
+                reason=bid.admin_notes or ""
+            )
+    except Exception as email_err:
+        print(f"[BID STATUS EMAIL ERROR] ({new_status}): {email_err}")
+
+    return {
+        "success": True,
+        "message": f"Bid status updated to {new_status}",
+        "data": {
+            "id": bid.id,
+            "bidCode": bid.bid_code,
+            "status": bid.status,
+            "adminNotes": bid.admin_notes
+        }
+    }
+
 
 
 

@@ -151,4 +151,27 @@ class MarketplaceAdmin(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class MarketplaceBid(Base):
+    __tablename__ = "marketplace_bids"
+
+    id = Column(Integer, primary_key=True, index=True)
+    bid_code = Column(String(50), unique=True, index=True, nullable=False)
+    product_id = Column(String(100), nullable=False)
+    product_name = Column(String(300), nullable=False)
+    bidder_name = Column(String(150), nullable=False)
+    bidder_email = Column(String(150), nullable=False)
+    bidder_phone = Column(String(50), nullable=False)
+    bidder_lga = Column(String(100), default="Ilorin East")
+    bid_amount = Column(JSON, nullable=False)          # {"amount": 42000, "currency": "NGN"}
+    offered_qty = Column(String(50), nullable=False, default="1")
+    notes = Column(Text, nullable=True)
+    seller_id = Column(String(100), nullable=True)
+    seller_name = Column(String(150), nullable=True)
+    status = Column(String(50), default="pending_review")  # pending_review | accepted | rejected
+    admin_notes = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+
+
 

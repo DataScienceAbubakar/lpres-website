@@ -23,6 +23,9 @@ import {
     ShieldCheck,
     Award,
     Clock,
+    DollarSign,
+    Tag,
+    TrendingUp,
     ArrowLeft
 } from 'lucide-react';
 import './MarketplacePage.css';
@@ -108,6 +111,84 @@ export default function MarketplacePage() {
     const [reqSubmitting, setReqSubmitting] = useState(false);
     const [reqSuccessData, setReqSuccessData] = useState(null);
     const [reqError, setReqError] = useState('');
+
+    // Bid Modal State
+    const [showBidModal, setShowBidModal] = useState(false);
+    const [bidProduct, setBidProduct] = useState(null);
+    const [bidAmountInput, setBidAmountInput] = useState('');
+    const [bidQtyInput, setBidQtyInput] = useState('1');
+    const [bidNotesInput, setBidNotesInput] = useState('');
+    const [bidSubmitting, setBidSubmitting] = useState(false);
+    const [bidSuccessData, setBidSuccessData] = useState(null);
+    const [bidError, setBidError] = useState('');
+
+    // My Bids State
+    const [myBids, setMyBids] = useState([]);
+    const [loadingMyBids, setLoadingMyBids] = useState(false);
+
+    const handleOpenBidModal = (prod) => {
+        setBidProduct(prod);
+        const defaultPrice = typeof prod.price === 'object' ? (prod.price.amount || 0) : Number(prod.price || 0);
+        setBidAmountInput(String(defaultPrice));
+        setBidQtyInput('1');
+        setBidNotesInput('');
+        setBidSuccessData(null);
+        setBidError('');
+        setShowBidModal(true);
+    };
+
+    const handleSubmitBid = async (e) => {
+        e.preventDefault();
+        if (!bidProduct || !mUser) return;
+        setBidSubmitting(true);
+        setBidError('');
+
+        const currency = (typeof bidProduct.price === 'object' && bidProduct.price.currency) || 'NGN';
+        const payload = {
+            product_id: String(bidProduct._id || bidProduct.id),
+            product_name: bidProduct.name,
+            bidder_name: mUser.name,
+            bidder_email: mUser.email,
+            bidder_phone: mUser.phone || '',
+            bidder_lga: mUser.lga || 'Ilorin East',
+            bid_amount: { amount: parseFloat(bidAmountInput) || 0, currency },
+            offered_qty: String(bidQtyInput),
+            notes: bidNotesInput,
+            seller_id: bidProduct.seller?.userId || '',
+            seller_name: bidProduct.seller?.name || ''
+        };
+
+        try {
+            const res = await fetch(`${API_BASE}/api/marketplace/bids`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || data.message || 'Failed to submit bid');
+            setBidSuccessData(data);
+            fetchMyBids();
+        } catch (err) {
+            setBidError(err.message || 'Error submitting bid. Please try again.');
+        } finally {
+            setBidSubmitting(false);
+        }
+    };
+
+    const fetchMyBids = async () => {
+        if (!mUser?.email) return;
+        setLoadingMyBids(true);
+        try {
+            const res = await fetch(`${API_BASE}/api/marketplace/bids/my?email=${encodeURIComponent(mUser.email)}`);
+            const data = await res.json();
+            if (data.success && data.data) {
+                setMyBids(data.data);
+            }
+        } catch (_) { }
+        finally {
+            setLoadingMyBids(false);
+        }
+    };
 
     const handleOpenRequestModal = (prod) => {
         setRequestProduct(prod);
@@ -420,9 +501,11 @@ export default function MarketplacePage() {
 
     // Filter products
     const filteredProducts = products.filter((p) => {
+        const nameStr = p?.name || '';
+        const descStr = p?.description || '';
         const matchesSearch =
-            p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            p.description.toLowerCase().includes(searchTerm.toLowerCase());
+            nameStr.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            descStr.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = !selectedCategory || selectedCategory === 'All' || p.category === selectedCategory;
         const matchesLga = !selectedLga || selectedLga === 'All' || p.location?.region?.toLowerCase() === selectedLga.toLowerCase();
         const matchesVerified = !onlyVerifiedFilter || Boolean(p.seller?.isVerified || p.seller?.is_verified);
@@ -834,6 +917,13 @@ export default function MarketplacePage() {
                                                                 title="Initiate facilitated transaction via L-PRES Intermediary"
                                                             >
                                                                 <ShieldCheck size={16} /> Request Item (L-PRES Facilitated)
+                                                            </button>
+                                                            <button
+                                                                onClick={() => requireAuthForAction('submit a bid', () => handleOpenBidModal(p))}
+                                                                className="btn-place-bid"
+                                                                title="Submit a custom price bid or counter-offer"
+                                                            >
+                                                                <DollarSign size={16} /> Place a Bid
                                                             </button>
                                                         </div>
                                                     </div>
@@ -1768,6 +1858,117 @@ export default function MarketplacePage() {
                                         className="btn-mp-primary btn-enterprise-submit"
                                     >
                                         {reqSubmitting ? 'Submitting Request...' : 'Submit Enterprise Trade Request'}
+                                    </button>
+                                </div>
+                            </form>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {/* Bid Modal */}
+            {showBidModal && bidProduct && (
+                <div className="mp-modal-overlay">
+                    <div className="mp-modal large">
+                        <button onClick={() => setShowBidModal(false)} className="mp-modal-close">
+                            <X size={20} />
+                        </button>
+
+                        <div className="mp-modal-title-box">
+                            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#16a34a', background: 'rgba(22, 163, 74, 0.1)', padding: '0.3rem 0.8rem', borderRadius: 999, fontSize: '0.8rem', fontWeight: 700, marginBottom: 8 }}>
+                                <DollarSign size={15} /> Official L-PRES Bidding Portal
+                            </div>
+                            <h2>Submit Price Bid / Counter-Offer</h2>
+                            <p>Propose your custom unit price or bulk offer to the seller and Kwara L-PRES Trade Facilitators.</p>
+                        </div>
+
+                        {bidSuccessData ? (
+                            <div className="mp-req-success">
+                                <CheckCircle2 size={48} className="mp-success-icon" />
+                                <h3>Bid Submitted Successfully!</h3>
+                                <p className="mp-req-code">Bid Reference Code: <strong>{bidSuccessData.bidCode}</strong></p>
+                                <p className="mp-req-notice">
+                                    Your bid has been recorded. Kwara State L-PRES Trade Desk and the seller will review your offer and notify you via email.
+                                </p>
+                                <button
+                                    onClick={() => { setShowBidModal(false); setBidSuccessData(null); }}
+                                    className="btn-mp-primary"
+                                >
+                                    Done
+                                </button>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubmitBid} className="mp-add-form">
+                                <div className="mp-req-summary-card">
+                                    <img
+                                        src={bidProduct.images?.[0] || 'https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=300&q=80'}
+                                        alt={bidProduct.name}
+                                        className="mp-req-summary-img"
+                                    />
+                                    <div className="mp-req-summary-info">
+                                        <h4>{bidProduct.name}</h4>
+                                        <div className="mp-req-summary-meta">
+                                            <span>Category: <strong>{bidProduct.category || 'Agro Produce'}</strong></span>
+                                            <span>Listed Price: <strong>₦{typeof bidProduct.price === 'object' ? (bidProduct.price.amount || 0).toLocaleString() : Number(bidProduct.price || 0).toLocaleString()} {typeof bidProduct.price === 'object' ? bidProduct.price.unit : 'unit'}</strong></span>
+                                            <span>Seller: <strong>{bidProduct.seller?.name || 'Kwara Producer'}</strong></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {bidError && (
+                                    <div className="mp-form-error">
+                                        <AlertCircle size={16} /> {bidError}
+                                    </div>
+                                )}
+
+                                <div className="mp-form-grid">
+                                    <div className="mp-form-group">
+                                        <label>Your Proposed Unit Price (₦) *</label>
+                                        <input
+                                            type="number"
+                                            required
+                                            min="1"
+                                            value={bidAmountInput}
+                                            onChange={(e) => setBidAmountInput(e.target.value)}
+                                            placeholder="e.g. 42000"
+                                        />
+                                    </div>
+                                    <div className="mp-form-group">
+                                        <label>Offered Quantity *</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={bidQtyInput}
+                                            onChange={(e) => setBidQtyInput(e.target.value)}
+                                            placeholder="e.g. 5 bags, 2 head, etc."
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="mp-form-group">
+                                    <label>Bid Rationale / Buyer Notes (Optional)</label>
+                                    <textarea
+                                        rows={3}
+                                        value={bidNotesInput}
+                                        onChange={(e) => setBidNotesInput(e.target.value)}
+                                        placeholder="Explain reason for counter-offer, bulk commitment, pickup schedule, or terms..."
+                                    />
+                                </div>
+
+                                <div className="mp-modal-actions" style={{ marginTop: 18 }}>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowBidModal(false)}
+                                        className="btn-mp-cancel"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={bidSubmitting}
+                                        className="btn-mp-primary btn-enterprise-submit"
+                                    >
+                                        {bidSubmitting ? 'Submitting Bid...' : 'Submit Official Bid'}
                                     </button>
                                 </div>
                             </form>
