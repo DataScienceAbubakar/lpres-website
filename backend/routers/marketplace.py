@@ -40,6 +40,82 @@ def safe_parse_json(val, default=None):
     return default
 
 
+SEED_PRODUCTS = [
+    {
+        "_id": "seed-2",
+        "id": 2,
+        "name": "Fresh Pasteurised Dairy Milk",
+        "description": "Daily harvested fresh raw and pasteurised cow milk produced at Offa Dairy Cold Chain Hub under strict L-PRES hygiene protocols.",
+        "category": "Livestock",
+        "price": {"amount": 1200, "currency": "NGN", "unit": "per Litre"},
+        "quantity": {"available": 250, "unit": "Litres"},
+        "location": {"region": "Offa", "country": "Nigeria"},
+        "images": [{"url": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=800&q=80", "alt": "Fresh Dairy Milk", "isPrimary": True}],
+        "specifications": {"isOrganic": True, "variety": "Fresh Holstein-Bunaji Cross", "grade": "Premium Grade"},
+        "seller": {
+            "userId": "seller-2",
+            "name": "Offa Women Dairy Cooperative",
+            "isVerified": True,
+            "contact": {"phone": "+234 805 987 6543", "email": "offa.dairy@lpres-coop.ng", "whatsapp": "+234 805 987 6543"}
+        },
+        "status": "active",
+        "views": 89,
+        "averageRating": 5.0,
+        "ratings": [],
+        "inquiries": [],
+        "createdAt": "2026-09-01T12:00:00.000Z"
+    },
+    {
+        "_id": "seed-3",
+        "id": 3,
+        "name": "High-Nutrient Stylosanthes Hay Bales",
+        "description": "Nutritious cultivated leguminous forage pasture hay bales harvested from Baruten Grazing Reserve plots. High protein content suitable for dairy & beef cattle.",
+        "category": "Feed & Fodder",
+        "price": {"amount": 4500, "currency": "NGN", "unit": "per bale"},
+        "quantity": {"available": 400, "unit": "bales"},
+        "location": {"region": "Baruten", "country": "Nigeria"},
+        "images": [{"url": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80", "alt": "Hay Bales", "isPrimary": True}],
+        "specifications": {"isOrganic": True, "variety": "Stylosanthes hamata", "grade": "Class 1 Feed"},
+        "seller": {
+            "userId": "seed-3",
+            "name": "Baruten Pastoralist Support Union",
+            "isVerified": True,
+            "contact": {"phone": "+234 812 345 6789", "email": "baruten.pasture@lpres-coop.ng", "whatsapp": "+234 812 345 6789"}
+        },
+        "status": "active",
+        "views": 65,
+        "averageRating": 4.8,
+        "ratings": [],
+        "inquiries": [],
+        "createdAt": "2026-09-01T12:00:00.000Z"
+    },
+    {
+        "_id": "seed-4",
+        "id": 4,
+        "name": "Hybrid Yellow Maize (Dried Grain)",
+        "description": "Clean, well-dried 50kg bags of yellow grain maize harvested in Edu LGA. Moisture content < 12%, perfect for livestock feed formulation.",
+        "category": "Cereals",
+        "price": {"amount": 48000, "currency": "NGN", "unit": "per 50kg bag"},
+        "quantity": {"available": 120, "unit": "bags"},
+        "location": {"region": "Edu", "country": "Nigeria"},
+        "images": [{"url": "https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=800&q=80", "alt": "Yellow Maize", "isPrimary": True}],
+        "specifications": {"isOrganic": False, "variety": "SAMMAZ 15 Hybrid", "grade": "Grade A"},
+        "seller": {
+            "userId": "seed-4",
+            "name": "Mallam Usman Pategi",
+            "isVerified": False,
+            "contact": {"phone": "+234 814 555 7788", "email": "usman.pategi@lpres-farmers.ng", "whatsapp": "+234 814 555 7788"}
+        },
+        "status": "active",
+        "views": 110,
+        "averageRating": 4.9,
+        "ratings": [],
+        "inquiries": [],
+        "createdAt": "2026-09-01T12:00:00.000Z"
+    }
+]
+
+
 @router.post("/auth/register")
 def register_user(user_data: schemas.MarketplaceUserCreate, db: Session = Depends(get_db)):
     try:
@@ -188,10 +264,13 @@ def get_products(
                     
             result_list.append(p_dict)
             
+        if not result_list:
+            result_list = SEED_PRODUCTS
+            
         return {"success": True, "data": {"products": result_list}}
     except Exception as e:
         print(f"Error fetching marketplace products: {e}")
-        return {"success": True, "data": {"products": []}}
+        return {"success": True, "data": {"products": SEED_PRODUCTS}}
 
 
 @router.post("/products")

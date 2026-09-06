@@ -4,9 +4,13 @@ import zipfile
 def build_zip():
     zip_path = "lambda_function.zip"
     if os.path.exists(zip_path):
-        os.remove(zip_path)
+        try:
+            os.remove(zip_path)
+            print(f"Removed old {zip_path}")
+        except Exception as e:
+            print(f"Warning removing {zip_path}: {e}")
 
-    print(f"Building {zip_path}...")
+    print(f"Building fresh {zip_path}...")
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
         # Add packages from package/ directory
         pkg_dir = "package"
@@ -17,12 +21,13 @@ def build_zip():
                     arc_path = os.path.relpath(full_path, pkg_dir)
                     zf.write(full_path, arc_path)
 
-        # Add backend source python files & directories
+        # Add backend source python files & directories (overwriting package if needed)
         sources = [
             "main.py", "models.py", "schemas.py", "auth.py", "database.py", "handler.py"
         ]
         for src in sources:
             if os.path.exists(src):
+                print(f"Adding source: {src}")
                 zf.write(src, src)
 
         for folder in ["routers", "utils"]:
@@ -31,6 +36,7 @@ def build_zip():
                     for file in files:
                         if not file.endswith(".pyc") and "__pycache__" not in root:
                             full_path = os.path.join(root, file)
+                            print(f"Adding folder file: {full_path}")
                             zf.write(full_path, full_path)
 
     size_mb = os.path.getsize(zip_path) / (1024 * 1024)

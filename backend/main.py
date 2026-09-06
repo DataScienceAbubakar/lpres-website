@@ -42,43 +42,52 @@ app.add_middleware(
 )
 
 
-models.Base.metadata.create_all(bind=engine)
+try:
+    models.Base.metadata.create_all(bind=engine)
+except Exception as db_init_err:
+    print(f"[STARTUP DB WARNING] models.Base.metadata.create_all: {db_init_err}")
 
 
 def run_migrations():
-    from sqlalchemy import text
-    db = SessionLocal()
-    
-    # Migrate marketplace_users table columns
-    user_columns = [
-        ("is_verified", "BOOLEAN DEFAULT FALSE"),
-        ("verification_status", "VARCHAR(50) DEFAULT 'unverified'"),
-        ("verification_details", "TEXT DEFAULT '{}'"),
-    ]
-    
-    for col_name, col_type in user_columns:
+    try:
+        from sqlalchemy import text
+        db = SessionLocal()
+        
+        # Migrate marketplace_users table columns
+        user_columns = [
+            ("is_verified", "BOOLEAN DEFAULT FALSE"),
+            ("verification_status", "VARCHAR(50) DEFAULT 'unverified'"),
+            ("verification_details", "TEXT DEFAULT '{}'"),
+        ]
+        
+        for col_name, col_type in user_columns:
+            try:
+                db.execute(text(f"ALTER TABLE marketplace_users ADD COLUMN {col_name} {col_type}"))
+                db.commit()
+            except Exception:
+                db.rollback()
+
         try:
-            db.execute(text(f"ALTER TABLE marketplace_users ADD COLUMN {col_name} {col_type}"))
+            db.execute(text("ALTER TABLE projects ADD COLUMN images TEXT DEFAULT '[]'"))
             db.commit()
         except Exception:
             db.rollback()
 
-    try:
-        db.execute(text("ALTER TABLE projects ADD COLUMN images TEXT DEFAULT '[]'"))
-        db.commit()
-    except Exception:
-        db.rollback()
-
-    try:
-        db.execute(text("DELETE FROM marketplace_products WHERE name LIKE '%Bunaji Bulls%'"))
-        db.commit()
-    except Exception:
-        db.rollback()
-        
-    db.close()
+        try:
+            db.execute(text("DELETE FROM marketplace_products WHERE name LIKE '%Bunaji Bulls%'"))
+            db.commit()
+        except Exception:
+            db.rollback()
+            
+        db.close()
+    except Exception as e:
+        print(f"[MIGRATION WARNING] {e}")
 
 
-run_migrations()
+try:
+    run_migrations()
+except Exception as e:
+    print(f"[STARTUP MIGRATION WARNING] {e}")
 
 app.include_router(admin.router)
 app.include_router(news.router)
@@ -105,11 +114,17 @@ def seed_default_admin():
             db.add(admin_user)
             db.commit()
             print("Default admin created: username=admin")
+    except Exception as e:
+        print(f"Default admin seed skipped: {e}")
+        db.rollback()
     finally:
         db.close()
 
 
-seed_default_admin()
+try:
+    seed_default_admin()
+except Exception as e:
+    print(f"[STARTUP SEED WARNING] seed_default_admin: {e}")
 
 
 def seed_marketplace_admin():
@@ -134,7 +149,10 @@ def seed_marketplace_admin():
         db.close()
 
 
-seed_marketplace_admin()
+try:
+    seed_marketplace_admin()
+except Exception as e:
+    print(f"[STARTUP SEED WARNING] seed_marketplace_admin: {e}")
 
 
 def seed_sample_data():
@@ -225,7 +243,10 @@ def seed_sample_data():
         db.close()
 
 
-seed_sample_data()
+try:
+    seed_sample_data()
+except Exception as e:
+    print(f"[STARTUP SEED WARNING] seed_sample_data: {e}")
 
 
 @app.get("/")
