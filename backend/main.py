@@ -1,6 +1,7 @@
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from database import engine
 import models
@@ -35,11 +36,32 @@ origins = [
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_origin_regex=r"https?://.*",
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    allow_headers=["*"],
+    allow_headers=["authorization", "content-type", "x-requested-with", "accept", "origin", "x-api-key"],
 )
+
+
+@app.middleware("http")
+async def cors_catch_all(request: Request, call_next):
+    # For any origin not in the explicit list, still allow it (open API)
+    origin = request.headers.get("origin", "")
+    if request.method == "OPTIONS":
+        return JSONResponse(
+            status_code=200,
+            headers={
+                "Access-Control-Allow-Origin": origin or "*",
+                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
+                "Access-Control-Allow-Headers": "authorization, content-type, x-requested-with, accept, origin, x-api-key",
+                "Access-Control-Allow-Credentials": "true",
+                "Access-Control-Max-Age": "600",
+            },
+        )
+    response = await call_next(request)
+    if origin and origin not in origins:
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
 
 
 
