@@ -1,7 +1,5 @@
 import os
-from fastapi import FastAPI, Request
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from database import engine
 import models
@@ -19,52 +17,9 @@ except Exception:
 
 app = FastAPI(title="LPRES Website API", version="1.0.0")
 
-origins = [
-    "http://localhost:5173",
-    "http://localhost:3000",
-    "http://127.0.0.1:5173",
-    "https://lpres-website.onrender.com",
-    "https://lpress-website.onrender.com",
-    "https://lpres-marketplace.onrender.com",
-    "https://lpres.onrender.com",
-    "https://lpres.kw.gov.ng",
-    "https://www.lpres.kw.gov.ng",
-    "https://market.lpres.kw.gov.ng",
-]
-
-
-
-CORS_ALLOWED_HEADERS = "authorization, content-type, x-requested-with, accept, origin, x-api-key"
-CORS_ALLOWED_METHODS = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
-
-
-@app.middleware("http")
-async def cors_middleware(request: Request, call_next):
-    origin = request.headers.get("origin", "")
-
-    # Always respond 200 OK to preflight OPTIONS requests
-    if request.method == "OPTIONS":
-        return JSONResponse(
-            status_code=200,
-            headers={
-                "Access-Control-Allow-Origin": origin if origin else "*",
-                "Access-Control-Allow-Methods": CORS_ALLOWED_METHODS,
-                "Access-Control-Allow-Headers": CORS_ALLOWED_HEADERS,
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Max-Age": "600",
-            },
-        )
-
-    response = await call_next(request)
-
-    # Inject CORS headers on every response
-    if origin:
-        response.headers["Access-Control-Allow-Origin"] = origin
-        response.headers["Access-Control-Allow-Credentials"] = "true"
-        response.headers["Access-Control-Allow-Methods"] = CORS_ALLOWED_METHODS
-        response.headers["Access-Control-Allow-Headers"] = CORS_ALLOWED_HEADERS
-    return response
-
+# CORS is handled entirely by AWS API Gateway HTTP API CorsConfiguration.
+# Do NOT add any FastAPI CORS middleware here — it will duplicate headers and
+# cause browser preflight failures.
 
 
 
