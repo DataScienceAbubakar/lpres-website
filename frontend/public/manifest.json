@@ -1,0 +1,44 @@
+{
+    "short_name": "L-PRES Kwara",
+    "name": "Kwara State L-PRES Marketplace & Portal",
+    "description": "Livestock Productivity & Resilience Support Project Marketplace. End-to-end agro trade, veterinary health inspection, and offline trade synchronization.",
+    "icons": [
+        {
+            "src": "/lpres-logo.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/favicon.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
+    ],
+    "id": "/",
+    "start_url": "/?source=pwa",
+    "background_color": "#0d3b2a",
+    "theme_color": "#059669",
+    "display": "standalone",
+    "orientation": "any",
+    "categories": [
+        "business",
+        "shopping",
+        "agriculture",
+        "productivity"
+    ],
+    "shortcuts": [
+        {
+            "name": "Marketplace Catalog",
+            "short_name": "Marketplace",
+            "description": "Browse Kwara livestock & agro produce",
+            "url": "/marketplace",
+            "icons": [
+                {
+                    "src": "/favicon.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ]
+}

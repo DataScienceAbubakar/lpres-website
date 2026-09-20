@@ -26,7 +26,7 @@ import GalleryManager from './pages/admin/GalleryManager';
 import ProjectsManager from './pages/admin/ProjectsManager';
 import SearchModal from './components/ui/SearchModal';
 import ChatBot from './components/ui/ChatBot';
-
+import PWAInstallBanner from './components/PWAInstallBanner';
 
 function ScrollAnimator() {
   const { pathname } = useLocation();
@@ -175,6 +175,7 @@ export default function App() {
           <ScrollAnimator />
           <SearchModal />
           <ChatBot />
+          <PWAInstallBanner />
           <AppRoutes />
         </AuthProvider>
       </ThemeProvider>

@@ -29,8 +29,8 @@ import {
     ArrowLeft
 } from 'lucide-react';
 import './MarketplacePage.css';
-
 import { DEFAULT_API_URL } from '../utils/env';
+import { enqueueOfflineRequest } from '../utils/offlineSync';
 
 const API_BASE = DEFAULT_API_URL;
 
@@ -159,6 +159,22 @@ export default function MarketplacePage() {
         };
 
         try {
+            if (!navigator.onLine) {
+                enqueueOfflineRequest({
+                    endpoint: '/api/marketplace/bids',
+                    method: 'POST',
+                    data: payload,
+                    label: `Offer/Bid for ${bidProduct.name}`
+                });
+                setBidSuccessData({
+                    success: true,
+                    is_offline: true,
+                    message: `Offline Mode: Your offer of ₦${Number(bidAmountInput).toLocaleString()} for ${bidProduct.name} has been queued locally. It will auto-sync as soon as network connection returns!`,
+                    data: { bid_id: `OFFLINE-BID-${Date.now()}` }
+                });
+                return;
+            }
+
             const res = await fetch(`${API_BASE}/api/marketplace/bids`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -169,7 +185,18 @@ export default function MarketplacePage() {
             setBidSuccessData(data);
             fetchMyBids();
         } catch (err) {
-            setBidError(err.message || 'Error submitting bid. Please try again.');
+            enqueueOfflineRequest({
+                endpoint: '/api/marketplace/bids',
+                method: 'POST',
+                data: payload,
+                label: `Offer/Bid for ${bidProduct.name}`
+            });
+            setBidSuccessData({
+                success: true,
+                is_offline: true,
+                message: `Your offer for ${bidProduct.name} has been queued locally and will auto-sync when network returns.`,
+                data: { bid_id: `OFFLINE-BID-${Date.now()}` }
+            });
         } finally {
             setBidSubmitting(false);
         }
@@ -238,6 +265,22 @@ export default function MarketplacePage() {
         };
 
         try {
+            if (!navigator.onLine) {
+                enqueueOfflineRequest({
+                    endpoint: '/api/marketplace/requests',
+                    method: 'POST',
+                    data: payload,
+                    label: `Trade Request for ${requestProduct.name}`
+                });
+                setReqSuccessData({
+                    success: true,
+                    is_offline: true,
+                    message: `Offline Mode: Your trade request for ${requestProduct.name} has been queued locally. It will auto-sync to Kwara L-PRES as soon as your internet connection returns!`,
+                    data: { request_id: `OFFLINE-${Date.now()}` }
+                });
+                return;
+            }
+
             const res = await fetch(`${API_BASE}/api/marketplace/requests`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -247,7 +290,19 @@ export default function MarketplacePage() {
             if (!res.ok) throw new Error(data.detail || data.message || 'Failed to submit trade request');
             setReqSuccessData(data);
         } catch (err) {
-            setReqError(err.message || 'Error submitting request. Please try again.');
+            // Fallback offline queue on network error
+            enqueueOfflineRequest({
+                endpoint: '/api/marketplace/requests',
+                method: 'POST',
+                data: payload,
+                label: `Trade Request for ${requestProduct.name}`
+            });
+            setReqSuccessData({
+                success: true,
+                is_offline: true,
+                message: `Your trade request for ${requestProduct.name} has been queued locally and will sync automatically when network returns.`,
+                data: { request_id: `OFFLINE-${Date.now()}` }
+            });
         } finally {
             setReqSubmitting(false);
         }
