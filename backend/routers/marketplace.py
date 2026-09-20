@@ -260,64 +260,68 @@ def get_products(
     category: Optional[str] = None,
     region: Optional[str] = None,
     search: Optional[str] = None,
-    db: Session = Depends(get_db)
 ):
+    from database import SessionLocal
+    result_list = []
     try:
-        query = db.query(models.MarketplaceProduct)
-        
-        if category and category != "All":
-            query = query.filter(models.MarketplaceProduct.category == category)
-            
-        products = query.order_by(models.MarketplaceProduct.created_at.desc()).all()
-        
-        result_list = []
-        for p in products:
-            p_name = p.name or ""
-            if "bunaji bulls" in p_name.lower():
-                continue
-                
-            p_dict = {
-                "_id": str(p.id),
-                "id": p.id,
-                "name": p_name,
-                "description": p.description or "",
-                "category": p.category or "Agro Produce",
-                "price": safe_parse_json(p.price, {"amount": 0, "currency": "NGN", "unit": "unit"}),
-                "quantity": safe_parse_json(p.quantity, {"available": 0, "unit": "unit"}),
-                "location": safe_parse_json(p.location, {"region": "Kwara", "country": "Nigeria"}),
-                "images": safe_parse_json(p.images, []),
-                "specifications": safe_parse_json(p.specifications, {}),
-                "seller": safe_parse_json(p.seller, {"name": "Kwara Producer"}),
-                "status": p.status or "active",
-                "views": p.views or 0,
-                "averageRating": 5.0,
-                "ratings": [],
-                "inquiries": [],
-                "createdAt": p.created_at.isoformat() if p.created_at else ""
-            }
+        db = SessionLocal()
+        try:
+            query = db.query(models.MarketplaceProduct)
 
-            # Filter by region/LGA if search or region is specified
-            if region and region != "All":
-                loc = p_dict["location"]
-                prod_region = loc.get("region", "") if isinstance(loc, dict) else str(loc)
-                if prod_region.lower() != region.lower():
+            if category and category != "All":
+                query = query.filter(models.MarketplaceProduct.category == category)
+
+            products = query.order_by(models.MarketplaceProduct.created_at.desc()).all()
+
+            for p in products:
+                p_name = p.name or ""
+                if "bunaji bulls" in p_name.lower():
                     continue
-                    
-            if search:
-                s = search.lower()
-                desc = (p.description or "").lower()
-                if s not in p_name.lower() and s not in desc:
-                    continue
-                    
-            result_list.append(p_dict)
-            
-        if not result_list:
-            result_list = SEED_PRODUCTS
-            
-        return {"success": True, "data": {"products": result_list}}
+
+                p_dict = {
+                    "_id": str(p.id),
+                    "id": p.id,
+                    "name": p_name,
+                    "description": p.description or "",
+                    "category": p.category or "Agro Produce",
+                    "price": safe_parse_json(p.price, {"amount": 0, "currency": "NGN", "unit": "unit"}),
+                    "quantity": safe_parse_json(p.quantity, {"available": 0, "unit": "unit"}),
+                    "location": safe_parse_json(p.location, {"region": "Kwara", "country": "Nigeria"}),
+                    "images": safe_parse_json(p.images, []),
+                    "specifications": safe_parse_json(p.specifications, {}),
+                    "seller": safe_parse_json(p.seller, {"name": "Kwara Producer"}),
+                    "status": p.status or "active",
+                    "views": p.views or 0,
+                    "averageRating": 5.0,
+                    "ratings": [],
+                    "inquiries": [],
+                    "createdAt": p.created_at.isoformat() if p.created_at else ""
+                }
+
+                if region and region != "All":
+                    loc = p_dict["location"]
+                    prod_region = loc.get("region", "") if isinstance(loc, dict) else str(loc)
+                    if prod_region.lower() != region.lower():
+                        continue
+
+                if search:
+                    s = search.lower()
+                    desc = (p.description or "").lower()
+                    if s not in p_name.lower() and s not in desc:
+                        continue
+
+                result_list.append(p_dict)
+        finally:
+            db.close()
     except Exception as e:
-        print(f"Error fetching marketplace products: {e}")
-        return {"success": True, "data": {"products": SEED_PRODUCTS}}
+        print(f"[PRODUCTS FALLBACK] DB Error: {e}")
+        result_list = []
+
+    if not result_list:
+        result_list = SEED_PRODUCTS
+
+    return {"success": True, "data": {"products": result_list}}
+
 
 
 @router.post("/products")
