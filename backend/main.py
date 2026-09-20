@@ -33,35 +33,39 @@ origins = [
 ]
 
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    allow_headers=["authorization", "content-type", "x-requested-with", "accept", "origin", "x-api-key"],
-)
+
+CORS_ALLOWED_HEADERS = "authorization, content-type, x-requested-with, accept, origin, x-api-key"
+CORS_ALLOWED_METHODS = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
 
 
 @app.middleware("http")
-async def cors_catch_all(request: Request, call_next):
-    # For any origin not in the explicit list, still allow it (open API)
+async def cors_middleware(request: Request, call_next):
     origin = request.headers.get("origin", "")
+
+    # Always respond 200 OK to preflight OPTIONS requests
     if request.method == "OPTIONS":
         return JSONResponse(
             status_code=200,
             headers={
-                "Access-Control-Allow-Origin": origin or "*",
-                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
-                "Access-Control-Allow-Headers": "authorization, content-type, x-requested-with, accept, origin, x-api-key",
+                "Access-Control-Allow-Origin": origin if origin else "*",
+                "Access-Control-Allow-Methods": CORS_ALLOWED_METHODS,
+                "Access-Control-Allow-Headers": CORS_ALLOWED_HEADERS,
                 "Access-Control-Allow-Credentials": "true",
                 "Access-Control-Max-Age": "600",
             },
         )
+
     response = await call_next(request)
-    if origin and origin not in origins:
+
+    # Inject CORS headers on every response
+    if origin:
         response.headers["Access-Control-Allow-Origin"] = origin
         response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Access-Control-Allow-Methods"] = CORS_ALLOWED_METHODS
+        response.headers["Access-Control-Allow-Headers"] = CORS_ALLOWED_HEADERS
     return response
+
+
 
 
 
