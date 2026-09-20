@@ -8,11 +8,16 @@ from sqlalchemy.orm import sessionmaker
 
 raw_db_url = os.getenv("DATABASE_URL", "sqlite:///./lpres_website.db")
 
-# Standardize postgres protocol for SQLAlchemy 2.0
+# Standardize postgres protocol for SQLAlchemy 2.0 and append SSL mode if missing
 if raw_db_url.startswith("postgres://"):
     SQLALCHEMY_DATABASE_URL = raw_db_url.replace("postgres://", "postgresql://", 1)
 else:
     SQLALCHEMY_DATABASE_URL = raw_db_url
+
+if SQLALCHEMY_DATABASE_URL.startswith("postgresql://") and "sslmode" not in SQLALCHEMY_DATABASE_URL:
+    delimiter = "&" if "?" in SQLALCHEMY_DATABASE_URL else "?"
+    SQLALCHEMY_DATABASE_URL += f"{delimiter}sslmode=require"
+
 
 if SQLALCHEMY_DATABASE_URL.startswith("sqlite"):
     engine = create_engine(
