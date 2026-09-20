@@ -28,10 +28,19 @@ custom:
     dockerizePip: false
     slim: true
     strip: true
+    pipCmdExtraArgs:
+      - '--platform'
+      - 'manylinux2014_x86_64'
+      - '--implementation'
+      - 'cp'
+      - '--python-version'
+      - '3.11'
+      - '--only-binary=:all:'
     noDeploy:
       - pytest
       - botocore
       - boto3
+
 
 
 
@@ -56,3 +65,5 @@ package:
     - '!*.sqlite3'
     - '!uploads/**'
     - '!test_marketplace_admin.py'
+    - '!test_linux_packages/**'
+

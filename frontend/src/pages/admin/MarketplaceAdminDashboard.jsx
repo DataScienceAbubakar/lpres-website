@@ -59,8 +59,10 @@ export default function MarketplaceAdminDashboard() {
     const [bids, setBids] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedStatusFilter, setSelectedStatusFilter] = useState('All');
+    // Search and filter for Users tab
+    const [userSearchTerm, setUserSearchTerm] = useState('');
+    const [userStatusFilter, setUserStatusFilter] = useState('All');
+    const [activeUserModal, setActiveUserModal] = useState(null);
 
     // Modal State for Request Detail / Action
     const [activeRequestModal, setActiveRequestModal] = useState(null);
@@ -371,7 +373,7 @@ export default function MarketplaceAdminDashboard() {
                         onClick={() => setActiveTab('users')}
                     >
                         <Users size={18} />
-                        <span>Marketers & Verification ({users.length})</span>
+                        <span>Registered Users ({users.length})</span>
                     </button>
 
                     <button
@@ -532,75 +534,144 @@ export default function MarketplaceAdminDashboard() {
                     </section>
                 )}
 
-                {/* TAB 2: USERS & VERIFICATION */}
+                {/* TAB 2: REGISTERED USERS */}
                 {activeTab === 'users' && (
                     <section className="mp-admin-section">
-                        <div className="mp-table-wrapper">
-                            <table className="mp-data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Marketer Name</th>
-                                        <th>Email & Phone</th>
-                                        <th>LGA</th>
-                                        <th>Verification Status</th>
-                                        <th>Farm / Coop Details</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {users.map(u => (
-                                        <tr key={u.id}>
-                                            <td>
-                                                <strong>{u.name}</strong>
-                                                {u.isVerified && <ShieldCheck size={14} color="#10b981" title="Verified Badge Active" />}
-                                            </td>
-                                            <td>
-                                                <div>{u.email}</div>
-                                                <div className="mp-time">{u.phone}</div>
-                                            </td>
-                                            <td>{u.lga || 'Ilorin East'}</td>
-                                            <td>
-                                                {u.isVerified ? (
-                                                    <span className="mp-badge mp-badge-approved">Verified Marketer</span>
-                                                ) : u.verificationStatus === 'pending' ? (
-                                                    <span className="mp-badge mp-badge-pending">Pending Review</span>
-                                                ) : (
-                                                    <span className="mp-badge mp-badge-cancelled">Unverified</span>
-                                                )}
-                                            </td>
-                                            <td>
-                                                {u.verificationDetails ? (
-                                                    <div style={{ fontSize: '12px', color: '#94a3b8' }}>
-                                                        <div>Farm: {u.verificationDetails.farm_name || u.verificationDetails.farmName || 'N/A'}</div>
-                                                        <div>NIN/Reg: {u.verificationDetails.nin_reg || u.verificationDetails.nin || 'N/A'}</div>
-                                                    </div>
-                                                ) : 'No verification application submitted'}
-                                            </td>
-                                            <td>
-                                                <div className="mp-action-btns-row">
-                                                    {!u.isVerified && (
-                                                        <button
-                                                            onClick={() => handleVerifyUser(u.id, 'verified')}
-                                                            className="mp-btn-action mp-btn-approve"
-                                                        >
-                                                            <Check size={13} /> Grant Verification Badge
-                                                        </button>
-                                                    )}
-                                                    {u.isVerified && (
-                                                        <button
-                                                            onClick={() => handleVerifyUser(u.id, 'unverified')}
-                                                            className="mp-btn-action mp-btn-cancel"
-                                                        >
-                                                            <X size={13} /> Revoke Verification
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                        <div className="mp-section-header">
+                            <div className="mp-search-bar">
+                                <Search size={16} className="mp-search-icon" />
+                                <input
+                                    type="text"
+                                    placeholder="Search by user name, email, phone, LGA, or farm name..."
+                                    value={userSearchTerm}
+                                    onChange={(e) => setUserSearchTerm(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="mp-filter-group">
+                                <label>Filter Verification Status:</label>
+                                <select
+                                    value={userStatusFilter}
+                                    onChange={(e) => setUserStatusFilter(e.target.value)}
+                                >
+                                    <option value="All">All Registered Users</option>
+                                    <option value="verified">Verified Marketers / Producers</option>
+                                    <option value="pending">Pending Verification Review</option>
+                                    <option value="unverified">Unverified Users</option>
+                                </select>
+                            </div>
                         </div>
+
+                        {loading ? (
+                            <div className="mp-admin-loading">
+                                <RefreshCw size={24} className="mp-spin" />
+                                <p>Loading registered users database...</p>
+                            </div>
+                        ) : users.length === 0 ? (
+                            <div className="mp-admin-empty">
+                                <Users size={40} />
+                                <h3>No registered users found</h3>
+                                <p>Registered users, farmers, and marketers will appear here.</p>
+                            </div>
+                        ) : (
+                            <div className="mp-table-wrapper">
+                                <table className="mp-data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>User ID & Name</th>
+                                            <th>Email & Contact Phone</th>
+                                            <th>LGA & Location</th>
+                                            <th>Verification Status</th>
+                                            <th>Farm / Enterprise Details</th>
+                                            <th>Registration Date</th>
+                                            <th>Verification Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {users.filter(u => {
+                                            const matchesSearch = (u.name || '').toLowerCase().includes(userSearchTerm.toLowerCase()) ||
+                                                (u.email || '').toLowerCase().includes(userSearchTerm.toLowerCase()) ||
+                                                (u.phone || '').toLowerCase().includes(userSearchTerm.toLowerCase()) ||
+                                                (u.lga || '').toLowerCase().includes(userSearchTerm.toLowerCase()) ||
+                                                (u.verificationDetails?.farm_name || u.verificationDetails?.farmName || '').toLowerCase().includes(userSearchTerm.toLowerCase());
+
+                                            const matchesFilter = userStatusFilter === 'All' ||
+                                                (userStatusFilter === 'verified' && u.isVerified) ||
+                                                (userStatusFilter === 'pending' && u.verificationStatus === 'pending') ||
+                                                (userStatusFilter === 'unverified' && !u.isVerified && u.verificationStatus !== 'pending');
+
+                                            return matchesSearch && matchesFilter;
+                                        }).map(u => (
+                                            <tr key={u.id}>
+                                                <td>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                        <span className="mp-code">#USR-{u.id}</span>
+                                                        <strong>{u.name}</strong>
+                                                        {u.isVerified && <ShieldCheck size={16} color="#10b981" title="Verified Badge Active" />}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div><Mail size={12} /> {u.email}</div>
+                                                    <div className="mp-buyer-contact"><Phone size={12} /> {u.phone}</div>
+                                                </td>
+                                                <td>{u.lga || 'Ilorin East'}</td>
+                                                <td>
+                                                    {u.isVerified ? (
+                                                        <span className="mp-badge mp-badge-approved"><CheckCircle2 size={13} /> Verified Marketer</span>
+                                                    ) : u.verificationStatus === 'pending' ? (
+                                                        <span className="mp-badge mp-badge-pending"><Clock size={13} /> Pending Review</span>
+                                                    ) : (
+                                                        <span className="mp-badge mp-badge-cancelled"><XCircle size={13} /> Unverified</span>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {u.verificationDetails && (u.verificationDetails.farm_name || u.verificationDetails.farmName) ? (
+                                                        <div style={{ fontSize: '12px', color: '#64748b' }}>
+                                                            <div><strong>Farm:</strong> {u.verificationDetails.farm_name || u.verificationDetails.farmName}</div>
+                                                            <div><strong>Reg/NIN:</strong> {u.verificationDetails.nin_reg || u.verificationDetails.nin || 'Submitted'}</div>
+                                                        </div>
+                                                    ) : (
+                                                        <span style={{ fontSize: '12px', color: '#94a3b8', fontStyle: 'italic' }}>Standard Account</span>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    <div className="mp-time">{u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A'}</div>
+                                                </td>
+                                                <td>
+                                                    <div className="mp-action-btns-row">
+                                                        <button
+                                                            onClick={() => setActiveUserModal(u)}
+                                                            className="mp-btn-action mp-btn-view"
+                                                            title="View User Details"
+                                                        >
+                                                            <Eye size={13} /> Details
+                                                        </button>
+
+                                                        {!u.isVerified ? (
+                                                            <button
+                                                                onClick={() => handleVerifyUser(u.id, 'verified')}
+                                                                className="mp-btn-action mp-btn-approve"
+                                                                title="Grant Verified Status & Badge"
+                                                            >
+                                                                <Check size={13} /> Verify User
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                onClick={() => handleVerifyUser(u.id, 'unverified')}
+                                                                className="mp-btn-action mp-btn-cancel"
+                                                                title="Revoke Verified Status"
+                                                            >
+                                                                <X size={13} /> Revoke
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
                     </section>
                 )}
 
@@ -813,6 +884,80 @@ export default function MarketplaceAdminDashboard() {
                                     className="mp-btn-action mp-btn-cancel"
                                 >
                                     <XCircle size={14} /> Cancel Request
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* DETAIL MODAL FOR REGISTERED USER */}
+            {activeUserModal && (
+                <div className="mp-modal-overlay">
+                    <div className="mp-modal-card">
+                        <div className="mp-modal-header">
+                            <h2>Registered User Details [#USR-{activeUserModal.id}]</h2>
+                            <button onClick={() => setActiveUserModal(null)} className="mp-modal-close">
+                                <X size={20} />
+                            </button>
+                        </div>
+
+                        <div className="mp-modal-body">
+                            <div className="mp-modal-grid">
+                                <div>
+                                    <h4 className="mp-modal-sub">Personal & Contact Profile</h4>
+                                    <p><strong>Full Name:</strong> {activeUserModal.name}</p>
+                                    <p><strong>Email Address:</strong> {activeUserModal.email}</p>
+                                    <p><strong>Phone Number:</strong> {activeUserModal.phone}</p>
+                                    <p><strong>WhatsApp Line:</strong> {activeUserModal.whatsapp || activeUserModal.phone}</p>
+                                    <p><strong>LGA Region:</strong> {activeUserModal.lga || 'Ilorin East'}</p>
+                                    <p><strong>Registered Date:</strong> {activeUserModal.createdAt ? new Date(activeUserModal.createdAt).toLocaleString() : 'N/A'}</p>
+                                </div>
+
+                                <div>
+                                    <h4 className="mp-modal-sub">Verification & Farm Application</h4>
+                                    <p>
+                                        <strong>Status: </strong>
+                                        {activeUserModal.isVerified ? (
+                                            <span className="mp-badge mp-badge-approved">Verified Marketer</span>
+                                        ) : activeUserModal.verificationStatus === 'pending' ? (
+                                            <span className="mp-badge mp-badge-pending">Pending Review</span>
+                                        ) : (
+                                            <span className="mp-badge mp-badge-cancelled">Unverified</span>
+                                        )}
+                                    </p>
+                                    <p><strong>Farm / Coop Name:</strong> {activeUserModal.verificationDetails?.farm_name || activeUserModal.verificationDetails?.farmName || 'N/A'}</p>
+                                    <p><strong>NIN / Govt Registration:</strong> {activeUserModal.verificationDetails?.nin_reg || activeUserModal.verificationDetails?.nin || 'N/A'}</p>
+                                    <p><strong>Business Type:</strong> {activeUserModal.verificationDetails?.business_type || 'Livestock Marketer / Producer'}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mp-modal-footer">
+                            <div className="mp-modal-status-actions">
+                                {!activeUserModal.isVerified ? (
+                                    <button
+                                        onClick={() => {
+                                            handleVerifyUser(activeUserModal.id, 'verified');
+                                            setActiveUserModal(null);
+                                        }}
+                                        className="mp-btn-action mp-btn-approve"
+                                    >
+                                        <Check size={14} /> Grant Verified Status Badge
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={() => {
+                                            handleVerifyUser(activeUserModal.id, 'unverified');
+                                            setActiveUserModal(null);
+                                        }}
+                                        className="mp-btn-action mp-btn-cancel"
+                                    >
+                                        <X size={14} /> Revoke Verified Status Badge
+                                    </button>
+                                )}
+                                <button onClick={() => setActiveUserModal(null)} className="mp-btn-action mp-btn-view">
+                                    Close Window
                                 </button>
                             </div>
                         </div>
