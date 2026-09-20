@@ -59,6 +59,10 @@ export default function MarketplaceAdminDashboard() {
     const [bids, setBids] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    // Search and filter for Requests tab
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedStatusFilter, setSelectedStatusFilter] = useState('All');
+
     // Search and filter for Users tab
     const [userSearchTerm, setUserSearchTerm] = useState('');
     const [userStatusFilter, setUserStatusFilter] = useState('All');
