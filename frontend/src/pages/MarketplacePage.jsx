@@ -614,191 +614,145 @@ export default function MarketplacePage() {
 
                             <div className="marketplace-hero__content">
                                 <div className="marketplace-hero__badge">
-                                    <Award size={16} /> Official Government Trade Intermediary — Kwara L-PRES
+                                    <Award size={15} /> Official Government Trade Intermediary — Kwara L-PRES
                                 </div>
                                 <h1 className="marketplace-hero__title">
-                                    Enterprise Livestock & Agro <span className="text-emerald">Marketplace</span>
+                                    Best Deals. <span className="text-emerald">Everything Agriculture & Livestock</span>
                                 </h1>
                                 <p className="marketplace-hero__lead">
-                                    L-PRES facilitates end-to-end secure trade between agricultural producers and commercial buyers. Enjoy official escrow protection, 1% veterinary health inspections, and logistics support state-wide.
+                                    End-to-end secure trade between Kwara agricultural producers and commercial buyers with escrow protection, veterinary health inspection, and state-wide haulage.
                                 </p>
+
+                                {/* Capsule Unified Search Bar (Livestocx Style) */}
+                                <div className="mp-hero-search-capsule">
+                                    <div className="mp-capsule-field">
+                                        <Search size={18} className="mp-capsule-icon" />
+                                        <input
+                                            type="text"
+                                            placeholder="What are you looking for? (Cattle, Maize, Feeds...)"
+                                            value={searchTerm}
+                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                            className="mp-capsule-input"
+                                        />
+                                        {searchTerm && (
+                                            <button onClick={() => setSearchTerm('')} className="mp-capsule-clear">
+                                                <X size={14} />
+                                            </button>
+                                        )}
+                                    </div>
+                                    <div className="mp-capsule-divider" />
+                                    <div className="mp-capsule-field select-field">
+                                        <MapPin size={16} className="mp-capsule-icon" />
+                                        <select
+                                            value={selectedLga}
+                                            onChange={(e) => setSelectedLga(e.target.value)}
+                                            className="mp-capsule-select"
+                                        >
+                                            <option value="">All Kwara LGAs</option>
+                                            {[
+                                                'Ilorin East', 'Ilorin West', 'Ilorin South', 'Offa', 'Baruten',
+                                                'Kaiama', 'Edu', 'Pategi', 'Ifelodun', 'Irepodun', 'Oyun', 'Isin',
+                                                'Moro', 'Asa', 'Oke Ero', 'Ekiti'
+                                            ].map((lga) => (
+                                                <option key={lga} value={lga}>{lga}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="mp-capsule-divider" />
+                                    <div className="mp-capsule-field select-field">
+                                        <Tag size={16} className="mp-capsule-icon" />
+                                        <select
+                                            value={selectedCategory}
+                                            onChange={(e) => setSelectedCategory(e.target.value)}
+                                            className="mp-capsule-select"
+                                        >
+                                            <option value="">All Categories</option>
+                                            {['Livestock', 'Feed & Fodder', 'Cereals', 'Cash Crops', 'Root Crops', 'Vegetables', 'Fruits', 'Equipment'].map((c) => (
+                                                <option key={c} value={c}>{c}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <button
+                                        onClick={() => {
+                                            const el = document.getElementById('catalog-section');
+                                            if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                        }}
+                                        className="mp-capsule-btn"
+                                    >
+                                        <Search size={16} /> Search
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
-                        {/* Enterprise Service Gateway & Overview */}
-                        <div className="mp-landing-gateway">
-                            <div className="mp-gateway-header">
-                                <span className="mp-gateway-subtitle">OUR ENTERPRISE SERVICES</span>
-                                <h2>How L-PRES Facilitates Enterprise Agricultural Trade</h2>
-                                <p>We bridge the gap between Kwara livestock producers and enterprise buyers with government-backed transparency and reliability.</p>
-                            </div>
-
-                            {/* Services 4-Grid */}
-                            <div className="mp-services-grid">
-                                <div className="mp-service-card">
-                                    <div className="mp-service-card__icon mp-service-card__icon--emerald">
-                                        <ShieldCheck size={26} />
-                                    </div>
-                                    <h3>Intermediary Trade Facilitation</h3>
-                                    <p>L-PRES handles buyer requests, escrow protection, and seller coordination to eliminate fraudulent transactions and protect market integrity.</p>
-                                    <span className="mp-service-card__badge">Government Intermediary</span>
-                                </div>
-
-                                <div className="mp-service-card">
-                                    <div className="mp-service-card__icon mp-service-card__icon--amber">
-                                        <CheckCircle2 size={26} />
-                                    </div>
-                                    <h3>1% Quality & Health Inspection</h3>
-                                    <p>Optional official veterinary inspections for livestock health, breed certification, weight grading, and vaccination clearance before delivery.</p>
-                                    <span className="mp-service-card__badge">1% Fee Service</span>
-                                </div>
-
-                                <div className="mp-service-card">
-                                    <div className="mp-service-card__icon mp-service-card__icon--blue">
-                                        <Package size={26} />
-                                    </div>
-                                    <h3>Supply Chain & Logistics</h3>
-                                    <p>State-wide logistics facilitation, livestock transit, and cold-chain support connecting all 16 Kwara LGAs to regional national hubs.</p>
-                                    <span className="mp-service-card__badge">Full Haulage</span>
-                                </div>
-
-                                <div className="mp-service-card">
-                                    <div className="mp-service-card__icon mp-service-card__icon--purple">
-                                        <Award size={26} />
-                                    </div>
-                                    <h3>Verified Marketer Network</h3>
-                                    <p>Access vetted livestock cooperatives, licensed pastoralists, and commercial agro-producers with verified Kwara L-PRES badges.</p>
-                                    <span className="mp-service-card__badge">Vetted Producers</span>
-                                </div>
-                            </div>
-
-                            {/* How Facilitation Works Flow */}
-                            <div className="mp-how-it-works">
-                                <div className="mp-how-title">
-                                    <Clock size={18} /> 4-Step Enterprise Facilitation Process
-                                </div>
-                                <div className="mp-steps-row">
-                                    <div className="mp-step-item">
-                                        <div className="mp-step-num">1</div>
-                                        <h4>Select & Request</h4>
-                                        <p>Browse listings and click <strong>"Request Item"</strong> to submit your order specifications to L-PRES.</p>
-                                    </div>
-                                    <div className="mp-step-arrow">→</div>
-                                    <div className="mp-step-item">
-                                        <div className="mp-step-num">2</div>
-                                        <h4>Inspection & Quote</h4>
-                                        <p>Optionally add <strong>1% Veterinary Inspection</strong> for official health check & weight verification.</p>
-                                    </div>
-                                    <div className="mp-step-arrow">→</div>
-                                    <div className="mp-step-item">
-                                        <div className="mp-step-num">3</div>
-                                        <h4>Logistics & Haulage</h4>
-                                        <p>L-PRES coordinates secure transit from farm-gate to buyer location across Kwara LGAs.</p>
-                                    </div>
-                                    <div className="mp-step-arrow">→</div>
-                                    <div className="mp-step-item">
-                                        <div className="mp-step-num">4</div>
-                                        <h4>Settlement & Delivery</h4>
-                                        <p>Confirm item delivery and quality to trigger automated release to the verified producer.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Landing CTA Bar */}
-                            <div className="mp-gateway-cta">
-                                <a href="#catalog-section" className="btn btn-primary mp-cta-btn">
-                                    <Leaf size={18} /> Explore Marketplace Catalog & Request Trade
-                                </a>
-                                <button
-                                    onClick={() => {
-                                        setAuthIntentReason('register as an L-PRES Marketer');
-                                        setAuthMode('register');
-                                        setAuthError('');
-                                        setShowAuthModal(true);
-                                    }}
-                                    className="btn btn-secondary mp-cta-btn-alt"
-                                >
-                                    <Plus size={18} /> Register as Kwara Livestock Marketer
-                                </button>
-                            </div>
+                        {/* Announcement / Boost Strip */}
+                        <div className="mp-announcement-strip">
+                            <span className="mp-announcement-icon">🚀</span>
+                            <span>Official Escrow & 1% Veterinary Inspection Available Across All 16 Kwara LGAs</span>
+                            <a href="#catalog-section" className="mp-announcement-link">Explore Listings &rarr;</a>
                         </div>
                     </section>
 
-                    {/* Filter Bar */}
+                    {/* Filter & Category Bar */}
                     <section id="catalog-section" className="marketplace-filter-section">
                         <div className="container">
+                            {/* Horizontal Category Chips */}
+                            <div className="mp-category-chips">
+                                <button
+                                    onClick={() => setSelectedCategory('')}
+                                    className={`mp-chip ${!selectedCategory ? 'active' : ''}`}
+                                >
+                                    All Listings
+                                </button>
+                                {['Livestock', 'Feed & Fodder', 'Cereals', 'Cash Crops', 'Root Crops', 'Vegetables', 'Fruits', 'Equipment'].map((cat) => (
+                                    <button
+                                        key={cat}
+                                        onClick={() => setSelectedCategory(selectedCategory === cat ? '' : cat)}
+                                        className={`mp-chip ${selectedCategory === cat ? 'active' : ''}`}
+                                    >
+                                        {cat}
+                                    </button>
+                                ))}
+                            </div>
+
                             <div className="marketplace-filter-bar">
-                                {/* Search */}
-                                <div className="mp-search-box">
-                                    <Search size={18} className="mp-search-icon" />
-                                    <input
-                                        type="text"
-                                        placeholder="Search cattle, dairy, maize, feeds, machinery..."
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                        className="mp-search-input"
-                                    />
-                                    {searchTerm && (
-                                        <button onClick={() => setSearchTerm('')} className="mp-search-clear">
-                                            <X size={14} />
-                                        </button>
+                                <div className="mp-filter-left">
+                                    <span className="mp-listings-count">
+                                        Showing <strong>{filteredProducts.length}</strong> items
+                                    </span>
+                                    {selectedLga && (
+                                        <span className="mp-active-tag">LGA: {selectedLga}</span>
                                     )}
                                 </div>
 
-                                {/* Category Select */}
-                                <select
-                                    value={selectedCategory}
-                                    onChange={(e) => setSelectedCategory(e.target.value)}
-                                    className="mp-select"
-                                >
-                                    <option value="">All Categories</option>
-                                    {['Livestock', 'Feed & Fodder', 'Cereals', 'Cash Crops', 'Root Crops', 'Vegetables', 'Fruits', 'Equipment'].map((c) => (
-                                        <option key={c} value={c}>{c}</option>
-                                    ))}
-                                </select>
-
-                                {/* Kwara LGA Filter */}
-                                <select
-                                    value={selectedLga}
-                                    onChange={(e) => setSelectedLga(e.target.value)}
-                                    className="mp-select"
-                                >
-                                    <option value="">All Kwara LGAs</option>
-                                    {[
-                                        'Ilorin East', 'Ilorin West', 'Ilorin South', 'Offa', 'Baruten',
-                                        'Kaiama', 'Edu', 'Pategi', 'Ifelodun', 'Irepodun', 'Oyun', 'Isin',
-                                        'Moro', 'Asa', 'Oke Ero', 'Ekiti'
-                                    ].map((lga) => (
-                                        <option key={lga} value={lga}>{lga}</option>
-                                    ))}
-                                </select>
-
-                                {/* Verified Sellers Toggle */}
-                                <button
-                                    onClick={() => setOnlyVerifiedFilter(!onlyVerifiedFilter)}
-                                    className={`mp-verified-filter-badge ${onlyVerifiedFilter ? 'active' : ''}`}
-                                    title="Filter by L-PRES Verified Marketers"
-                                >
-                                    <ShieldCheck size={16} />
-                                    <span>Verified Only</span>
-                                </button>
-
-                                {/* View Mode Toggle */}
-                                <div className="mp-view-toggle">
+                                <div className="mp-filter-right">
+                                    {/* Verified Toggle */}
                                     <button
-                                        onClick={() => setViewMode('grid')}
-                                        className={`mp-view-btn ${viewMode === 'grid' ? 'active' : ''}`}
-                                        title="Grid view"
+                                        onClick={() => setOnlyVerifiedFilter(!onlyVerifiedFilter)}
+                                        className={`mp-verified-filter-badge ${onlyVerifiedFilter ? 'active' : ''}`}
+                                        title="Filter by L-PRES Verified Marketers"
                                     >
-                                        <Grid size={18} />
+                                        <ShieldCheck size={14} />
+                                        <span>Verified Only</span>
                                     </button>
-                                    <button
-                                        onClick={() => setViewMode('list')}
-                                        className={`mp-view-btn ${viewMode === 'list' ? 'active' : ''}`}
-                                        title="List view"
-                                    >
-                                        <List size={18} />
-                                    </button>
+
+                                    {/* View Mode Toggle */}
+                                    <div className="mp-view-toggle">
+                                        <button
+                                            onClick={() => setViewMode('grid')}
+                                            className={`mp-view-btn ${viewMode === 'grid' ? 'active' : ''}`}
+                                            title="Grid view"
+                                        >
+                                            <Grid size={16} />
+                                        </button>
+                                        <button
+                                            onClick={() => setViewMode('list')}
+                                            className={`mp-view-btn ${viewMode === 'list' ? 'active' : ''}`}
+                                            title="List view"
+                                        >
+                                            <List size={16} />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -807,18 +761,6 @@ export default function MarketplacePage() {
                     {/* Main Content Area */}
                     <section className="marketplace-body">
                         <div className="container">
-                            <div className="mp-status-header">
-                                <h2 className="mp-section-title">
-                                    Available Listings ({filteredProducts.length})
-                                </h2>
-                                {selectedCategory && (
-                                    <span className="mp-active-tag">Category: {selectedCategory}</span>
-                                )}
-                                {selectedLga && (
-                                    <span className="mp-active-tag">LGA: {selectedLga}</span>
-                                )}
-                            </div>
-
                             {loading ? (
                                 <div className="mp-loading-state">
                                     <div className="mp-spinner" />
@@ -826,27 +768,27 @@ export default function MarketplacePage() {
                                 </div>
                             ) : filteredProducts.length === 0 ? (
                                 <div className="mp-empty-state">
-                                    <Package size={48} className="mp-empty-icon" />
+                                    <Package size={44} className="mp-empty-icon" />
                                     <h3>No products found matching your search</h3>
                                     <p>Try adjusting your category or LGA filter, or be the first to list a product in this category!</p>
                                     <button
                                         onClick={() => requireAuthForAction('list a product', () => setShowAddModal(true))}
                                         className="btn-mp-primary"
-                                        style={{ marginTop: 16 }}
+                                        style={{ marginTop: 14 }}
                                     >
-                                        <Plus size={18} /> List a Product Now
+                                        <Plus size={16} /> List a Product Now
                                     </button>
                                 </div>
                             ) : (
                                 <div className={viewMode === 'grid' ? 'mp-grid' : 'mp-list'}>
                                     {filteredProducts.map((p) => {
                                         const prodId = p._id || p.id;
-                                        const isContactRevealed = revealedContacts[prodId] || mUser;
                                         const isOwner = mUser && (p.seller?.userId === mUser._id || p.seller?.email === mUser.email);
+                                        const isVerified = Boolean(p.seller?.isVerified || p.seller?.is_verified);
 
                                         return (
                                             <div key={prodId} className="mp-card">
-                                                {/* Image */}
+                                                {/* Card Image Wrap */}
                                                 <div className="mp-card__image-wrap">
                                                     <img
                                                         src={typeof p.images?.[0] === 'string' ? p.images[0] : (p.images?.[0]?.url || 'https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=800&q=80')}
@@ -857,75 +799,74 @@ export default function MarketplacePage() {
                                                             e.target.src = 'https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=800&q=80';
                                                         }}
                                                     />
-                                                    {(p.seller?.isVerified || p.seller?.is_verified) && (
-                                                        <span className="mp-card__verified-badge" title="Verified by Kwara L-PRES State Project Office">
-                                                            <ShieldCheck size={12} /> L-PRES Verified
+
+                                                    {/* Top Left Pill Badge: Category */}
+                                                    <span className="mp-card__cat-pill">{p.category || 'General'}</span>
+
+                                                    {/* Top Right Badges */}
+                                                    {isVerified && (
+                                                        <span className="mp-card__verified-badge" title="Verified by Kwara L-PRES">
+                                                            <ShieldCheck size={11} /> Verified
                                                         </span>
                                                     )}
-                                                    <span className="mp-card__category">{p.category}</span>
-                                                    {p.specifications?.isOrganic && (
-                                                        <span className="mp-card__organic-badge">
-                                                            <Leaf size={12} /> Organic
-                                                        </span>
-                                                    )}
+
+                                                    {/* Bottom Right Floating Circular Quick Action */}
+                                                    <button
+                                                        onClick={() => handleOpenRequestModal(p)}
+                                                        className="mp-card__quick-fav"
+                                                        title="Request Trade Facilitation"
+                                                    >
+                                                        <ShieldCheck size={15} />
+                                                    </button>
                                                 </div>
 
-                                                {/* Content */}
+                                                {/* Card Content Body */}
                                                 <div className="mp-card__content">
-                                                    <div className="mp-card__header">
-                                                        <h3 className="mp-card__title">{p.name}</h3>
-                                                        <div className="mp-card__price-box">
-                                                            <span className="mp-card__price">{formatPrice(p.price?.amount, p.price?.unit)}</span>
-                                                            <span className="mp-card__qty">{p.quantity?.available} {p.quantity?.unit} available</span>
+                                                    <h3 className="mp-card__title" title={p.name}>{p.name}</h3>
+
+                                                    {/* Price & Quantity Row */}
+                                                    <div className="mp-card__price-row">
+                                                        <div className="mp-card__price">
+                                                            {formatPrice(p.price?.amount, p.price?.unit)}
                                                         </div>
+                                                        <span className="mp-card__stock">
+                                                            {p.quantity?.available || 1} available
+                                                        </span>
                                                     </div>
 
-                                                    <p className="mp-card__desc">{p.description}</p>
-
-                                                    <div className="mp-card__meta">
-                                                        <div className="mp-meta-item">
-                                                            <MapPin size={14} />
-                                                            <span>{p.location?.region || 'Kwara State'}, {p.location?.country || 'Nigeria'}</span>
-                                                        </div>
-                                                        {p.specifications?.variety && (
-                                                            <div className="mp-meta-item">
-                                                                <Star size={14} className="text-amber" />
-                                                                <span>Variety: {p.specifications.variety}</span>
-                                                            </div>
+                                                    {/* Attributes Pills Strip */}
+                                                    <div className="mp-card__pills">
+                                                        <span className="mp-pill-tag">In Stock</span>
+                                                        <span className="mp-pill-tag gray">Non-Negotiable</span>
+                                                        {p.specifications?.isOrganic && (
+                                                            <span className="mp-pill-tag organic">
+                                                                <Leaf size={10} /> Organic
+                                                            </span>
                                                         )}
                                                     </div>
 
-                                                    {/* Seller Footer */}
-                                                    <div className="mp-card__seller-box">
-                                                        <div className="mp-seller-info">
-                                                            <div className="mp-seller-name-row">
-                                                                <span className="mp-seller-name">{p.seller?.name || 'Kwara Producer'}</span>
-                                                                {(p.seller?.isVerified || p.seller?.is_verified) && (
-                                                                    <ShieldCheck size={15} className="mp-verified-icon" title="L-PRES Verified Marketer" />
-                                                                )}
-                                                            </div>
-                                                            <span className="mp-seller-lga">
-                                                                {(p.seller?.isVerified || p.seller?.is_verified) ? 'L-PRES Verified Producer' : (p.location?.region || 'Kwara Marketer')}
-                                                            </span>
-                                                        </div>
+                                                    {/* Location */}
+                                                    <div className="mp-card__location">
+                                                        <MapPin size={12} className="mp-loc-icon" />
+                                                        <span>{p.location?.region || p.seller?.lga || 'Kwara State'}, Kwara</span>
+                                                    </div>
 
-                                                        {/* Enterprise Intermediary Facilitation Action */}
-                                                        <div className="mp-seller-actions">
-                                                            <button
-                                                                onClick={() => handleOpenRequestModal(p)}
-                                                                className="btn-request-trade"
-                                                                title="Initiate facilitated transaction via L-PRES Intermediary"
-                                                            >
-                                                                <ShieldCheck size={16} /> Request Item (L-PRES Facilitated)
-                                                            </button>
-                                                            <button
-                                                                onClick={() => requireAuthForAction('submit a bid', () => handleOpenBidModal(p))}
-                                                                className="btn-place-bid"
-                                                                title="Submit a custom price bid or counter-offer"
-                                                            >
-                                                                <DollarSign size={16} /> Place a Bid
-                                                            </button>
-                                                        </div>
+                                                    {/* Card Action Buttons */}
+                                                    <div className="mp-card__actions">
+                                                        <button
+                                                            onClick={() => handleOpenRequestModal(p)}
+                                                            className="btn-request-trade-sm"
+                                                            title="Initiate transaction via L-PRES Intermediary"
+                                                        >
+                                                            <ShieldCheck size={14} /> Request Item
+                                                        </button>
+                                                        <button
+                                                            onClick={() => requireAuthForAction('submit a bid', () => handleOpenBidModal(p))}
+                                                            className="btn-bid-sm"
+                                                            title="Place custom price bid"
+                                                        >
+                                                            <DollarSign size={14} /> Bid
+                                                        </button>
                                                     </div>
 
                                                     {/* Owner actions */}
