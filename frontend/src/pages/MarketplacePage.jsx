@@ -72,6 +72,7 @@ export default function MarketplacePage() {
     const [verificationFarmName, setVerificationFarmName] = useState('');
     const [verificationCoopName, setVerificationCoopName] = useState('');
     const [verificationNin, setVerificationNin] = useState('');
+    const [verificationLga, setVerificationLga] = useState('Kaiama');
     const [verificationNotes, setVerificationNotes] = useState('');
     const [verificationSubmitting, setVerificationSubmitting] = useState(false);
     const [verificationSuccess, setVerificationSuccess] = useState('');
@@ -584,6 +585,7 @@ export default function MarketplacePage() {
                     farm_name: verificationFarmName,
                     cooperative_name: verificationCoopName,
                     nin_or_reg_no: verificationNin,
+                    lga: verificationLga,
                     notes: verificationNotes
                 })
             });
@@ -593,7 +595,8 @@ export default function MarketplacePage() {
                 verification_details: {
                     farmName: verificationFarmName,
                     coopName: verificationCoopName,
-                    nin: verificationNin
+                    nin: verificationNin,
+                    lga: verificationLga
                 }
             };
             localStorage.setItem('lpres_m_user', JSON.stringify(updatedUser));
@@ -1965,6 +1968,121 @@ export default function MarketplacePage() {
                                         className="btn-mp-primary btn-enterprise-submit"
                                     >
                                         {bidSubmitting ? 'Submitting Bid...' : 'Submit Official Bid'}
+                                    </button>
+                                </div>
+                            </form>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {/* Verification Request Modal */}
+            {showVerificationModal && (
+                <div className="mp-modal-overlay">
+                    <div className="mp-modal large">
+                        <button onClick={() => setShowVerificationModal(false)} className="mp-modal-close">
+                            <X size={20} />
+                        </button>
+
+                        <div className="mp-modal-title-box">
+                            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#10b981', background: 'rgba(16, 185, 129, 0.1)', padding: '0.3rem 0.8rem', borderRadius: 999, fontSize: '0.8rem', fontWeight: 700, marginBottom: 8 }}>
+                                <ShieldCheck size={15} /> Kwara L-PRES Verification Service
+                            </div>
+                            <h2>Request L-PRES Verification Badge</h2>
+                            <p>Submit your farm or cooperative details for verification by Kwara L-PRES State Project Office.</p>
+                        </div>
+
+                        {verificationSuccess ? (
+                            <div className="mp-req-success">
+                                <CheckCircle2 size={48} className="mp-success-icon" />
+                                <h3>Verification Request Submitted!</h3>
+                                <p className="mp-req-notice">{verificationSuccess}</p>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleRequestVerification} className="mp-add-form">
+                                <div className="mp-form-grid">
+                                    <div className="mp-form-group">
+                                        <label>Farm / Business Name *</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={verificationFarmName}
+                                            onChange={(e) => setVerificationFarmName(e.target.value)}
+                                            placeholder="e.g. Danladi Fattening & Breeding Farm"
+                                        />
+                                    </div>
+                                    <div className="mp-form-group">
+                                        <label>Cooperative / Association Name (Optional)</label>
+                                        <input
+                                            type="text"
+                                            value={verificationCoopName}
+                                            onChange={(e) => setVerificationCoopName(e.target.value)}
+                                            placeholder="e.g. Offa Dairy Producers Cooperative Union"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="mp-form-grid">
+                                    <div className="mp-form-group">
+                                        <label>NIN or Farmer Reg Number *</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={verificationNin}
+                                            onChange={(e) => setVerificationNin(e.target.value)}
+                                            placeholder="e.g. NIN 12345678901 / KWR-LPRES-042"
+                                        />
+                                    </div>
+                                    <div className="mp-form-group">
+                                        <label>Kwara LGA Location *</label>
+                                        <select
+                                            value={verificationLga}
+                                            onChange={(e) => setVerificationLga(e.target.value)}
+                                            required
+                                        >
+                                            <option value="Kaiama">Kaiama LGA</option>
+                                            <option value="Asa">Asa LGA</option>
+                                            <option value="Baruten">Baruten LGA</option>
+                                            <option value="Edu">Edu LGA</option>
+                                            <option value="Ekiti">Ekiti LGA</option>
+                                            <option value="Ifelodun">Ifelodun LGA</option>
+                                            <option value="Ilorin East">Ilorin East LGA</option>
+                                            <option value="Ilorin South">Ilorin South LGA</option>
+                                            <option value="Ilorin West">Ilorin West LGA</option>
+                                            <option value="Isin">Isin LGA</option>
+                                            <option value="Moro">Moro LGA</option>
+                                            <option value="Offa">Offa LGA</option>
+                                            <option value="Oke Ero">Oke Ero LGA</option>
+                                            <option value="Oyun">Oyun LGA</option>
+                                            <option value="Pategi">Pategi LGA</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="mp-form-group">
+                                    <label>Livestock Operations & Farm Description</label>
+                                    <textarea
+                                        rows={3}
+                                        value={verificationNotes}
+                                        onChange={(e) => setVerificationNotes(e.target.value)}
+                                        placeholder="Briefly describe your herd size, breed, livestock products, or farm location..."
+                                    />
+                                </div>
+
+                                <div className="mp-modal-actions" style={{ marginTop: 18 }}>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowVerificationModal(false)}
+                                        className="btn-mp-cancel"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={verificationSubmitting}
+                                        className="btn-mp-primary"
+                                    >
+                                        {verificationSubmitting ? 'Submitting Verification Request...' : 'Submit Verification Request'}
                                     </button>
                                 </div>
                             </form>
