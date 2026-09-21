@@ -31,6 +31,14 @@ origins = [
     "https://market.lpres.kw.gov.ng",
 ]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 from fastapi import Request
 from fastapi.responses import JSONResponse
 
