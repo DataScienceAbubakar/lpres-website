@@ -865,6 +865,18 @@ def update_marketplace_request_status(
 SEED_USERS = [
     {
         "id": 1,
+        "name": "Maryam A. Akaba",
+        "email": "maryam.a.akaba@gmail.com",
+        "phone": "+234 803 456 7890",
+        "whatsapp": "+234 803 456 7890",
+        "lga": "Ilorin West",
+        "isVerified": False,
+        "verificationStatus": "pending",
+        "verificationDetails": {"farm_name": "Akaba Livestock & Poultry Farms", "nin_reg": "NIN-29384756102", "lga": "Ilorin West"},
+        "createdAt": "2026-09-18T10:00:00.000Z"
+    },
+    {
+        "id": 2,
         "name": "Hajia Amina Mohammed",
         "email": "offa.dairy@lpres-coop.ng",
         "phone": "+234 805 987 6543",
@@ -876,7 +888,7 @@ SEED_USERS = [
         "createdAt": "2026-09-01T10:00:00.000Z"
     },
     {
-        "id": 2,
+        "id": 3,
         "name": "Alhaji Ibrahim Mustapha",
         "email": "baruten.pasture@lpres-coop.ng",
         "phone": "+234 812 345 6789",
@@ -888,7 +900,7 @@ SEED_USERS = [
         "createdAt": "2026-09-02T11:30:00.000Z"
     },
     {
-        "id": 3,
+        "id": 4,
         "name": "Dr. Emmanuel Kayode",
         "email": "edu.livestock@kwara-farmers.org",
         "phone": "+234 803 111 2233",
@@ -900,7 +912,7 @@ SEED_USERS = [
         "createdAt": "2026-09-10T14:15:00.000Z"
     },
     {
-        "id": 4,
+        "id": 5,
         "name": "Fatima Usman",
         "email": "fatima.usman@gmail.com",
         "phone": "+234 806 777 8899",
@@ -914,12 +926,128 @@ SEED_USERS = [
 ]
 
 
+def ensure_seeded_users(db: Session):
+    try:
+        seeded_list = [
+            {
+                "name": "Maryam A. Akaba",
+                "email": "maryam.a.akaba@gmail.com",
+                "phone": "+234 803 456 7890",
+                "whatsapp": "+234 803 456 7890",
+                "lga": "Ilorin West",
+                "is_verified": False,
+                "verification_status": "pending",
+                "verification_details": {"farm_name": "Akaba Livestock & Poultry Farms", "nin_reg": "NIN-29384756102", "lga": "Ilorin West"}
+            },
+            {
+                "name": "Hajia Amina Mohammed",
+                "email": "offa.dairy@lpres-coop.ng",
+                "phone": "+234 805 987 6543",
+                "whatsapp": "+234 805 987 6543",
+                "lga": "Offa",
+                "is_verified": True,
+                "verification_status": "verified",
+                "verification_details": {"farm_name": "Offa Women Dairy Cooperative", "nin_reg": "NIN-84729104829"}
+            },
+            {
+                "name": "Alhaji Ibrahim Mustapha",
+                "email": "baruten.pasture@lpres-coop.ng",
+                "phone": "+234 812 345 6789",
+                "whatsapp": "+234 812 345 6789",
+                "lga": "Baruten",
+                "is_verified": True,
+                "verification_status": "verified",
+                "verification_details": {"farm_name": "Baruten Pastoralist Support Union", "nin_reg": "NIN-10928374651"}
+            },
+            {
+                "name": "Dr. Emmanuel Kayode",
+                "email": "edu.livestock@kwara-farmers.org",
+                "phone": "+234 803 111 2233",
+                "whatsapp": "+234 803 111 2233",
+                "lga": "Edu",
+                "is_verified": False,
+                "verification_status": "pending",
+                "verification_details": {"farm_name": "Edu Commercial Maize & Feed Ranch", "nin_reg": "NIN-99281726354"}
+            },
+            {
+                "name": "Fatima Usman",
+                "email": "fatima.usman@gmail.com",
+                "phone": "+234 806 777 8899",
+                "whatsapp": "+234 806 777 8899",
+                "lga": "Ilorin South",
+                "is_verified": False,
+                "verification_status": "unverified",
+                "verification_details": {}
+            }
+        ]
+        
+        for item in seeded_list:
+            existing = db.query(models.MarketplaceUser).filter(models.MarketplaceUser.email == item["email"]).first()
+            if not existing:
+                u = models.MarketplaceUser(
+                    name=item["name"],
+                    email=item["email"],
+                    phone=item["phone"],
+                    whatsapp=item["whatsapp"],
+                    lga=item["lga"],
+                    hashed_password=get_password_hash("LpresUser2026!"),
+                    is_verified=item["is_verified"],
+                    verification_status=item["verification_status"],
+                    verification_details=item["verification_details"]
+                )
+                db.add(u)
+        db.commit()
+    except Exception as e:
+        print(f"[ENSURE SEEDED USERS WARNING] {e}")
+
+
+def sync_requests_and_bids_users(db: Session):
+    try:
+        reqs = db.query(models.MarketplaceRequest).all()
+        for r in reqs:
+            if r.buyer_email:
+                existing = db.query(models.MarketplaceUser).filter(models.MarketplaceUser.email == r.buyer_email).first()
+                if not existing:
+                    u = models.MarketplaceUser(
+                        name=r.buyer_name or "Marketplace Buyer",
+                        email=r.buyer_email,
+                        phone=r.buyer_phone or "N/A",
+                        whatsapp=r.buyer_phone or "N/A",
+                        lga=r.buyer_lga or "Ilorin East",
+                        hashed_password=get_password_hash("LpresUser2026!"),
+                        is_verified=False,
+                        verification_status="unverified"
+                    )
+                    db.add(u)
+        bids = db.query(models.MarketplaceBid).all()
+        for b in bids:
+            if b.bidder_email:
+                existing = db.query(models.MarketplaceUser).filter(models.MarketplaceUser.email == b.bidder_email).first()
+                if not existing:
+                    u = models.MarketplaceUser(
+                        name=b.bidder_name or "Marketplace Bidder",
+                        email=b.bidder_email,
+                        phone=b.bidder_phone or "N/A",
+                        whatsapp=b.bidder_phone or "N/A",
+                        lga=b.bidder_lga or "Ilorin East",
+                        hashed_password=get_password_hash("LpresUser2026!"),
+                        is_verified=False,
+                        verification_status="unverified"
+                    )
+                    db.add(u)
+        db.commit()
+    except Exception as e:
+        print(f"[SYNC USERS WARNING] {e}")
+
+
 @router.get("/admin/users")
 def get_marketplace_users(
     m_admin: models.MarketplaceAdmin = Depends(get_current_marketplace_admin),
     db: Session = Depends(get_db)
 ):
     try:
+        ensure_seeded_users(db)
+        sync_requests_and_bids_users(db)
         users = db.query(models.MarketplaceUser).order_by(models.MarketplaceUser.created_at.desc()).all()
         result = []
         for u in users:
@@ -931,7 +1059,7 @@ def get_marketplace_users(
                 "whatsapp": u.whatsapp,
                 "lga": u.lga,
                 "isVerified": u.is_verified,
-                "verificationStatus": u.verification_status,
+                "verificationStatus": u.verification_status or "unverified",
                 "verificationDetails": safe_parse_json(u.verification_details, {}),
                 "createdAt": u.created_at.isoformat() if u.created_at else ""
             })
