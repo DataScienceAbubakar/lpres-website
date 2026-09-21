@@ -122,11 +122,13 @@ class MarketplaceUserLogin(BaseModel):
 
 
 class MarketplaceVerificationRequest(BaseModel):
-    farm_name: Optional[str] = None
-    cooperative_name: Optional[str] = None
-    nin_or_reg_no: Optional[str] = None
-    id_document_url: Optional[str] = None
-    notes: Optional[str] = None
+    email: Optional[Any] = None
+    farm_name: Optional[Any] = None
+    cooperative_name: Optional[Any] = None
+    nin_or_reg_no: Optional[Any] = None
+    lga: Optional[Any] = None
+    id_document_url: Optional[Any] = None
+    notes: Optional[Any] = None
 
 
 class MarketplaceProductCreate(BaseModel):
